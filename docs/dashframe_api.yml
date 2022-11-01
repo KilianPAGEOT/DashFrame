@@ -1,0 +1,110 @@
+openapi: 3.0.0
+info:
+  title: DashFrame API
+  version: 0.1.0
+  description: |
+    ## Authentification
+
+    This API uses tokens of an unknown type.
+    The token is in the `Authorization` header of the request.  
+
+    Example:
+    ```
+    Authorization: gho_pJ9dGXVKpfzZp4PUHSxYEq9hjk0h288Gwj4S
+    ```
+servers:
+  - url: https://localhost:8080/api
+    description: Development Server
+components:
+  schemas:
+    clientInfo:
+      type: object
+      description: Information about the client that executed this request
+      properties:
+        name:
+          type: string
+          description: Indicates the identifier of this parameter
+          example: city
+        type:
+          type: string
+          description: Indicates the type of this parameter
+          enum: ["string", "integer"]
+          example: string
+    serverInfo:
+      type: object
+      description: Information about the server that is receiving this request
+      properties:
+        current_time:
+          type: number
+          example: 1531680780
+          format: int64
+          description: Indicates the server time in the Epoch Unix Time Stamp format
+        services:
+          type: array
+          description: Indicates the list of Services supported by the server
+          items:
+            $ref: "#/components/schemas/service"
+    service:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Indicates the name of the Service
+          example: weather
+        widgets:
+          type: array
+          description: Indicates the list of Widgets supported by this Service
+          items:
+            $ref: "#/components/schemas/widget"
+    widget:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Indicates the identifier of this Widget
+          example: city_temperature
+        description:
+          type: string
+          example: Display temperature for a city
+        params:
+          type: array
+          description: Indicates the list of parameters to configure this Widget
+          items:
+            $ref: "#/components/schemas/widgetParameter"
+    widgetParameter:
+      type: object
+      description: Describes a widget parameter
+      properties:
+        name:
+          type: string
+          description: Indicates the identifier of this parameter
+          example: city
+        type:
+          type: string
+          description: Indicates the type of this parameter
+          enum: ["string", "integer"]
+          example: string
+  securitySchemes:
+    apiKey:
+      name: Authorization
+      description: Authentification via API key
+      type: apiKey
+      in: header
+
+paths:
+  /about.json:
+    get:
+      summary: Information about the supported services
+      security: [] # public
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  client:
+                    $ref: "#/components/schemas/clientInfo"
+                  server:
+                    $ref: "#/components/schemas/serverInfo"
