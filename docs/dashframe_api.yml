@@ -13,8 +13,11 @@ info:
     Authorization: gho_pJ9dGXVKpfzZp4PUHSxYEq9hjk0h288Gwj4S
     ```
 servers:
-  - url: https://localhost:8080/api
-    description: Development Server
+  - url: http://localhost:8080/api/{apiVersion}
+    description: Development API Server
+    variables:
+      apiVersion:
+        default: v1
 components:
   schemas:
     clientInfo:
@@ -30,6 +33,13 @@ components:
           description: Indicates the type of this parameter
           enum: ["string", "integer"]
           example: string
+      required:
+        - name
+        - type
+    id:
+      type: integer
+      description: A resource identifier
+      minimum: 0
     serverInfo:
       type: object
       description: Information about the server that is receiving this request
@@ -44,6 +54,9 @@ components:
           description: Indicates the list of Services supported by the server
           items:
             $ref: "#/components/schemas/service"
+      required:
+        - current_time
+        - services
     service:
       type: object
       properties:
@@ -55,8 +68,36 @@ components:
           type: array
           description: Indicates the list of Widgets supported by this Service
           items:
-            $ref: "#/components/schemas/widget"
-    widget:
+            $ref: "#/components/schemas/widgetDescription"
+      required:
+        - name
+        - widgets
+    widgetInstance:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/id"
+        name:
+          description: User-defined name of this widget component, optional
+          type: string
+        serviceId:
+          $ref: "#/components/schemas/id"
+        order:
+          type: integer
+          description: The ordering of this widget in the column
+          minimum: 0
+        columnPos:
+          type: integer
+          description: The column id of the widget
+          minimum: 0
+        config:
+          $ref: "#/components/schemas/widgetConfig"
+      required:
+        - id
+        - service_id
+        - order
+        - column_pos
+    widgetDescription:
       type: object
       properties:
         name:
@@ -70,8 +111,12 @@ components:
           type: array
           description: Indicates the list of parameters to configure this Widget
           items:
-            $ref: "#/components/schemas/widgetParameter"
-    widgetParameter:
+            $ref: "#/components/schemas/widgetParameterDescription"
+      required:
+        - name
+        - description
+        - params
+    widgetParameterDescription:
       type: object
       description: Describes a widget parameter
       properties:
@@ -84,6 +129,292 @@ components:
           description: Indicates the type of this parameter
           enum: ["string", "integer"]
           example: string
+      required:
+        - name
+        - type
+    widgetType:
+      type: string
+      enum:
+        - steam/friends_list
+        - steam/game_news
+        - steam/game_population
+    widgetConfig:
+      oneOf:
+        - $ref: "#/components/schemas/widgetConfigEpicGamesFreeGames"
+        - $ref: "#/components/schemas/widgetConfigEpicGamesFriendsList"
+        - $ref: "#/components/schemas/widgetConfigRssFeed"
+        - $ref: "#/components/schemas/widgetConfigSteamFriendsList"
+        - $ref: "#/components/schemas/widgetConfigSteamGameNews"
+        - $ref: "#/components/schemas/widgetConfigSteamGamePopulation"
+        - $ref: "#/components/schemas/widgetConfigTwitchFollowedChannels"
+        - $ref: "#/components/schemas/widgetConfigWeatherTime"
+        - $ref: "#/components/schemas/widgetConfigYouTubeChannelStats"
+        - $ref: "#/components/schemas/widgetConfigYouTubeSubscribedChannels"
+        - $ref: "#/components/schemas/widgetConfigYouTubeVideoStats"
+      discriminator:
+        propertyName: type
+        mapping:
+          steam/friends_list: "#/components/schemas/widgetConfigSteamFriendsList"
+          steam/game_news: "#/components/schemas/widgetConfigSteamGameNews"
+          steam/game_population: "#/components/schemas/widgetConfigSteamGamePopulation"
+    widgetConfigBase:
+      type: object
+      properties:
+        name:
+          description: Optional user-defined name for the widget
+          type: string
+    widgetConfigEpicGamesFreeGames:
+      allOf:
+        - $ref: "#/components/schemas/widgetConfigBase"
+        - type: object
+          description: Configuration for the Epic Games free games widget
+          properties:
+            type:
+              description: The unique id of this service widget
+              enum: ["epic_games/free_games"]
+          required:
+            - type
+    widgetConfigEpicGamesFriendsList:
+      allOf:
+        - $ref: "#/components/schemas/widgetConfigBase"
+        - type: object
+          description: Configuration for the Epic Games friends list widget
+          properties:
+            type:
+              description: The unique id of this service widget
+              enum: ["epic_games/friends_list"]
+            parameters:
+              type: object
+              properties:
+                showOffline:
+                  type: integer
+                  enum: [0, 1]
+              required:
+                - showOffline
+          required:
+            - type
+            - parameters
+    widgetConfigRssFeed:
+      allOf:
+        - $ref: "#/components/schemas/widgetConfigBase"
+        - type: object
+          description: Configuration for the RSS feed widget
+          properties:
+            type:
+              description: The unique id of this service widget
+              enum: ["rss/feed"]
+            parameters:
+              type: object
+              properties:
+                url:
+                  type: string
+                  format: uri
+              required:
+                - url
+          required:
+            - type
+            - parameters
+    widgetConfigSteamFriendsList:
+      allOf:
+        - $ref: "#/components/schemas/widgetConfigBase"
+        - type: object
+          description: Configuration for the Steam friends list widget
+          properties:
+            type:
+              description: The unique id of this service widget
+              enum: ["steam/friends_list"]
+            parameters:
+              type: object
+              properties:
+                showOffline:
+                  type: integer
+                  enum: [0, 1]
+              required:
+                - showOffline
+          required:
+            - type
+            - parameters
+    widgetConfigSteamGameNews:
+      allOf:
+        - $ref: "#/components/schemas/widgetConfigBase"
+        - type: object
+          description: Configuration for the Steam game news widget
+          properties:
+            type:
+              description: The unique id of this service widget
+              enum: ["steam/game_news"]
+            parameters:
+              type: object
+              properties:
+                gameNameOrId:
+                  type: string
+                  minLength: 1
+              required:
+                - gameNameOrId
+          required:
+            - type
+            - parameters
+    widgetConfigSteamGamePopulation:
+      allOf:
+        - $ref: "#/components/schemas/widgetConfigBase"
+        - type: object
+          description: Configuration for the Steam game population widget
+          properties:
+            type:
+              description: The unique id of this service widget
+              enum: ["steam/game_population"]
+            parameters:
+              type: object
+              properties:
+                gameNameOrId:
+                  type: string
+                  minLength: 1
+              required:
+                - gameNameOrId
+          required:
+            - type
+            - parameters
+    widgetConfigTwitchFollowedChannels:
+      allOf:
+        - $ref: "#/components/schemas/widgetConfigBase"
+        - type: object
+          description: Configuration for the Twitch list of followed channels
+          properties:
+            type:
+              description: The unique id of this service widget
+              enum: ["twitch/followed_channels"]
+            parameters:
+              type: object
+              properties:
+                filter:
+                  type: string
+                  enum: ["ALL", "STREAMING_ONLY"]
+              required:
+                - filter
+          required:
+            - type
+            - parameters
+    widgetConfigUnknown:
+      allOf:
+        - $ref: "#/components/schemas/widgetConfigBase"
+        - type: object
+          properties:
+            type:
+              type: string
+              description: The unique id of this service widget
+            parameters:
+              type: object
+          required:
+            - type
+            - parameters
+    widgetConfigWeatherTime:
+      allOf:
+        - $ref: "#/components/schemas/widgetConfigBase"
+        - type: object
+          description: Configuration for the weather & time widget
+          properties:
+            type:
+              description: The unique id of this service widget
+              enum: ["weather_time/default"]
+            parameters:
+              type: object
+              properties:
+                location:
+                  description: City name or address
+                  type: string
+              required:
+                - location
+          required:
+            - type
+            - parameters
+    widgetConfigYouTubeChannelStats:
+      allOf:
+        - $ref: "#/components/schemas/widgetConfigBase"
+        - type: object
+          description: Configuration for the YouTube channel stats widget
+          properties:
+            type:
+              description: The unique id of this service widget
+              enum: ["youtube/channel_statistics"]
+            parameters:
+              type: object
+              properties:
+                channel:
+                  type: string
+                  minLength: 1
+              required:
+                - channel
+          required:
+            - type
+            - parameters
+    widgetConfigYouTubeSubscribedChannels:
+      allOf:
+        - $ref: "#/components/schemas/widgetConfigBase"
+        - type: object
+          description: Configuration for the YouTube list of subscribed channels
+          properties:
+            type:
+              description: The unique id of this service widget
+              enum: ["youtube/subsribed_channels"]
+            parameters:
+              type: object
+              properties:
+                filter:
+                  type: string
+                  enum: ["ALL", "STREAMING_ONLY"]
+              required:
+                - filter
+          required:
+            - type
+            - parameters
+    widgetConfigYouTubeVideoStats:
+      allOf:
+        - $ref: "#/components/schemas/widgetConfigBase"
+        - type: object
+          description: Configuration for the YouTube video statistics
+          properties:
+            type:
+              description: The unique id of this service widget
+              enum: ["youtube/video_statistics"]
+            parameters:
+              type: object
+              properties:
+                video:
+                  type: string
+              required:
+                - video
+          required:
+            - type
+            - parameters
+
+  responses:
+    notFound:
+      description: Returned if the requested resource doesn't exist, or the user does not have access
+      content:
+        application/json:
+          schema: {}
+  parameters:
+    optionalUserId:
+      name: userId
+      in: query
+      required: false
+      description: The ID of an user, assumed to be the current user if not specified
+      schema:
+        $ref: "#/components/schemas/id"
+    widgetConfig:
+      name: config
+      in: query
+      description: Widget configuration
+      required: true
+      schema:
+        $ref: "#/components/schemas/widgetConfig"
+    widgetId:
+      name: widgetId
+      in: path
+      required: true
+      description: "The ID of a widget"
+      schema:
+        $ref: "#/components/schemas/id"
   securitySchemes:
     apiKey:
       name: Authorization
@@ -93,6 +424,9 @@ components:
 
 paths:
   /about.json:
+    servers:
+      - url: http://localhost:8080
+        description: Development Server
     get:
       summary: Information about the supported services
       security: [] # public
@@ -108,3 +442,86 @@ paths:
                     $ref: "#/components/schemas/clientInfo"
                   server:
                     $ref: "#/components/schemas/serverInfo"
+                required:
+                  - client
+                  - server
+  /widgets:
+    get:
+      parameters:
+        - $ref: "#/components/parameters/optionalUserId"
+      summary: Returns the layout of the requested user's board
+      security:
+        - "apiKey": []
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/widgetInstance"
+        "404":
+          $ref: "#/components/responses/notFound"
+    post:
+      summary: Create a new widget instance in the given user's board
+      parameters:
+        - $ref: "#/components/parameters/optionalUserId"
+        - name: serviceId
+          description: The ID of the linked service instance
+          in: query
+          required: true
+          schema:
+            $ref: "#/components/schemas/id"
+        - $ref: "#/components/parameters/widgetConfig"
+      responses:
+        "200":
+          description: Widget was created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/widgetInstance"
+        "404":
+          $ref: "#/components/responses/notFound"
+    delete:
+      summary: Clear all the widgets in the user's board
+      parameters:
+        - $ref: "#/components/parameters/optionalUserId"
+      responses:
+        "200":
+          description: Board was cleared successfully
+        "404":
+          $ref: "#/components/responses/notFound"
+  /widgets/{widgetId}:
+    get:
+      summary: Get information about a specific widget
+      parameters:
+        - $ref: "#/components/parameters/widgetId"
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/widgetInstance"
+        "404":
+          $ref: "#/components/responses/notFound"
+    patch:
+      summary: Update an existing widget's configuration
+      parameters:
+        - $ref: "#/components/parameters/widgetId"
+        - $ref: "#/components/parameters/widgetConfig"
+      responses:
+        "200":
+          description: The widget was updated successfully
+        "404":
+          $ref: "#/components/responses/notFound"
+    delete:
+      summary: Delete a widget
+      parameters:
+        - $ref: "#/components/parameters/widgetId"
+      responses:
+        "200":
+          description: The widget was deleted successfully
+        "404":
+          $ref: "#/components/responses/notFound"
