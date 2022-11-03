@@ -10,14 +10,93 @@ defineProps<{
       <span class="green">{{ msg }}</span>
     </div>
     <div class="nav_connect">
-      <q-btn color="white" text-color="black" label="Standard" />
-      <div class="connect_button">login</div>
-      <div class="connect_button">Sign up</div>
+      <div class="connect_button" @click="showModalLog = true">login</div>
+      <div class="connect_button" @click="showModalSign = true">Sign up</div>
     </div>
   </header>
+  <div v-if="showModalLog">
+    <transition name="modal">
+      <div class="modal-mask">
+        <div class="modal-wrapper">
+          <div class="modal-container">
+            <div class="modal-header">
+              <h3>Login</h3>
+              <q-btn
+                color="red"
+                label="X"
+                class="btn-close"
+                @click="showModalLog = false"
+              />
+            </div>
+            <div class="modal-body">
+              <q-input rounded outlined v-model="name" label="Username" />
+              <q-input rounded outlined v-model="mdp" label="Password" />
+            </div>
+            <div class="modal-footer">
+              <slot name="footer">
+                <q-btn
+                  color="primary"
+                  @click="showModalLog = false"
+                  label="Login"
+                />
+              </slot>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
+  </div>
+  <div v-if="showModalSign">
+    <transition name="modal" :showModalSign="false">
+      <div class="modal-mask">
+        <div class="modal-wrapper">
+          <div class="modal-container">
+            <div class="modal-header">
+              <h3>Sign in</h3>
+              <q-btn
+                color="red"
+                label="X"
+                class="btn-close"
+                @click="showModalSign = false"
+              />
+            </div>
+            <div class="modal-body">
+              <q-input rounded outlined v-model="name" label="Username" />
+              <q-input rounded outlined v-model="mail" label="Email" />
+              <q-input rounded outlined v-model="mdp" label="Password" />
+            </div>
+            <div class="modal-footer">
+              <slot name="footer">
+                <q-btn
+                  color="primary"
+                  @click="showModalSign = false"
+                  label="Sign in"
+                />
+              </slot>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
+  </div>
 </template>
 
+<script lang="ts">
+export default {
+  data() {
+    return {
+      showModalLog: false,
+      showModalSign: false,
+      name: "",
+      mdp: "",
+      maill: "",
+    };
+  },
+};
+</script>
+
 <style scoped>
+@import "../assets/modalStyle.css";
 header {
   background-color: #adadad;
   top: 0%;

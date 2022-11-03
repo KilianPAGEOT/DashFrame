@@ -1,3 +1,23 @@
+<script setup lang="ts">
+import "../assets/modalStyle.css";
+</script>
+
 <template>
-  <h1>Hello world</h1>
+  <body>
+    Body
+  </body>
 </template>
+
+<script lang="ts">
+export default {
+  data() {
+    return {
+      showModal: false,
+    };
+  },
+};
+</script>
+
+<style>
+@import "../assets/modalStyle.css";
+</style>
