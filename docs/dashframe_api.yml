@@ -134,9 +134,9 @@ components:
       discriminator:
         propertyName: type
         mapping:
-          widget/deletion: "#/components/schemas/WidgetDeletionEvent"
-          widget/error: "#/components/schemas/WidgetErrorEvent"
-          widget/refresh: "#/components/schemas/WidgetRefreshEvent"
+          widgets/deletion: "#/components/schemas/WidgetDeletionEvent"
+          widgets/error: "#/components/schemas/WidgetErrorEvent"
+          widgets/refresh: "#/components/schemas/WidgetRefreshEvent"
     Identifier:
       type: integer
       description: A resource identifier
@@ -366,22 +366,31 @@ components:
           steam/game_news: "#/components/schemas/SteamGameNewsWidgetConfiguration"
           steam/game_population: "#/components/schemas/SteamGamePopulationWidgetConfiguration"
     WidgetDeletionEvent:
+      example:
+        {
+          "type": "widgets/deletion",
+          "timestamp": 1667445637,
+          "data": { widgetIds: [4, 42, 23] },
+        }
       allOf:
         - $ref: "#/components/schemas/BaseEvent"
         - type: object
           description: Forces a widget to be delete if it still exists on the client side
           properties:
             type:
-              enum: ["widget/deletion"]
+              enum: ["widgets/deletion"]
               description: The unique ID of this event
             data:
               type: object
               description: Event data
               properties:
-                widgetId:
-                  $ref: "#/components/schemas/Identifier"
+                widgetIds:
+                  type: array
+                  description: The IDs of the widgets to be deleted
+                  items:
+                    $ref: "#/components/schemas/Identifier"
               required:
-                - widgetId
+                - widgetIds
           required:
             - type
             - data
@@ -411,19 +420,26 @@ components:
           description: Widget error event
           properties:
             type:
-              enum: ["widget/error"]
+              enum: ["widgets/error"]
               description: The unique ID of this event
             data:
               type: object
               description: Event data
               properties:
-                widgetId:
-                  $ref: "#/components/schemas/Identifier"
-                error:
-                  $ref: "#/components/schemas/Error"
+                widgets:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        $ref: "#/components/schemas/Identifier"
+                      error:
+                        $ref: "#/components/schemas/Error"
+                    required:
+                      - id
+                      - error
               required:
-                - widgetId
-                - error
+                - widgets
           required:
             - type
             - data
@@ -487,20 +503,27 @@ components:
           description: Widget data update event
           properties:
             type:
-              enum: ["widget/refresh"]
+              enum: ["widgets/refresh"]
               description: The unique ID of this event
             data:
               type: object
               description: Event data
               properties:
-                widgetId:
-                  $ref: "#/components/schemas/Identifier"
-                widgetData:
-                  type: object
-                  description: Widget-specific data
+                widgets:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        $ref: "#/components/schemas/Identifier"
+                      data:
+                        type: object
+                        description: Widget-specific data
+                    required:
+                      - id
+                      - data
               required:
-                - widgetId
-                - widgetData
+                - widgets
           required:
             - type
             - data
