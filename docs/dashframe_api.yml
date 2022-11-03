@@ -53,6 +53,10 @@ components:
         name:
           description: Optional user-defined name for the widget
           type: string
+        refreshRate:
+          type: integer
+          minimum: 1
+          description: Refresh rate of the widget, in seconds
     ClientInformation:
       type: object
       description: Information about the client that executed this request
