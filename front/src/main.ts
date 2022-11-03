@@ -8,7 +8,4 @@ import "@quasar/extras/material-icons/material-icons.css";
 import "quasar/src/css/index.sass";
 //import "./assets/main.css";
 
-createApp(App)
-  .use(Quasar, quasarUserOptions)
-  .use(Quasar, quasarUserOptions)
-  .mount("#app");
+createApp(App).use(Quasar, quasarUserOptions).mount("#app");
