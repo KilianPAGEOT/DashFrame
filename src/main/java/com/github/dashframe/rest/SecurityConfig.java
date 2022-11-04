@@ -1,5 +1,6 @@
 package com.github.dashframe.rest;
 
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,11 +16,11 @@ public class SecurityConfig {
                 .antMatchers(new String[]{"/", "/not-restricted"}).permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .oauth2Login().defaultSuccessUrl("http://localhost:5176", true);
+                .oauth2Login().defaultSuccessUrl("/api/v1/restricted", true);
+
 
         return httpSecurity.build();
     }
-
 
     /*@Override
     public void configure(HttpSecurity http) throws Exception {
