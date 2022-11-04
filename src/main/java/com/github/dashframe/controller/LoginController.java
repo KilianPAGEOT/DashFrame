@@ -1,5 +1,6 @@
-package com.github.dashframe.rest;
+package com.github.dashframe.controller;
 
+import com.github.dashframe.service.UserService;
 import com.github.dashframe.models.User;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -66,7 +67,8 @@ public class LoginController {
             protectedInfo.append("Welcome, " + userAttributes.get("name")+"<br><br>");
             protectedInfo.append("e-mail: " + userAttributes.get("email")+"<br><br>");
             protectedInfo.append("Access Token: " + userToken+"<br><br>");
-            userService.processOAuthPostLogin((String) userAttributes.get("name"), (String) userAttributes.get("email"),"test",userToken,false);
+            protectedInfo.append("test: "+userAttributes+"<br><br>");
+            userService.processOAuthPostLogin((String) userAttributes.get("name"), (String) userAttributes.get("email"),(String) userAttributes.get("at_hash"),userToken,false);
         }
         else{
             protectedInfo.append("NA");
