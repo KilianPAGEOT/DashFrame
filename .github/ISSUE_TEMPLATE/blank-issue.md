@@ -1,10 +1,7 @@
 ---
 name: Blank Issue
 about: A fresh new issue!
-title: ''
+title: ""
 labels: needs-triage
-assignees: ''
-
+assignees: ""
 ---
-
-

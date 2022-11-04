@@ -1,7 +1,7 @@
 package com.github.dashframe.models;
 
-import javax.persistence.*;
 import java.util.Date;
+import javax.persistence.*;
 
 @Entity(name = "widgets")
 public class Widget {
@@ -26,9 +26,7 @@ public class Widget {
     @Column(nullable = false)
     private Date createdAt;
 
-    public Widget() {
-
-    }
+    public Widget() {}
 
     public Widget(Integer id, Service service, String name, int position, int column_pos) {
         this.id = id;
@@ -91,5 +89,4 @@ public class Widget {
     public void onCreate() {
         this.createdAt = new Date();
     }
-
 }

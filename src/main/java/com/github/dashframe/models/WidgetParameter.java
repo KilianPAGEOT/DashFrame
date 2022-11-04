@@ -1,7 +1,7 @@
 package com.github.dashframe.models;
 
-import javax.persistence.*;
 import java.util.Date;
+import javax.persistence.*;
 
 @Entity(name = "widget_parameters")
 public class WidgetParameter {
@@ -17,15 +17,13 @@ public class WidgetParameter {
     @Column(nullable = false)
     private int position;
 
-    @Column(nullable = false, name="`value`")
+    @Column(nullable = false, name = "`value`")
     private int value;
 
     @Column(nullable = false)
     private Date createdAt;
 
-    public WidgetParameter() {
-
-    }
+    public WidgetParameter() {}
 
     public WidgetParameter(Integer id, Widget widget, int position, int value) {
         this.id = id;
@@ -79,5 +77,4 @@ public class WidgetParameter {
     public void onCreate() {
         this.createdAt = new Date();
     }
-
 }

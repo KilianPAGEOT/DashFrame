@@ -1,7 +1,7 @@
 package com.github.dashframe.models;
 
-import javax.persistence.*;
 import java.util.Date;
+import javax.persistence.*;
 
 @Entity(name = "services")
 public class Service {
@@ -26,9 +26,7 @@ public class Service {
     @Column(nullable = false)
     private Date createdAt;
 
-    public Service() {
-
-    }
+    public Service() {}
 
     public Service(Integer id, User user, String name, String token, Date expirationDate) {
         this.id = id;
@@ -91,5 +89,4 @@ public class Service {
     public void onCreate() {
         this.createdAt = new Date();
     }
-
 }
