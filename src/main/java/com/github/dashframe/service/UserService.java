@@ -1,4 +1,4 @@
-package com.github.dashframe.rest;
+package com.github.dashframe.service;
 
 import com.github.dashframe.dao.UserDAO;
 import com.github.dashframe.models.User;
@@ -12,7 +12,7 @@ public class UserService {
     private UserDAO repo;
 
     public void processOAuthPostLogin(String name, String email, String hashPassword, String oauthToken, boolean isAdmin) {
-        User existUser = repo.findByName(name);
+        User existUser = repo.findByEmail(email);
 
         if (existUser == null) {
             User newUser = new User();
