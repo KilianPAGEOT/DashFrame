@@ -15,7 +15,7 @@ public class SecurityConfig {
                 .antMatchers(new String[]{"/", "/not-restricted"}).permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .oauth2Login();
+                .oauth2Login().defaultSuccessUrl("http://localhost:5176", true);
 
         return httpSecurity.build();
     }

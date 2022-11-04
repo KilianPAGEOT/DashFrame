@@ -29,6 +29,17 @@ defineProps<{
               />
             </div>
             <div class="modal-body">
+              <div class="oauth-button">
+                <a href="http://localhost:8080/oauth2/authorization/google"
+                  ><q-btn color="primary" label="Google" class="btn-close"
+                /></a>
+              </div>
+              <div class="oauth-button">
+                <a href="http://localhost:8080/oauth2/authorization/github"
+                  ><q-btn color="primary" label="Github" class="btn-close"
+                /></a>
+              </div>
+
               <q-input rounded outlined v-model="name" label="Username" />
               <q-input rounded outlined v-model="mdp" label="Password" />
             </div>
@@ -61,6 +72,16 @@ defineProps<{
               />
             </div>
             <div class="modal-body">
+              <div class="oauth-button">
+                <a href="http://localhost:8080/oauth2/authorization/google"
+                  ><q-btn color="primary" label="Google" class="btn-close"
+                /></a>
+              </div>
+              <div class="oauth-button">
+                <a href="http://localhost:8080/oauth2/authorization/github"
+                  ><q-btn color="primary" label="Github" class="btn-close"
+                /></a>
+              </div>
               <q-input rounded outlined v-model="name" label="Username" />
               <q-input rounded outlined v-model="mail" label="Email" />
               <q-input rounded outlined v-model="mdp" label="Password" />
@@ -105,6 +126,12 @@ header {
   align-items: center;
   justify-content: space-between;
   width: 100%;
+}
+.oauth-button {
+  margin: 10px;
+}
+.oauth-button > a > * {
+  min-width: 100px;
 }
 span {
   font-size: 36px;
