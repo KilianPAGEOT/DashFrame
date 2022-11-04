@@ -13,38 +13,41 @@ import java.security.Principal;
 import java.util.Map;
 
 @RestController
-public class Controller {
+public class LoginController {
 
     private final OAuth2AuthorizedClientService authorizedClientService;
+    private final UserService userService;
 
-    public Controller(OAuth2AuthorizedClientService authorizedClientService){
+    public LoginController(OAuth2AuthorizedClientService authorizedClientService, UserService userService){
         this.authorizedClientService = authorizedClientService;
+        this.userService = userService;
     }
 
-    @GetMapping("/")
-    public String helloWorld() {
-        return "you don't need to be logged in";
-    }
+//    @GetMapping("/")
+//    public String helloWorld() {
+//        return "you don't need to be logged in";
+//    }
+//
+//    @GetMapping("/not-restricted")
+//    public String notRestricted() {
+//        return "you don't need to be logged in";
+//    }
+//
+//    @GetMapping("/restricted")
+//    public String restricted(Principal User) {
+//        return "if you see this you are logged in"+User.toString();
+//    }
 
-    @GetMapping("/not-restricted")
-    public String notRestricted() {
-        return "you don't need to be logged in";
-    }
-
-    @GetMapping("/restricted")
-    public String restricted(Principal User) {
-        return "if you see this you are logged in"+User.toString();
-    }
     @GetMapping("/user")
     public String getUserInfo(Principal user) {
 
         StringBuffer userInfo= new StringBuffer();
-
         if(user instanceof UsernamePasswordAuthenticationToken){
             userInfo.append(getUsernamePasswordLoginInfo(user));
         }
         else if(user instanceof OAuth2AuthenticationToken){
             userInfo.append(getOauth2LoginInfo(user));
+
         }
         return userInfo.toString();
     }
@@ -63,6 +66,7 @@ public class Controller {
             protectedInfo.append("Welcome, " + userAttributes.get("name")+"<br><br>");
             protectedInfo.append("e-mail: " + userAttributes.get("email")+"<br><br>");
             protectedInfo.append("Access Token: " + userToken+"<br><br>");
+            userService.processOAuthPostLogin((String) userAttributes.get("name"), (String) userAttributes.get("email"),"test",userToken,false);
         }
         else{
             protectedInfo.append("NA");

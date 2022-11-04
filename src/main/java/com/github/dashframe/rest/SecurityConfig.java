@@ -13,10 +13,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.antMatcher("/**").authorizeRequests()
-                .antMatchers(new String[]{"/", "/not-restricted"}).permitAll()
+                .antMatchers(new String[]{"/*"}).permitAll()
                 .anyRequest().authenticated()
-                .and()
-                .oauth2Login().defaultSuccessUrl("/api/v1/restricted", true);
+                .and().formLogin().and()
+                .oauth2Login().defaultSuccessUrl("/api/v1/user", true);
 
 
         return httpSecurity.build();
