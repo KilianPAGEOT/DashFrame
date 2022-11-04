@@ -1,8 +1,8 @@
 package com.github.dashframe.models;
 
+import java.util.Date;
 import javax.persistence.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import java.util.Date;
 
 @Entity(name = "users")
 public class User {
@@ -29,9 +29,7 @@ public class User {
     @Column(nullable = false)
     private Date createdAt;
 
-    public User() {
-
-    }
+    public User() {}
 
     public User(Integer id, String name, String email, String hashPassword, String oauthToken, boolean isAdmin) {
         this.id = id;
@@ -103,5 +101,4 @@ public class User {
     public void onCreate() {
         this.createdAt = new Date();
     }
-
 }

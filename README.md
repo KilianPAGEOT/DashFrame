@@ -1,5 +1,4 @@
-DASHFRAME  
-===
+# DASHFRAME
 
 This repository may be a mirror, [main repository](https://github.com/KilianPAGEOT/DashFrame)
 
@@ -14,11 +13,13 @@ Server:
 ## Development Mode
 
 To run the server in dev mode:
+
 ```
 ./gradlew runDevServer
 ```
 
 To run the front-end in dev mode:
+
 ```
 ./gradlew runDevFront
 ```

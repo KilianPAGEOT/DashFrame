@@ -1,16 +1,16 @@
 package com.github.dashframe.rest;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
 @RequestMapping("/services")
 public class ServicesController {
+
     @GetMapping
     public Map<String, Object> list() {
         var services = new HashMap<String, Object>();
