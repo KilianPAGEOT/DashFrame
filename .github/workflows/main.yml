@@ -47,3 +47,8 @@ jobs:
     - name: Check Formatting
       shell: bash
       run: npx prettier --check .
+
+    - name: ESLint
+      shell: bash
+      working-directory: front
+      run: npm run lint
