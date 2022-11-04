@@ -73,7 +73,7 @@ public class LoginController {
             protectedInfo.append("e-mail: " + userAttributes.get("email")+"<br><br>");
             protectedInfo.append("Access Token: " + userToken+"<br><br>");
             protectedInfo.append("test: "+userAttributes+"<br><br>");
-            //userService.processOAuthPostLogin((String) userAttributes.get("name"), (String) userAttributes.get("email"),(String) userAttributes.get("at_hash"),userToken,false);
+            userService.processOAuthPostLogin((String) userAttributes.get("name"), (String) userAttributes.get("email"),(String) userAttributes.get("at_hash"),userToken,false);
             OidcIdToken idToken = getIdToken(principal);
             if(idToken != null) {
 
