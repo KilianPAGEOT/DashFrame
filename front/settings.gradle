@@ -5,6 +5,4 @@ pluginManagement {
         mavenLocal()
     }
 }
-
-rootProject.name = 'dashframe'
-include 'front'
+rootProject.name = 'dashframe-front'

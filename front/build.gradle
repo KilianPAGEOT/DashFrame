@@ -1,0 +1,79 @@
+// Wrapper Gradle script for the front end NPM setup
+
+plugins {
+    id 'com.github.node-gradle.node' version '3.5.0'
+}
+
+buildDir = 'dist'
+
+configurations {
+    main
+}
+
+task assemble(type: NpmTask) {
+    dependsOn npmInstall
+    description 'Builds the front-end using `npm run build`'
+    group 'build'
+
+    args = ['run', 'build']
+
+    // inputs: the build task is re-run if any of these are modified
+    inputs.dir 'public'
+    inputs.dir 'src'
+    inputs.files 'env.d.ts', 'index.html'
+    inputs.files 'package.json', 'package-lock.json'
+    inputs.files 'tsconfig.app.json', 'tsconfig.config.json', 'tsconfig.json'
+    inputs.files 'vite.config.ts', 'vue.config.js'
+
+    outputs.dir 'dist'
+}
+
+task clean {
+    description 'Deletes the dist directory'
+    group 'build'
+
+    destroyables.register 'dist'
+    file('dist').deleteDir()
+}
+
+task testUnit(type: NpmTask) {
+    dependsOn npmInstall
+    description 'Runs front-end unit tests'
+    group 'verification'
+
+    args = ['run', 'test:unit']
+}
+
+task testEndToEnd(type: NpmTask) {
+    dependsOn npmInstall
+    description 'Runs end to end tests'
+    group 'verification'
+
+    args = ['run', 'test:e2e:dev']
+}
+
+task test {
+    // FIXME: front-end tests are quite borked at the moment
+    // dependsOn testUnit, testEndToEnd
+    description 'Runs the full front-end test suite'
+    group 'verification'
+}
+
+task build {
+    dependsOn assemble, test
+    description 'Assembles and tests the front-end'
+    group 'build'
+}
+
+task runDevFront(type: NpmTask) {
+    dependsOn npmInstall
+    description 'Starts the front-end in development mode'
+    group "running"
+
+    args = ['run', 'dev']
+}
+
+artifacts {
+    main(provider { tasks.assemble })
+}
+
