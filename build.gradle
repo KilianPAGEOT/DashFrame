@@ -15,23 +15,32 @@ repositories {
 
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-mail:${project.spring_version}"
-//implementation "org.springframework.boot:spring-boot-starter-oauth2-client"
-//	implementation "org.hibernate:hibernate-core:6.1.5.Final"
-//	implementation "org.hibernate:hibernate-entitymanager:5.6.12.Final"
-//implementation "io.jsonwebtoken:jjwt:0.9.1"
+    implementation "org.springframework.boot:spring-boot-starter-web:${project.spring_version}"
+    implementation "org.springframework.boot:spring-boot-starter:${project.spring_version}"
+    //implementation "org.springframework.boot:spring-boot-starter-oauth2-client"
+
+    implementation 'org.hibernate:hibernate-core:5.6.12.Final'
+    implementation 'org.hibernate:hibernate-entitymanager:5.6.12.Final'
+
     implementation "org.springframework.boot:spring-boot-starter-json:${project.spring_version}"
     implementation "org.springframework.security:spring-security-core:5.7.3"
-//	implementation "org.springframework.data:spring-data-jpa:${project.spring_version}"
-//	implementation "org.springframework.boot:spring-boot-starter-data-jpa:${project.spring_version}"
+
+ 	implementation "org.springframework.data:spring-data-jpa:${project.spring_version}"
+ 	implementation "org.springframework.boot:spring-boot-starter-data-jpa:${project.spring_version}"
+
     developmentOnly "org.springframework.boot:spring-boot-devtools:${project.spring_version}"
-//	runtimeOnly "org.mariadb.jdbc:mariadb-java-client:3.0.8"
+
+    runtimeOnly "org.mariadb.jdbc:mariadb-java-client:3.0.8"
+
     providedRuntime "org.springframework.boot:spring-boot-starter-tomcat:${project.spring_version}"
+
     testImplementation "org.springframework.boot:spring-boot-starter-test:${project.spring_version}"
-//testImplementation 'com.h2database:h2:2.1.214'
+    testImplementation 'com.h2database:h2:2.1.214'
 
     // WEB
     implementation "org.springframework.boot:spring-boot-starter-web:${project.spring_version}"
     implementation "org.springframework.boot:spring-boot-starter-websocket:${project.spring_version}"
+
 }
 
 tasks.named('test') {

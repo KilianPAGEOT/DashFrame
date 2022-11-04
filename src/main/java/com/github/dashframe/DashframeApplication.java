@@ -1,5 +1,10 @@
 package com.github.dashframe;
 
+import com.github.dashframe.dao.ServiceDAO;
+import com.github.dashframe.dao.UserDAO;
+import com.github.dashframe.dao.WidgetDAO;
+import com.github.dashframe.dao.WidgetParameterDAO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +19,18 @@ import java.util.Map;
 @Controller
 @ResponseBody
 public class DashframeApplication {
+
+    @Autowired
+    private ServiceDAO serviceDAO;
+
+    @Autowired
+    private UserDAO userDAO;
+
+    @Autowired
+    private WidgetDAO widgetDAO;
+
+    @Autowired
+    private WidgetParameterDAO widgetParameterDAO;
 
     public static void main(String[] args) {
         SpringApplication.run(DashframeApplication.class, args);
