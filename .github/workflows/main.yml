@@ -35,3 +35,15 @@ jobs:
         cache-read-only: false
       env:
         GRADLE_TOS_AGREE: yes
+
+  lint:
+    name: Linting
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Check Formatting
+      shell: bash
+      run: npx prettier --check .
