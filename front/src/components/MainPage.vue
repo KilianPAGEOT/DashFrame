@@ -69,6 +69,8 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  padding-bottom: 50px;
 }
 .Empty {
   width: 470px;
@@ -95,6 +97,8 @@ export default {
 .columnWidget > .Elipse {
   width: 77px;
   height: 77px;
+  position: absolute;
+  top: 87%;
 }
 .insideElipse {
   position: relative;
