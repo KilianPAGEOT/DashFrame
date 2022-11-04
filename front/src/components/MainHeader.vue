@@ -89,7 +89,7 @@ export default {
       showModalSign: false,
       name: "",
       mdp: "",
-      maill: "",
+      mail: "",
     };
   },
 };
