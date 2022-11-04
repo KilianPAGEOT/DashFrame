@@ -62,7 +62,7 @@ tasks.named('clean') {
 }
 
 // Always build the front end and copy assets before creating a WAR
-tasks.war.dependsOn(copyFrontAssets)
+tasks.processResources.dependsOn(copyFrontAssets)
 
 task runDevServer {
     dependsOn bootRun
