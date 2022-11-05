@@ -671,10 +671,9 @@ components:
         $ref: "#/components/schemas/Identifier"
   securitySchemes:
     apiKey:
-      name: Authorization
-      description: Authentification via API key
-      type: apiKey
-      in: header
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 
 tags:
   - name: widgets
@@ -690,10 +689,11 @@ paths:
       - url: http://localhost:8080
         description: Development Server
     get:
+      operationId: get_about_json
       summary: Information about the supported services
       security: [] # public
       tags:
-        - services
+        - information
       responses:
         "200":
           description: Expected response to a valid request
@@ -711,6 +711,7 @@ paths:
                   - server
   /services:
     get:
+      operationId: list_services
       summary: Returns the list of available services and services instances registered by the user
       security:
         - "apiKey": []
@@ -743,6 +744,7 @@ paths:
         "404":
           $ref: "#/components/responses/notFound"
     post:
+      operationId: create_service
       summary: Create a new service instance
       security:
         - "apiKey": []
@@ -787,6 +789,7 @@ paths:
         "404":
           $ref: "#/components/responses/notFound"
     delete:
+      operationId: delete_services
       summary: Removes all registered service instances of the user
       security:
         - "apiKey": []
@@ -801,21 +804,20 @@ paths:
           $ref: "#/components/responses/notLoggedIn"
         "404":
           $ref: "#/components/responses/notFound"
-  /services/{serviceIdOrType}:
+  /services/{serviceId}:
     delete:
-      summary: "If parameter is a service type, removes all instances of this type. If parmeter is an id, remove this instance"
+      operationId: delete_service
+      summary: "Delete a specific service instance"
       security:
         - "apiKey": []
       tags:
         - services
       parameters:
-        - name: serviceIdOrType
+        - name: serviceId
           required: true
           in: path
           schema:
-            oneOf:
-              - $ref: "#/components/schemas/Identifier"
-              - $ref: "#/components/schemas/ServiceType"
+            $ref: "#/components/schemas/Identifier"
       responses:
         "204":
           description: All services of type or service was deleted successfully
@@ -825,6 +827,7 @@ paths:
           $ref: "#/components/responses/notFound"
   /widgets:
     get:
+      operationId: list_widgets
       summary: Returns the layout of the requested user's board
       security:
         - "apiKey": []
@@ -846,6 +849,7 @@ paths:
         "404":
           $ref: "#/components/responses/notFound"
     post:
+      operationId: create_widget
       summary: Create a new widget instance in the given user's board
       security:
         - "apiKey": []
@@ -880,6 +884,7 @@ paths:
         "404":
           $ref: "#/components/responses/notFound"
     delete:
+      operationId: delete_widgets
       summary: Clear all the widgets in the user's board
       security:
         - "apiKey": []
@@ -896,6 +901,7 @@ paths:
           $ref: "#/components/responses/notFound"
   /widgets/{widgetId}:
     get:
+      operationId: get_widget
       summary: Get information about a specific widget
       security:
         - "apiKey": []
@@ -915,6 +921,7 @@ paths:
         "404":
           $ref: "#/components/responses/notFound"
     patch:
+      operationId: update_widget
       summary: Update an existing widget's configuration
       security:
         - "apiKey": []
@@ -942,6 +949,7 @@ paths:
         "404":
           $ref: "#/components/responses/notFound"
     delete:
+      operationId: delete_widget
       summary: Delete a widget
       security:
         - "apiKey": []
@@ -958,6 +966,7 @@ paths:
           $ref: "#/components/responses/notFound"
   /ws/events:
     get:
+      operationId: events_websocket
       summary: Subscribes to the events WebSocket of the given user, or the current user if not present
       security:
         - "apiKey": []
