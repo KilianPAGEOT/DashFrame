@@ -3,6 +3,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'java'
     id 'war'
+    id 'org.openapi.generator' version "6.2.1"
 }
 
 group = 'com.github.dashframe'
@@ -67,4 +68,14 @@ if (hasProperty('buildScan') && System.getenv('GRADLE_TOS_AGREE')) {
         termsOfServiceUrl = 'https://gradle.com/terms-of-service'
         termsOfServiceAgree = System.getenv('GRADLE_TOS_AGREE')
     }
+}
+
+openApiGenerate {
+    generatorName = 'typescript-fetch'
+    inputSpec = "$rootDir/docs/openapi.yml"
+    outputDir = "$rootDir/front/src/api"
+    configOptions = [
+            // we can trust whatever the server will send to the client
+            withoutRuntimeChecks: 'true',
+    ]
 }
