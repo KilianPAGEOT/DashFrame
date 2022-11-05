@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.5.2",
     "prettier": "^2.7.1",
     "prettier-plugin-java": "^1.6.2"
   },
