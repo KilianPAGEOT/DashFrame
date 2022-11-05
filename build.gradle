@@ -25,8 +25,8 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-json:${project.spring_version}"
     implementation "org.springframework.security:spring-security-core:5.7.3"
 
- 	implementation "org.springframework.data:spring-data-jpa:${project.spring_version}"
- 	implementation "org.springframework.boot:spring-boot-starter-data-jpa:${project.spring_version}"
+    implementation "org.springframework.data:spring-data-jpa:${project.spring_version}"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${project.spring_version}"
 
     developmentOnly "org.springframework.boot:spring-boot-devtools:${project.spring_version}"
 
@@ -47,22 +47,13 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-task copyFrontAssets(type: Copy) {
-    dependsOn ':front:assemble'
-    description "Copies the output of the front build to Spring's static assets directory"
-    group 'build'
-
-    from 'front/dist/'
-    into 'src/main/resources/static'
-}
-
 tasks.named('clean') {
     // remove the copied assets on cleanup
     file('src/main/resources/static').deleteDir()
 }
 
 // Always build the front end and copy assets before creating a WAR
-tasks.processResources.dependsOn(copyFrontAssets)
+tasks.war.dependsOn(':front:assemble')
 
 task runDevServer {
     dependsOn bootRun

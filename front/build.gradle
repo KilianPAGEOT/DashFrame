@@ -18,6 +18,7 @@ task assemble(type: NpmTask) {
     args = ['run', 'build']
 
     // inputs: the build task is re-run if any of these are modified
+    inputs.dir 'node_modules'
     inputs.dir 'public'
     inputs.dir 'src'
     inputs.files 'env.d.ts', 'index.html'
@@ -25,7 +26,7 @@ task assemble(type: NpmTask) {
     inputs.files 'tsconfig.app.json', 'tsconfig.config.json', 'tsconfig.json'
     inputs.files 'vite.config.ts', 'vue.config.js'
 
-    outputs.dir 'dist'
+    outputs.dir "${rootProject.buildDir}/resources/main/static"
 }
 
 task clean {
