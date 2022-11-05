@@ -11,12 +11,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @SpringBootApplication
 @Controller
-@ResponseBody
 public class DashframeApplication {
 
     @Autowired
@@ -35,6 +35,8 @@ public class DashframeApplication {
         SpringApplication.run(DashframeApplication.class, args);
     }
 
+    @ResponseBody
+    @CrossOrigin
     @GetMapping("/about.json")
     public ResponseEntity<Map<String, Object>> aboutJson() {
         Map<String, Object> body = new HashMap<>();
