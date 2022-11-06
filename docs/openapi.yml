@@ -41,6 +41,9 @@ components:
       type: object
       description: Common properties shared by any server-sent event, not a full event by itself
       properties:
+        type:
+          description: The type of event, one of the values of EventType
+          type: string
         timestamp:
           type: integer
           description: The UNIX timestamp of the event creation
@@ -50,6 +53,9 @@ components:
     BaseWidgetConfiguration:
       type: object
       properties:
+        type:
+          description: The type of widget, one of the values of WidgetType
+          type: string
         name:
           description: Optional user-defined name for the widget
           type: string
@@ -57,6 +63,8 @@ components:
           type: integer
           minimum: 1
           description: Refresh rate of the widget, in seconds
+      required:
+        - type
     ClientInformation:
       type: object
       description: Information about the client that executed this request
@@ -76,23 +84,12 @@ components:
     EpicGamesFreeGamesWidgetConfiguration:
       allOf:
         - $ref: "#/components/schemas/BaseWidgetConfiguration"
-        - type: object
-          description: Configuration for the Epic Games free games widget
-          properties:
-            type:
-              description: The unique id of this service widget
-              enum: ["epic_games/free_games"]
-          required:
-            - type
     EpicGamesFriendsListWidgetConfiguration:
       allOf:
         - $ref: "#/components/schemas/BaseWidgetConfiguration"
         - type: object
           description: Configuration for the Epic Games friends list widget
           properties:
-            type:
-              description: The unique id of this service widget
-              enum: ["epic_games/friends_list"]
             parameters:
               type: object
               properties:
@@ -102,7 +99,6 @@ components:
               required:
                 - showOffline
           required:
-            - type
             - parameters
     Error:
       type: object
@@ -141,6 +137,12 @@ components:
           widgets/deletion: "#/components/schemas/WidgetDeletionEvent"
           widgets/error: "#/components/schemas/WidgetErrorEvent"
           widgets/refresh: "#/components/schemas/WidgetRefreshEvent"
+    EventType:
+      type: string
+      enum:
+        - widgets/deletion
+        - widgets/error
+        - widgets/refresh
     Identifier:
       type: integer
       description: A resource identifier
@@ -157,9 +159,6 @@ components:
         - type: object
           description: Configuration for the RSS feed widget
           properties:
-            type:
-              description: The unique id of this service widget
-              enum: ["rss/feed"]
             parameters:
               type: object
               properties:
@@ -169,14 +168,13 @@ components:
               required:
                 - url
           required:
-            - type
             - parameters
     ServerInformation:
       type: object
       description: Information about the server that is receiving this request
       properties:
         current_time:
-          type: number
+          type: integer
           example: 1531680780
           format: int64
           description: Indicates the server time in the Epoch Unix Time Stamp format
@@ -243,9 +241,6 @@ components:
         - type: object
           description: Configuration for the Steam friends list widget
           properties:
-            type:
-              description: The unique id of this service widget
-              enum: ["steam/friends_list"]
             parameters:
               type: object
               properties:
@@ -255,7 +250,6 @@ components:
               required:
                 - showOffline
           required:
-            - type
             - parameters
     SteamGameNewsWidgetConfiguration:
       allOf:
@@ -263,9 +257,6 @@ components:
         - type: object
           description: Configuration for the Steam game news widget
           properties:
-            type:
-              description: The unique id of this service widget
-              enum: ["steam/game_news"]
             parameters:
               type: object
               properties:
@@ -275,7 +266,6 @@ components:
               required:
                 - gameNameOrId
           required:
-            - type
             - parameters
     SteamGamePopulationWidgetConfiguration:
       allOf:
@@ -283,9 +273,6 @@ components:
         - type: object
           description: Configuration for the Steam game population widget
           properties:
-            type:
-              description: The unique id of this service widget
-              enum: ["steam/game_population"]
             parameters:
               type: object
               properties:
@@ -295,7 +282,6 @@ components:
               required:
                 - gameNameOrId
           required:
-            - type
             - parameters
     TwitchFollowedChannelsWidgetConfiguration:
       allOf:
@@ -303,9 +289,6 @@ components:
         - type: object
           description: Configuration for the Twitch list of followed channels
           properties:
-            type:
-              description: The unique id of this service widget
-              enum: ["twitch/followed_channels"]
             parameters:
               type: object
               properties:
@@ -315,30 +298,18 @@ components:
               required:
                 - filter
           required:
-            - type
             - parameters
     UnknownWidgetConfiguration:
       allOf:
         - $ref: "#/components/schemas/BaseWidgetConfiguration"
         - type: object
-          properties:
-            type:
-              type: string
-              description: The unique id of this service widget
-            parameters:
-              type: object
-          required:
-            - type
-            - parameters
+          additionalProperties: {}
     WeatherTimeWidgetConfiguration:
       allOf:
         - $ref: "#/components/schemas/BaseWidgetConfiguration"
         - type: object
           description: Configuration for the weather & time widget
           properties:
-            type:
-              description: The unique id of this service widget
-              enum: ["weather_time/default"]
             parameters:
               type: object
               properties:
@@ -348,7 +319,6 @@ components:
               required:
                 - location
           required:
-            - type
             - parameters
     WidgetConfiguration:
       oneOf:
@@ -366,9 +336,17 @@ components:
       discriminator:
         propertyName: type
         mapping:
+          epic_games/free_games: "#/components/schemas/EpicGamesFreeGamesWidgetConfiguration"
+          epic_games/friends_list: "#/components/schemas/EpicGamesFriendsListWidgetConfiguration"
+          rss/feed: "#/components/schemas/RssFeedWidgetConfiguration"
           steam/friends_list: "#/components/schemas/SteamFriendsListWidgetConfiguration"
           steam/game_news: "#/components/schemas/SteamGameNewsWidgetConfiguration"
           steam/game_population: "#/components/schemas/SteamGamePopulationWidgetConfiguration"
+          twitch/followed_channels: "#/components/schemas/TwitchFollowedChannelsWidgetConfiguration"
+          weather_time/default: "#/components/schemas/WeatherTimeWidgetConfiguration"
+          youtube/channel_statistics: "#/components/schemas/YouTubeChannelStatisticsWidgetConfiguration"
+          youtube/subsribed_channels: "#/components/schemas/YouTubeSubscribedChannelsWidgetConfiguration"
+          youtube/video_statistics: "#/components/schemas/YouTubeVideoStatisticsWidgetConfiguration"
     WidgetDeletionEvent:
       example:
         {
@@ -381,9 +359,6 @@ components:
         - type: object
           description: Forces a widget to be delete if it still exists on the client side
           properties:
-            type:
-              enum: ["widgets/deletion"]
-              description: The unique ID of this event
             data:
               type: object
               description: Event data
@@ -396,7 +371,6 @@ components:
               required:
                 - widgetIds
           required:
-            - type
             - data
     WidgetDescription:
       type: object
@@ -423,9 +397,6 @@ components:
         - type: object
           description: Widget error event
           properties:
-            type:
-              enum: ["widgets/error"]
-              description: The unique ID of this event
             data:
               type: object
               description: Event data
@@ -445,7 +416,6 @@ components:
               required:
                 - widgets
           required:
-            - type
             - data
     WidgetInstance:
       type: object
@@ -506,9 +476,6 @@ components:
         - type: object
           description: Widget data update event
           properties:
-            type:
-              enum: ["widgets/refresh"]
-              description: The unique ID of this event
             data:
               type: object
               description: Event data
@@ -529,23 +496,27 @@ components:
               required:
                 - widgets
           required:
-            - type
             - data
     WidgetType:
       type: string
       enum:
+        - epic_games/free_games
+        - epic_games/friends_list
+        - rss/feed
         - steam/friends_list
         - steam/game_news
         - steam/game_population
+        - twitch/followed_channels
+        - weather_time/default
+        - youtube/channel_statistics
+        - youtube/subsribed_channels
+        - youtube/video_statistics
     YouTubeChannelStatisticsWidgetConfiguration:
       allOf:
         - $ref: "#/components/schemas/BaseWidgetConfiguration"
         - type: object
           description: Configuration for the YouTube channel stats widget
           properties:
-            type:
-              description: The unique id of this service widget
-              enum: ["youtube/channel_statistics"]
             parameters:
               type: object
               properties:
@@ -555,7 +526,6 @@ components:
               required:
                 - channel
           required:
-            - type
             - parameters
     YouTubeSubscribedChannelsWidgetConfiguration:
       allOf:
@@ -563,9 +533,6 @@ components:
         - type: object
           description: Configuration for the YouTube list of subscribed channels
           properties:
-            type:
-              description: The unique id of this service widget
-              enum: ["youtube/subsribed_channels"]
             parameters:
               type: object
               properties:
@@ -575,7 +542,6 @@ components:
               required:
                 - filter
           required:
-            - type
             - parameters
     YouTubeVideoStatisticsWidgetConfiguration:
       allOf:
@@ -583,9 +549,6 @@ components:
         - type: object
           description: Configuration for the YouTube video statistics
           properties:
-            type:
-              description: The unique id of this service widget
-              enum: ["youtube/video_statistics"]
             parameters:
               type: object
               properties:
@@ -594,7 +557,6 @@ components:
               required:
                 - video
           required:
-            - type
             - parameters
   responses:
     badRequest:

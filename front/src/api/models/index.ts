@@ -7,6 +7,12 @@
  */
 export interface BaseEvent {
   /**
+   * The type of event, one of the values of EventType
+   * @type {string}
+   * @memberof BaseEvent
+   */
+  type?: string;
+  /**
    * The UNIX timestamp of the event creation
    * @type {number}
    * @memberof BaseEvent
@@ -19,6 +25,12 @@ export interface BaseEvent {
  * @interface BaseWidgetConfiguration
  */
 export interface BaseWidgetConfiguration {
+  /**
+   * The type of widget, one of the values of WidgetType
+   * @type {string}
+   * @memberof BaseWidgetConfiguration
+   */
+  type: string;
   /**
    * Optional user-defined name for the widget
    * @type {string}
@@ -182,6 +194,12 @@ export interface CreateWidgetRequestAllOf {
  */
 export interface EpicGamesFreeGamesWidgetConfiguration {
   /**
+   * The type of widget, one of the values of WidgetType
+   * @type {string}
+   * @memberof EpicGamesFreeGamesWidgetConfiguration
+   */
+  type: string;
+  /**
    * Optional user-defined name for the widget
    * @type {string}
    * @memberof EpicGamesFreeGamesWidgetConfiguration
@@ -193,46 +211,7 @@ export interface EpicGamesFreeGamesWidgetConfiguration {
    * @memberof EpicGamesFreeGamesWidgetConfiguration
    */
   refreshRate?: number;
-  /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof EpicGamesFreeGamesWidgetConfiguration
-   */
-  type: EpicGamesFreeGamesWidgetConfigurationTypeEnum;
 }
-
-/**
- * @export
- */
-export const EpicGamesFreeGamesWidgetConfigurationTypeEnum = {
-  EpicGamesFreeGames: "epic_games/free_games",
-} as const;
-export type EpicGamesFreeGamesWidgetConfigurationTypeEnum =
-  typeof EpicGamesFreeGamesWidgetConfigurationTypeEnum[keyof typeof EpicGamesFreeGamesWidgetConfigurationTypeEnum];
-
-/**
- * Configuration for the Epic Games free games widget
- * @export
- * @interface EpicGamesFreeGamesWidgetConfigurationAllOf
- */
-export interface EpicGamesFreeGamesWidgetConfigurationAllOf {
-  /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof EpicGamesFreeGamesWidgetConfigurationAllOf
-   */
-  type: EpicGamesFreeGamesWidgetConfigurationAllOfTypeEnum;
-}
-
-/**
- * @export
- */
-export const EpicGamesFreeGamesWidgetConfigurationAllOfTypeEnum = {
-  EpicGamesFreeGames: "epic_games/free_games",
-} as const;
-export type EpicGamesFreeGamesWidgetConfigurationAllOfTypeEnum =
-  typeof EpicGamesFreeGamesWidgetConfigurationAllOfTypeEnum[keyof typeof EpicGamesFreeGamesWidgetConfigurationAllOfTypeEnum];
-
 /**
  *
  * @export
@@ -240,6 +219,12 @@ export type EpicGamesFreeGamesWidgetConfigurationAllOfTypeEnum =
  */
 export interface EpicGamesFriendsListWidgetConfiguration {
   /**
+   * The type of widget, one of the values of WidgetType
+   * @type {string}
+   * @memberof EpicGamesFriendsListWidgetConfiguration
+   */
+  type: string;
+  /**
    * Optional user-defined name for the widget
    * @type {string}
    * @memberof EpicGamesFriendsListWidgetConfiguration
@@ -252,28 +237,12 @@ export interface EpicGamesFriendsListWidgetConfiguration {
    */
   refreshRate?: number;
   /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof EpicGamesFriendsListWidgetConfiguration
-   */
-  type: EpicGamesFriendsListWidgetConfigurationTypeEnum;
-  /**
    *
    * @type {EpicGamesFriendsListWidgetConfigurationAllOfParameters}
    * @memberof EpicGamesFriendsListWidgetConfiguration
    */
   parameters: EpicGamesFriendsListWidgetConfigurationAllOfParameters;
 }
-
-/**
- * @export
- */
-export const EpicGamesFriendsListWidgetConfigurationTypeEnum = {
-  EpicGamesFriendsList: "epic_games/friends_list",
-} as const;
-export type EpicGamesFriendsListWidgetConfigurationTypeEnum =
-  typeof EpicGamesFriendsListWidgetConfigurationTypeEnum[keyof typeof EpicGamesFriendsListWidgetConfigurationTypeEnum];
-
 /**
  * Configuration for the Epic Games friends list widget
  * @export
@@ -281,28 +250,12 @@ export type EpicGamesFriendsListWidgetConfigurationTypeEnum =
  */
 export interface EpicGamesFriendsListWidgetConfigurationAllOf {
   /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof EpicGamesFriendsListWidgetConfigurationAllOf
-   */
-  type: EpicGamesFriendsListWidgetConfigurationAllOfTypeEnum;
-  /**
    *
    * @type {EpicGamesFriendsListWidgetConfigurationAllOfParameters}
    * @memberof EpicGamesFriendsListWidgetConfigurationAllOf
    */
   parameters: EpicGamesFriendsListWidgetConfigurationAllOfParameters;
 }
-
-/**
- * @export
- */
-export const EpicGamesFriendsListWidgetConfigurationAllOfTypeEnum = {
-  EpicGamesFriendsList: "epic_games/friends_list",
-} as const;
-export type EpicGamesFriendsListWidgetConfigurationAllOfTypeEnum =
-  typeof EpicGamesFriendsListWidgetConfigurationAllOfTypeEnum[keyof typeof EpicGamesFriendsListWidgetConfigurationAllOfTypeEnum];
-
 /**
  *
  * @export
@@ -337,6 +290,18 @@ export type Event =
   | ({ type: "widgets/deletion" } & WidgetDeletionEvent)
   | ({ type: "widgets/error" } & WidgetErrorEvent)
   | ({ type: "widgets/refresh" } & WidgetRefreshEvent);
+
+/**
+ *
+ * @export
+ */
+export const EventType = {
+  Deletion: "widgets/deletion",
+  Error: "widgets/error",
+  Refresh: "widgets/refresh",
+} as const;
+export type EventType = typeof EventType[keyof typeof EventType];
+
 /**
  *
  * @export
@@ -452,6 +417,12 @@ export interface OptionalUserIdentifier {
  */
 export interface RssFeedWidgetConfiguration {
   /**
+   * The type of widget, one of the values of WidgetType
+   * @type {string}
+   * @memberof RssFeedWidgetConfiguration
+   */
+  type: string;
+  /**
    * Optional user-defined name for the widget
    * @type {string}
    * @memberof RssFeedWidgetConfiguration
@@ -464,28 +435,12 @@ export interface RssFeedWidgetConfiguration {
    */
   refreshRate?: number;
   /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof RssFeedWidgetConfiguration
-   */
-  type: RssFeedWidgetConfigurationTypeEnum;
-  /**
    *
    * @type {RssFeedWidgetConfigurationAllOfParameters}
    * @memberof RssFeedWidgetConfiguration
    */
   parameters: RssFeedWidgetConfigurationAllOfParameters;
 }
-
-/**
- * @export
- */
-export const RssFeedWidgetConfigurationTypeEnum = {
-  RssFeed: "rss/feed",
-} as const;
-export type RssFeedWidgetConfigurationTypeEnum =
-  typeof RssFeedWidgetConfigurationTypeEnum[keyof typeof RssFeedWidgetConfigurationTypeEnum];
-
 /**
  * Configuration for the RSS feed widget
  * @export
@@ -493,28 +448,12 @@ export type RssFeedWidgetConfigurationTypeEnum =
  */
 export interface RssFeedWidgetConfigurationAllOf {
   /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof RssFeedWidgetConfigurationAllOf
-   */
-  type: RssFeedWidgetConfigurationAllOfTypeEnum;
-  /**
    *
    * @type {RssFeedWidgetConfigurationAllOfParameters}
    * @memberof RssFeedWidgetConfigurationAllOf
    */
   parameters: RssFeedWidgetConfigurationAllOfParameters;
 }
-
-/**
- * @export
- */
-export const RssFeedWidgetConfigurationAllOfTypeEnum = {
-  RssFeed: "rss/feed",
-} as const;
-export type RssFeedWidgetConfigurationAllOfTypeEnum =
-  typeof RssFeedWidgetConfigurationAllOfTypeEnum[keyof typeof RssFeedWidgetConfigurationAllOfTypeEnum];
-
 /**
  *
  * @export
@@ -631,6 +570,12 @@ export type ServiceType = typeof ServiceType[keyof typeof ServiceType];
  */
 export interface SteamFriendsListWidgetConfiguration {
   /**
+   * The type of widget, one of the values of WidgetType
+   * @type {string}
+   * @memberof SteamFriendsListWidgetConfiguration
+   */
+  type: string;
+  /**
    * Optional user-defined name for the widget
    * @type {string}
    * @memberof SteamFriendsListWidgetConfiguration
@@ -643,28 +588,12 @@ export interface SteamFriendsListWidgetConfiguration {
    */
   refreshRate?: number;
   /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof SteamFriendsListWidgetConfiguration
-   */
-  type: SteamFriendsListWidgetConfigurationTypeEnum;
-  /**
    *
    * @type {EpicGamesFriendsListWidgetConfigurationAllOfParameters}
    * @memberof SteamFriendsListWidgetConfiguration
    */
   parameters: EpicGamesFriendsListWidgetConfigurationAllOfParameters;
 }
-
-/**
- * @export
- */
-export const SteamFriendsListWidgetConfigurationTypeEnum = {
-  SteamFriendsList: "steam/friends_list",
-} as const;
-export type SteamFriendsListWidgetConfigurationTypeEnum =
-  typeof SteamFriendsListWidgetConfigurationTypeEnum[keyof typeof SteamFriendsListWidgetConfigurationTypeEnum];
-
 /**
  * Configuration for the Steam friends list widget
  * @export
@@ -672,34 +601,24 @@ export type SteamFriendsListWidgetConfigurationTypeEnum =
  */
 export interface SteamFriendsListWidgetConfigurationAllOf {
   /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof SteamFriendsListWidgetConfigurationAllOf
-   */
-  type: SteamFriendsListWidgetConfigurationAllOfTypeEnum;
-  /**
    *
    * @type {EpicGamesFriendsListWidgetConfigurationAllOfParameters}
    * @memberof SteamFriendsListWidgetConfigurationAllOf
    */
   parameters: EpicGamesFriendsListWidgetConfigurationAllOfParameters;
 }
-
-/**
- * @export
- */
-export const SteamFriendsListWidgetConfigurationAllOfTypeEnum = {
-  SteamFriendsList: "steam/friends_list",
-} as const;
-export type SteamFriendsListWidgetConfigurationAllOfTypeEnum =
-  typeof SteamFriendsListWidgetConfigurationAllOfTypeEnum[keyof typeof SteamFriendsListWidgetConfigurationAllOfTypeEnum];
-
 /**
  *
  * @export
  * @interface SteamGameNewsWidgetConfiguration
  */
 export interface SteamGameNewsWidgetConfiguration {
+  /**
+   * The type of widget, one of the values of WidgetType
+   * @type {string}
+   * @memberof SteamGameNewsWidgetConfiguration
+   */
+  type: string;
   /**
    * Optional user-defined name for the widget
    * @type {string}
@@ -713,28 +632,12 @@ export interface SteamGameNewsWidgetConfiguration {
    */
   refreshRate?: number;
   /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof SteamGameNewsWidgetConfiguration
-   */
-  type: SteamGameNewsWidgetConfigurationTypeEnum;
-  /**
    *
    * @type {SteamGameNewsWidgetConfigurationAllOfParameters}
    * @memberof SteamGameNewsWidgetConfiguration
    */
   parameters: SteamGameNewsWidgetConfigurationAllOfParameters;
 }
-
-/**
- * @export
- */
-export const SteamGameNewsWidgetConfigurationTypeEnum = {
-  SteamGameNews: "steam/game_news",
-} as const;
-export type SteamGameNewsWidgetConfigurationTypeEnum =
-  typeof SteamGameNewsWidgetConfigurationTypeEnum[keyof typeof SteamGameNewsWidgetConfigurationTypeEnum];
-
 /**
  * Configuration for the Steam game news widget
  * @export
@@ -742,28 +645,12 @@ export type SteamGameNewsWidgetConfigurationTypeEnum =
  */
 export interface SteamGameNewsWidgetConfigurationAllOf {
   /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof SteamGameNewsWidgetConfigurationAllOf
-   */
-  type: SteamGameNewsWidgetConfigurationAllOfTypeEnum;
-  /**
    *
    * @type {SteamGameNewsWidgetConfigurationAllOfParameters}
    * @memberof SteamGameNewsWidgetConfigurationAllOf
    */
   parameters: SteamGameNewsWidgetConfigurationAllOfParameters;
 }
-
-/**
- * @export
- */
-export const SteamGameNewsWidgetConfigurationAllOfTypeEnum = {
-  SteamGameNews: "steam/game_news",
-} as const;
-export type SteamGameNewsWidgetConfigurationAllOfTypeEnum =
-  typeof SteamGameNewsWidgetConfigurationAllOfTypeEnum[keyof typeof SteamGameNewsWidgetConfigurationAllOfTypeEnum];
-
 /**
  *
  * @export
@@ -784,6 +671,12 @@ export interface SteamGameNewsWidgetConfigurationAllOfParameters {
  */
 export interface SteamGamePopulationWidgetConfiguration {
   /**
+   * The type of widget, one of the values of WidgetType
+   * @type {string}
+   * @memberof SteamGamePopulationWidgetConfiguration
+   */
+  type: string;
+  /**
    * Optional user-defined name for the widget
    * @type {string}
    * @memberof SteamGamePopulationWidgetConfiguration
@@ -796,28 +689,12 @@ export interface SteamGamePopulationWidgetConfiguration {
    */
   refreshRate?: number;
   /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof SteamGamePopulationWidgetConfiguration
-   */
-  type: SteamGamePopulationWidgetConfigurationTypeEnum;
-  /**
    *
    * @type {SteamGameNewsWidgetConfigurationAllOfParameters}
    * @memberof SteamGamePopulationWidgetConfiguration
    */
   parameters: SteamGameNewsWidgetConfigurationAllOfParameters;
 }
-
-/**
- * @export
- */
-export const SteamGamePopulationWidgetConfigurationTypeEnum = {
-  SteamGamePopulation: "steam/game_population",
-} as const;
-export type SteamGamePopulationWidgetConfigurationTypeEnum =
-  typeof SteamGamePopulationWidgetConfigurationTypeEnum[keyof typeof SteamGamePopulationWidgetConfigurationTypeEnum];
-
 /**
  * Configuration for the Steam game population widget
  * @export
@@ -825,34 +702,24 @@ export type SteamGamePopulationWidgetConfigurationTypeEnum =
  */
 export interface SteamGamePopulationWidgetConfigurationAllOf {
   /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof SteamGamePopulationWidgetConfigurationAllOf
-   */
-  type: SteamGamePopulationWidgetConfigurationAllOfTypeEnum;
-  /**
    *
    * @type {SteamGameNewsWidgetConfigurationAllOfParameters}
    * @memberof SteamGamePopulationWidgetConfigurationAllOf
    */
   parameters: SteamGameNewsWidgetConfigurationAllOfParameters;
 }
-
-/**
- * @export
- */
-export const SteamGamePopulationWidgetConfigurationAllOfTypeEnum = {
-  SteamGamePopulation: "steam/game_population",
-} as const;
-export type SteamGamePopulationWidgetConfigurationAllOfTypeEnum =
-  typeof SteamGamePopulationWidgetConfigurationAllOfTypeEnum[keyof typeof SteamGamePopulationWidgetConfigurationAllOfTypeEnum];
-
 /**
  *
  * @export
  * @interface TwitchFollowedChannelsWidgetConfiguration
  */
 export interface TwitchFollowedChannelsWidgetConfiguration {
+  /**
+   * The type of widget, one of the values of WidgetType
+   * @type {string}
+   * @memberof TwitchFollowedChannelsWidgetConfiguration
+   */
+  type: string;
   /**
    * Optional user-defined name for the widget
    * @type {string}
@@ -866,28 +733,12 @@ export interface TwitchFollowedChannelsWidgetConfiguration {
    */
   refreshRate?: number;
   /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof TwitchFollowedChannelsWidgetConfiguration
-   */
-  type: TwitchFollowedChannelsWidgetConfigurationTypeEnum;
-  /**
    *
    * @type {TwitchFollowedChannelsWidgetConfigurationAllOfParameters}
    * @memberof TwitchFollowedChannelsWidgetConfiguration
    */
   parameters: TwitchFollowedChannelsWidgetConfigurationAllOfParameters;
 }
-
-/**
- * @export
- */
-export const TwitchFollowedChannelsWidgetConfigurationTypeEnum = {
-  TwitchFollowedChannels: "twitch/followed_channels",
-} as const;
-export type TwitchFollowedChannelsWidgetConfigurationTypeEnum =
-  typeof TwitchFollowedChannelsWidgetConfigurationTypeEnum[keyof typeof TwitchFollowedChannelsWidgetConfigurationTypeEnum];
-
 /**
  * Configuration for the Twitch list of followed channels
  * @export
@@ -895,28 +746,12 @@ export type TwitchFollowedChannelsWidgetConfigurationTypeEnum =
  */
 export interface TwitchFollowedChannelsWidgetConfigurationAllOf {
   /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof TwitchFollowedChannelsWidgetConfigurationAllOf
-   */
-  type: TwitchFollowedChannelsWidgetConfigurationAllOfTypeEnum;
-  /**
    *
    * @type {TwitchFollowedChannelsWidgetConfigurationAllOfParameters}
    * @memberof TwitchFollowedChannelsWidgetConfigurationAllOf
    */
   parameters: TwitchFollowedChannelsWidgetConfigurationAllOfParameters;
 }
-
-/**
- * @export
- */
-export const TwitchFollowedChannelsWidgetConfigurationAllOfTypeEnum = {
-  TwitchFollowedChannels: "twitch/followed_channels",
-} as const;
-export type TwitchFollowedChannelsWidgetConfigurationAllOfTypeEnum =
-  typeof TwitchFollowedChannelsWidgetConfigurationAllOfTypeEnum[keyof typeof TwitchFollowedChannelsWidgetConfigurationAllOfTypeEnum];
-
 /**
  *
  * @export
@@ -949,6 +784,12 @@ export type TwitchFollowedChannelsWidgetConfigurationAllOfParametersFilterEnum =
  */
 export interface UnknownWidgetConfiguration {
   /**
+   * The type of widget, one of the values of WidgetType
+   * @type {string}
+   * @memberof UnknownWidgetConfiguration
+   */
+  type: string;
+  /**
    * Optional user-defined name for the widget
    * @type {string}
    * @memberof UnknownWidgetConfiguration
@@ -960,37 +801,6 @@ export interface UnknownWidgetConfiguration {
    * @memberof UnknownWidgetConfiguration
    */
   refreshRate?: number;
-  /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof UnknownWidgetConfiguration
-   */
-  type: string;
-  /**
-   *
-   * @type {object}
-   * @memberof UnknownWidgetConfiguration
-   */
-  parameters: object;
-}
-/**
- *
- * @export
- * @interface UnknownWidgetConfigurationAllOf
- */
-export interface UnknownWidgetConfigurationAllOf {
-  /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof UnknownWidgetConfigurationAllOf
-   */
-  type: string;
-  /**
-   *
-   * @type {object}
-   * @memberof UnknownWidgetConfigurationAllOf
-   */
-  parameters: object;
 }
 /**
  *
@@ -1012,6 +822,12 @@ export interface UpdateWidgetRequest {
  */
 export interface WeatherTimeWidgetConfiguration {
   /**
+   * The type of widget, one of the values of WidgetType
+   * @type {string}
+   * @memberof WeatherTimeWidgetConfiguration
+   */
+  type: string;
+  /**
    * Optional user-defined name for the widget
    * @type {string}
    * @memberof WeatherTimeWidgetConfiguration
@@ -1024,28 +840,12 @@ export interface WeatherTimeWidgetConfiguration {
    */
   refreshRate?: number;
   /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof WeatherTimeWidgetConfiguration
-   */
-  type: WeatherTimeWidgetConfigurationTypeEnum;
-  /**
    *
    * @type {WeatherTimeWidgetConfigurationAllOfParameters}
    * @memberof WeatherTimeWidgetConfiguration
    */
   parameters: WeatherTimeWidgetConfigurationAllOfParameters;
 }
-
-/**
- * @export
- */
-export const WeatherTimeWidgetConfigurationTypeEnum = {
-  WeatherTimeDefault: "weather_time/default",
-} as const;
-export type WeatherTimeWidgetConfigurationTypeEnum =
-  typeof WeatherTimeWidgetConfigurationTypeEnum[keyof typeof WeatherTimeWidgetConfigurationTypeEnum];
-
 /**
  * Configuration for the weather & time widget
  * @export
@@ -1053,28 +853,12 @@ export type WeatherTimeWidgetConfigurationTypeEnum =
  */
 export interface WeatherTimeWidgetConfigurationAllOf {
   /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof WeatherTimeWidgetConfigurationAllOf
-   */
-  type: WeatherTimeWidgetConfigurationAllOfTypeEnum;
-  /**
    *
    * @type {WeatherTimeWidgetConfigurationAllOfParameters}
    * @memberof WeatherTimeWidgetConfigurationAllOf
    */
   parameters: WeatherTimeWidgetConfigurationAllOfParameters;
 }
-
-/**
- * @export
- */
-export const WeatherTimeWidgetConfigurationAllOfTypeEnum = {
-  WeatherTimeDefault: "weather_time/default",
-} as const;
-export type WeatherTimeWidgetConfigurationAllOfTypeEnum =
-  typeof WeatherTimeWidgetConfigurationAllOfTypeEnum[keyof typeof WeatherTimeWidgetConfigurationAllOfTypeEnum];
-
 /**
  *
  * @export
@@ -1094,11 +878,27 @@ export interface WeatherTimeWidgetConfigurationAllOfParameters {
  * @export
  */
 export type WidgetConfiguration =
+  | ({ type: "epic_games/free_games" } & EpicGamesFreeGamesWidgetConfiguration)
+  | ({
+      type: "epic_games/friends_list";
+    } & EpicGamesFriendsListWidgetConfiguration)
+  | ({ type: "rss/feed" } & RssFeedWidgetConfiguration)
   | ({ type: "steam/friends_list" } & SteamFriendsListWidgetConfiguration)
   | ({ type: "steam/game_news" } & SteamGameNewsWidgetConfiguration)
+  | ({ type: "steam/game_population" } & SteamGamePopulationWidgetConfiguration)
   | ({
-      type: "steam/game_population";
-    } & SteamGamePopulationWidgetConfiguration);
+      type: "twitch/followed_channels";
+    } & TwitchFollowedChannelsWidgetConfiguration)
+  | ({ type: "weather_time/default" } & WeatherTimeWidgetConfiguration)
+  | ({
+      type: "youtube/channel_statistics";
+    } & YouTubeChannelStatisticsWidgetConfiguration)
+  | ({
+      type: "youtube/subsribed_channels";
+    } & YouTubeSubscribedChannelsWidgetConfiguration)
+  | ({
+      type: "youtube/video_statistics";
+    } & YouTubeVideoStatisticsWidgetConfiguration);
 /**
  *
  * @export
@@ -1106,17 +906,17 @@ export type WidgetConfiguration =
  */
 export interface WidgetDeletionEvent {
   /**
+   * The type of event, one of the values of EventType
+   * @type {string}
+   * @memberof WidgetDeletionEvent
+   */
+  type?: string;
+  /**
    * The UNIX timestamp of the event creation
    * @type {number}
    * @memberof WidgetDeletionEvent
    */
   timestamp: number;
-  /**
-   * The unique ID of this event
-   * @type {string}
-   * @memberof WidgetDeletionEvent
-   */
-  type: WidgetDeletionEventTypeEnum;
   /**
    *
    * @type {WidgetDeletionEventAllOfData}
@@ -1124,16 +924,6 @@ export interface WidgetDeletionEvent {
    */
   data: WidgetDeletionEventAllOfData;
 }
-
-/**
- * @export
- */
-export const WidgetDeletionEventTypeEnum = {
-  WidgetsDeletion: "widgets/deletion",
-} as const;
-export type WidgetDeletionEventTypeEnum =
-  typeof WidgetDeletionEventTypeEnum[keyof typeof WidgetDeletionEventTypeEnum];
-
 /**
  * Forces a widget to be delete if it still exists on the client side
  * @export
@@ -1141,28 +931,12 @@ export type WidgetDeletionEventTypeEnum =
  */
 export interface WidgetDeletionEventAllOf {
   /**
-   * The unique ID of this event
-   * @type {string}
-   * @memberof WidgetDeletionEventAllOf
-   */
-  type: WidgetDeletionEventAllOfTypeEnum;
-  /**
    *
    * @type {WidgetDeletionEventAllOfData}
    * @memberof WidgetDeletionEventAllOf
    */
   data: WidgetDeletionEventAllOfData;
 }
-
-/**
- * @export
- */
-export const WidgetDeletionEventAllOfTypeEnum = {
-  WidgetsDeletion: "widgets/deletion",
-} as const;
-export type WidgetDeletionEventAllOfTypeEnum =
-  typeof WidgetDeletionEventAllOfTypeEnum[keyof typeof WidgetDeletionEventAllOfTypeEnum];
-
 /**
  * Event data
  * @export
@@ -1208,17 +982,17 @@ export interface WidgetDescription {
  */
 export interface WidgetErrorEvent {
   /**
+   * The type of event, one of the values of EventType
+   * @type {string}
+   * @memberof WidgetErrorEvent
+   */
+  type?: string;
+  /**
    * The UNIX timestamp of the event creation
    * @type {number}
    * @memberof WidgetErrorEvent
    */
   timestamp: number;
-  /**
-   * The unique ID of this event
-   * @type {string}
-   * @memberof WidgetErrorEvent
-   */
-  type: WidgetErrorEventTypeEnum;
   /**
    *
    * @type {WidgetErrorEventAllOfData}
@@ -1226,16 +1000,6 @@ export interface WidgetErrorEvent {
    */
   data: WidgetErrorEventAllOfData;
 }
-
-/**
- * @export
- */
-export const WidgetErrorEventTypeEnum = {
-  WidgetsError: "widgets/error",
-} as const;
-export type WidgetErrorEventTypeEnum =
-  typeof WidgetErrorEventTypeEnum[keyof typeof WidgetErrorEventTypeEnum];
-
 /**
  * Widget error event
  * @export
@@ -1243,28 +1007,12 @@ export type WidgetErrorEventTypeEnum =
  */
 export interface WidgetErrorEventAllOf {
   /**
-   * The unique ID of this event
-   * @type {string}
-   * @memberof WidgetErrorEventAllOf
-   */
-  type: WidgetErrorEventAllOfTypeEnum;
-  /**
    *
    * @type {WidgetErrorEventAllOfData}
    * @memberof WidgetErrorEventAllOf
    */
   data: WidgetErrorEventAllOfData;
 }
-
-/**
- * @export
- */
-export const WidgetErrorEventAllOfTypeEnum = {
-  WidgetsError: "widgets/error",
-} as const;
-export type WidgetErrorEventAllOfTypeEnum =
-  typeof WidgetErrorEventAllOfTypeEnum[keyof typeof WidgetErrorEventAllOfTypeEnum];
-
 /**
  * Event data
  * @export
@@ -1377,17 +1125,17 @@ export type WidgetParameterDescriptionTypeEnum =
  */
 export interface WidgetRefreshEvent {
   /**
+   * The type of event, one of the values of EventType
+   * @type {string}
+   * @memberof WidgetRefreshEvent
+   */
+  type?: string;
+  /**
    * The UNIX timestamp of the event creation
    * @type {number}
    * @memberof WidgetRefreshEvent
    */
   timestamp: number;
-  /**
-   * The unique ID of this event
-   * @type {string}
-   * @memberof WidgetRefreshEvent
-   */
-  type: WidgetRefreshEventTypeEnum;
   /**
    *
    * @type {WidgetRefreshEventAllOfData}
@@ -1395,16 +1143,6 @@ export interface WidgetRefreshEvent {
    */
   data: WidgetRefreshEventAllOfData;
 }
-
-/**
- * @export
- */
-export const WidgetRefreshEventTypeEnum = {
-  WidgetsRefresh: "widgets/refresh",
-} as const;
-export type WidgetRefreshEventTypeEnum =
-  typeof WidgetRefreshEventTypeEnum[keyof typeof WidgetRefreshEventTypeEnum];
-
 /**
  * Widget data update event
  * @export
@@ -1412,28 +1150,12 @@ export type WidgetRefreshEventTypeEnum =
  */
 export interface WidgetRefreshEventAllOf {
   /**
-   * The unique ID of this event
-   * @type {string}
-   * @memberof WidgetRefreshEventAllOf
-   */
-  type: WidgetRefreshEventAllOfTypeEnum;
-  /**
    *
    * @type {WidgetRefreshEventAllOfData}
    * @memberof WidgetRefreshEventAllOf
    */
   data: WidgetRefreshEventAllOfData;
 }
-
-/**
- * @export
- */
-export const WidgetRefreshEventAllOfTypeEnum = {
-  WidgetsRefresh: "widgets/refresh",
-} as const;
-export type WidgetRefreshEventAllOfTypeEnum =
-  typeof WidgetRefreshEventAllOfTypeEnum[keyof typeof WidgetRefreshEventAllOfTypeEnum];
-
 /**
  * Event data
  * @export
@@ -1472,9 +1194,17 @@ export interface WidgetRefreshEventAllOfDataWidgets {
  * @export
  */
 export const WidgetType = {
-  FriendsList: "steam/friends_list",
-  GameNews: "steam/game_news",
-  GamePopulation: "steam/game_population",
+  EpicGamesFreeGames: "epic_games/free_games",
+  EpicGamesFriendsList: "epic_games/friends_list",
+  RssFeed: "rss/feed",
+  SteamFriendsList: "steam/friends_list",
+  SteamGameNews: "steam/game_news",
+  SteamGamePopulation: "steam/game_population",
+  TwitchFollowedChannels: "twitch/followed_channels",
+  WeatherTimeDefault: "weather_time/default",
+  YoutubeChannelStatistics: "youtube/channel_statistics",
+  YoutubeSubsribedChannels: "youtube/subsribed_channels",
+  YoutubeVideoStatistics: "youtube/video_statistics",
 } as const;
 export type WidgetType = typeof WidgetType[keyof typeof WidgetType];
 
@@ -1484,6 +1214,12 @@ export type WidgetType = typeof WidgetType[keyof typeof WidgetType];
  * @interface YouTubeChannelStatisticsWidgetConfiguration
  */
 export interface YouTubeChannelStatisticsWidgetConfiguration {
+  /**
+   * The type of widget, one of the values of WidgetType
+   * @type {string}
+   * @memberof YouTubeChannelStatisticsWidgetConfiguration
+   */
+  type: string;
   /**
    * Optional user-defined name for the widget
    * @type {string}
@@ -1497,28 +1233,12 @@ export interface YouTubeChannelStatisticsWidgetConfiguration {
    */
   refreshRate?: number;
   /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof YouTubeChannelStatisticsWidgetConfiguration
-   */
-  type: YouTubeChannelStatisticsWidgetConfigurationTypeEnum;
-  /**
    *
    * @type {YouTubeChannelStatisticsWidgetConfigurationAllOfParameters}
    * @memberof YouTubeChannelStatisticsWidgetConfiguration
    */
   parameters: YouTubeChannelStatisticsWidgetConfigurationAllOfParameters;
 }
-
-/**
- * @export
- */
-export const YouTubeChannelStatisticsWidgetConfigurationTypeEnum = {
-  YoutubeChannelStatistics: "youtube/channel_statistics",
-} as const;
-export type YouTubeChannelStatisticsWidgetConfigurationTypeEnum =
-  typeof YouTubeChannelStatisticsWidgetConfigurationTypeEnum[keyof typeof YouTubeChannelStatisticsWidgetConfigurationTypeEnum];
-
 /**
  * Configuration for the YouTube channel stats widget
  * @export
@@ -1526,28 +1246,12 @@ export type YouTubeChannelStatisticsWidgetConfigurationTypeEnum =
  */
 export interface YouTubeChannelStatisticsWidgetConfigurationAllOf {
   /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof YouTubeChannelStatisticsWidgetConfigurationAllOf
-   */
-  type: YouTubeChannelStatisticsWidgetConfigurationAllOfTypeEnum;
-  /**
    *
    * @type {YouTubeChannelStatisticsWidgetConfigurationAllOfParameters}
    * @memberof YouTubeChannelStatisticsWidgetConfigurationAllOf
    */
   parameters: YouTubeChannelStatisticsWidgetConfigurationAllOfParameters;
 }
-
-/**
- * @export
- */
-export const YouTubeChannelStatisticsWidgetConfigurationAllOfTypeEnum = {
-  YoutubeChannelStatistics: "youtube/channel_statistics",
-} as const;
-export type YouTubeChannelStatisticsWidgetConfigurationAllOfTypeEnum =
-  typeof YouTubeChannelStatisticsWidgetConfigurationAllOfTypeEnum[keyof typeof YouTubeChannelStatisticsWidgetConfigurationAllOfTypeEnum];
-
 /**
  *
  * @export
@@ -1568,6 +1272,12 @@ export interface YouTubeChannelStatisticsWidgetConfigurationAllOfParameters {
  */
 export interface YouTubeSubscribedChannelsWidgetConfiguration {
   /**
+   * The type of widget, one of the values of WidgetType
+   * @type {string}
+   * @memberof YouTubeSubscribedChannelsWidgetConfiguration
+   */
+  type: string;
+  /**
    * Optional user-defined name for the widget
    * @type {string}
    * @memberof YouTubeSubscribedChannelsWidgetConfiguration
@@ -1580,28 +1290,12 @@ export interface YouTubeSubscribedChannelsWidgetConfiguration {
    */
   refreshRate?: number;
   /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof YouTubeSubscribedChannelsWidgetConfiguration
-   */
-  type: YouTubeSubscribedChannelsWidgetConfigurationTypeEnum;
-  /**
    *
    * @type {TwitchFollowedChannelsWidgetConfigurationAllOfParameters}
    * @memberof YouTubeSubscribedChannelsWidgetConfiguration
    */
   parameters: TwitchFollowedChannelsWidgetConfigurationAllOfParameters;
 }
-
-/**
- * @export
- */
-export const YouTubeSubscribedChannelsWidgetConfigurationTypeEnum = {
-  YoutubeSubsribedChannels: "youtube/subsribed_channels",
-} as const;
-export type YouTubeSubscribedChannelsWidgetConfigurationTypeEnum =
-  typeof YouTubeSubscribedChannelsWidgetConfigurationTypeEnum[keyof typeof YouTubeSubscribedChannelsWidgetConfigurationTypeEnum];
-
 /**
  * Configuration for the YouTube list of subscribed channels
  * @export
@@ -1609,34 +1303,24 @@ export type YouTubeSubscribedChannelsWidgetConfigurationTypeEnum =
  */
 export interface YouTubeSubscribedChannelsWidgetConfigurationAllOf {
   /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof YouTubeSubscribedChannelsWidgetConfigurationAllOf
-   */
-  type: YouTubeSubscribedChannelsWidgetConfigurationAllOfTypeEnum;
-  /**
    *
    * @type {TwitchFollowedChannelsWidgetConfigurationAllOfParameters}
    * @memberof YouTubeSubscribedChannelsWidgetConfigurationAllOf
    */
   parameters: TwitchFollowedChannelsWidgetConfigurationAllOfParameters;
 }
-
-/**
- * @export
- */
-export const YouTubeSubscribedChannelsWidgetConfigurationAllOfTypeEnum = {
-  YoutubeSubsribedChannels: "youtube/subsribed_channels",
-} as const;
-export type YouTubeSubscribedChannelsWidgetConfigurationAllOfTypeEnum =
-  typeof YouTubeSubscribedChannelsWidgetConfigurationAllOfTypeEnum[keyof typeof YouTubeSubscribedChannelsWidgetConfigurationAllOfTypeEnum];
-
 /**
  *
  * @export
  * @interface YouTubeVideoStatisticsWidgetConfiguration
  */
 export interface YouTubeVideoStatisticsWidgetConfiguration {
+  /**
+   * The type of widget, one of the values of WidgetType
+   * @type {string}
+   * @memberof YouTubeVideoStatisticsWidgetConfiguration
+   */
+  type: string;
   /**
    * Optional user-defined name for the widget
    * @type {string}
@@ -1650,28 +1334,12 @@ export interface YouTubeVideoStatisticsWidgetConfiguration {
    */
   refreshRate?: number;
   /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof YouTubeVideoStatisticsWidgetConfiguration
-   */
-  type: YouTubeVideoStatisticsWidgetConfigurationTypeEnum;
-  /**
    *
    * @type {YouTubeVideoStatisticsWidgetConfigurationAllOfParameters}
    * @memberof YouTubeVideoStatisticsWidgetConfiguration
    */
   parameters: YouTubeVideoStatisticsWidgetConfigurationAllOfParameters;
 }
-
-/**
- * @export
- */
-export const YouTubeVideoStatisticsWidgetConfigurationTypeEnum = {
-  YoutubeVideoStatistics: "youtube/video_statistics",
-} as const;
-export type YouTubeVideoStatisticsWidgetConfigurationTypeEnum =
-  typeof YouTubeVideoStatisticsWidgetConfigurationTypeEnum[keyof typeof YouTubeVideoStatisticsWidgetConfigurationTypeEnum];
-
 /**
  * Configuration for the YouTube video statistics
  * @export
@@ -1679,28 +1347,12 @@ export type YouTubeVideoStatisticsWidgetConfigurationTypeEnum =
  */
 export interface YouTubeVideoStatisticsWidgetConfigurationAllOf {
   /**
-   * The unique id of this service widget
-   * @type {string}
-   * @memberof YouTubeVideoStatisticsWidgetConfigurationAllOf
-   */
-  type: YouTubeVideoStatisticsWidgetConfigurationAllOfTypeEnum;
-  /**
    *
    * @type {YouTubeVideoStatisticsWidgetConfigurationAllOfParameters}
    * @memberof YouTubeVideoStatisticsWidgetConfigurationAllOf
    */
   parameters: YouTubeVideoStatisticsWidgetConfigurationAllOfParameters;
 }
-
-/**
- * @export
- */
-export const YouTubeVideoStatisticsWidgetConfigurationAllOfTypeEnum = {
-  YoutubeVideoStatistics: "youtube/video_statistics",
-} as const;
-export type YouTubeVideoStatisticsWidgetConfigurationAllOfTypeEnum =
-  typeof YouTubeVideoStatisticsWidgetConfigurationAllOfTypeEnum[keyof typeof YouTubeVideoStatisticsWidgetConfigurationAllOfTypeEnum];
-
 /**
  *
  * @export
