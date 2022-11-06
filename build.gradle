@@ -42,6 +42,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web:${project.spring_version}"
     implementation "org.springframework.boot:spring-boot-starter-websocket:${project.spring_version}"
 
+    implementation 'javax.validation:validation-api:2.0.1.Final'
 }
 
 tasks.named('test') {
@@ -70,12 +71,31 @@ if (hasProperty('buildScan') && System.getenv('GRADLE_TOS_AGREE')) {
     }
 }
 
+// Generates server-side implementation of the REST API
+// The output of this task need to be cleaned-up manually using `npm run format`
 openApiGenerate {
-    generatorName = 'typescript-fetch'
+    generatorName = 'spring'
     inputSpec = "$rootDir/docs/openapi.yml"
-    outputDir = "$rootDir/front/src/api"
+    outputDir = "$rootDir"
     configOptions = [
-            // we can trust whatever the server will send to the client
-            withoutRuntimeChecks: 'true',
+            // junk packages
+            basePackage          : "${group}.DELETE_ME",
+            configPackage        : "${group}.DELETE_ME.config",
+            invokerPackage       : "${group}.DELETE_ME.invoker",
+
+            // target packages
+            apiPackage           : "${group}.rest.api",
+            modelPackage         : "${group}.models.json",
+
+            // do not generate OpenAPI docs in code, we already have a spec
+            useSwaggerUI         : 'false',
+            annotationLibrary    : 'none',
+            documentationProvider: 'none',
+
+            // do not import the @JsonNullable from jackson, they seem to be unused anyway
+            openApiNullable      : 'false',
+
+            // do not generate stub implementations of the API.
+            interfaceOnly: 'true'
     ]
 }
