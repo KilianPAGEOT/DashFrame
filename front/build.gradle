@@ -2,6 +2,7 @@
 
 plugins {
     id 'com.github.node-gradle.node' version '3.5.0'
+    id 'org.openapi.generator' version "6.2.1"
 }
 
 buildDir = 'dist'
@@ -78,3 +79,14 @@ artifacts {
     main(provider { tasks.assemble })
 }
 
+// Generates client-side implementation of the REST API
+// The output of this task need to be cleaned-up manually using `npm run format`
+openApiGenerate {
+    generatorName = 'typescript-fetch'
+    inputSpec = "$rootDir/docs/openapi.yml"
+    outputDir = "$rootDir/front/src/api"
+    configOptions = [
+            // we can trust whatever the server will send to the client
+            withoutRuntimeChecks: 'true',
+    ]
+}
