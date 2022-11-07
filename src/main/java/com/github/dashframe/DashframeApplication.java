@@ -6,6 +6,8 @@ import com.github.dashframe.dao.UserDAO;
 import com.github.dashframe.dao.WidgetDAO;
 import com.github.dashframe.dao.WidgetParameterDAO;
 import java.util.HashMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -17,10 +19,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-
-import java.util.HashMap;
-import java.util.Map;
 
 @SpringBootApplication
 @Controller

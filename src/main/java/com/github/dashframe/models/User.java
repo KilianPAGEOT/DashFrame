@@ -41,7 +41,7 @@ public class User implements UserDetails {
     public User(String name, String username, String hashPassword, String oauthToken, boolean isAdmin) {
         this.name = name;
         this.username = username;
-        if(hashPassword!=null){
+        if (hashPassword != null) {
             this.hashPassword = new BCryptPasswordEncoder().encode(hashPassword);
         }
         this.oauthToken = oauthToken;
@@ -79,7 +79,7 @@ public class User implements UserDetails {
     }
 
     public void setHashPassword(String hashPassword) {
-        if(hashPassword!=null) {
+        if (hashPassword != null) {
             this.hashPassword = new BCryptPasswordEncoder().encode(hashPassword);
         }
     }
