@@ -9,8 +9,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    private static final String API_VERSION = "v1";
-    private static final String API_BASE = "api/" + API_VERSION;
+    public static final String API_VERSION = "v1";
+    public static final String API_BASE = "api/" + API_VERSION;
 
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {

@@ -18,6 +18,9 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-mail:${project.spring_version}"
     implementation "org.springframework.boot:spring-boot-starter-web:${project.spring_version}"
     implementation "org.springframework.boot:spring-boot-starter:${project.spring_version}"
+    //implementation "org.springframework.boot:spring-boot-starter-security:${project.spring_version}"
+    implementation "org.springframework.boot:spring-boot-starter-oauth2-resource-server:${project.spring_version}"
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
     //implementation "org.springframework.boot:spring-boot-starter-oauth2-client"
 
     implementation 'org.hibernate:hibernate-core:5.6.12.Final'
@@ -37,6 +40,7 @@ dependencies {
 
     testImplementation "org.springframework.boot:spring-boot-starter-test:${project.spring_version}"
     testImplementation 'com.h2database:h2:2.1.214'
+    testImplementation 'org.springframework.security:spring-security-test:5.7.3'
 
     // WEB
     implementation "org.springframework.boot:spring-boot-starter-web:${project.spring_version}"
