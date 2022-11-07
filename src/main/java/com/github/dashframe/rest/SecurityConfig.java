@@ -31,7 +31,7 @@ public class SecurityConfig {
             .formLogin()
             .and()
             .oauth2Login()
-            .defaultSuccessUrl("/api/v1/user", true)
+            .defaultSuccessUrl("/api/v1/userOAuth2", true)
             .permitAll();
         return httpSecurity.build();
     }

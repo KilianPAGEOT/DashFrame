@@ -7,8 +7,8 @@ import java.security.Principal;
 import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -17,10 +17,8 @@ import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 @RestController
 public class LoginController extends HttpServlet {
 
@@ -34,22 +32,7 @@ public class LoginController extends HttpServlet {
         this.userService = userService;
     }
 
-    //    @GetMapping("/")
-    //    public String helloWorld() {
-    //        return "you don't need to be logged in";
-    //    }
-    //
-    //    @GetMapping("/not-restricted")
-    //    public String notRestricted() {
-    //        return "you don't need to be logged in";
-    //    }
-    //
-    //    @GetMapping("/restricted")
-    //    public String restricted(Principal User) {
-    //        return "if you see this you are logged in"+User.toString();
-    //    }
-
-    @GetMapping("/user")
+    @GetMapping("/userOAuth2")
     public String getUserInfo(Principal user, HttpServletResponse response) throws IOException {
         System.out.println(user);
         StringBuffer userInfo = new StringBuffer();
@@ -85,7 +68,7 @@ public class LoginController extends HttpServlet {
             protectedInfo.append("Access Token: " + userToken + "<br><br>");
             protectedInfo.append("test: " + userAttributes + "<br><br>");
             userService.processOAuthPostLogin(
-                (String) userAttributes.get("name") == null
+                 userAttributes.get("name") == null
                     ? (String) userAttributes.get("login")
                     : (String) userAttributes.get("name"),
                 userAttributes.get("sub") == null
