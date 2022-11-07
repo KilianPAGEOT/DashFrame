@@ -11,19 +11,20 @@ public class UserService {
     @Autowired
     private UserDAO repo;
 
-    public void processOAuthPostLogin(String name, String email, String hashPassword, String oauthToken, boolean isAdmin) {
-        User existUser = repo.findByEmail(email);
+    public void processOAuthPostLogin(String name, String username, String hashPassword, String oauthToken, boolean isAdmin) {
+        User existUser = repo.findByUsername(username);
 
         if (existUser == null) {
             User newUser = new User();
             newUser.setName(name);
-            newUser.setEmail(email);
+            newUser.setUsername(username);
             newUser.setHashPassword(hashPassword);
             newUser.setToken(oauthToken);
             newUser.setAdmin(isAdmin);
             repo.save(newUser);
         }else {
             existUser.setToken(oauthToken);
+            repo.save(existUser);
         }
 
     }
