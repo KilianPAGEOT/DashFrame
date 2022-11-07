@@ -1,4 +1,4 @@
-package com.github.dashframe.controller;
+package com.github.dashframe.rest;
 
 import com.github.dashframe.rest.api.ServicesApi;
 import java.util.Optional;
