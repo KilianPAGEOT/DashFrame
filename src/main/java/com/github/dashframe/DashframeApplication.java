@@ -6,8 +6,6 @@ import com.github.dashframe.dao.UserDAO;
 import com.github.dashframe.dao.WidgetDAO;
 import com.github.dashframe.dao.WidgetParameterDAO;
 import java.util.HashMap;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;

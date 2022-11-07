@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -19,6 +18,7 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 @RestController
 public class LoginController extends HttpServlet {
 
@@ -32,22 +32,20 @@ public class LoginController extends HttpServlet {
         this.userService = userService;
     }
 
-    @GetMapping("/userOAuth2")
-    public String getUserInfo(Principal user, HttpServletResponse response) throws IOException {
-        System.out.println(user);
+    @GetMapping("/users-oauth2")
+    public void getUserInfo(Principal user, HttpServletResponse response) throws IOException {
         StringBuffer userInfo = new StringBuffer();
-        if (user instanceof UsernamePasswordAuthenticationToken) {
+        if (user instanceof UsernamePasswordAuthenticationToken) { //check if user is login with OAuth or not
             userInfo.append(getUsernamePasswordLoginInfo(user));
         } else if (user instanceof OAuth2AuthenticationToken) {
             userInfo.append(getOauth2LoginInfo(user));
         }
-
-        response.addCookie(this.cookie);
+        response.addCookie(this.cookie); //add cookie and redirect to fronted client
         response.sendRedirect("http://localhost:5176");
-        return userInfo.toString();
+        //return userInfo.toString(); return for debug
     }
 
-    private StringBuffer getOauth2LoginInfo(Principal user) {
+    private StringBuffer getOauth2LoginInfo(Principal user) { // function if user login with OAuth2
         StringBuffer protectedInfo = new StringBuffer();
 
         OAuth2AuthenticationToken authToken = ((OAuth2AuthenticationToken) user);
@@ -63,12 +61,12 @@ public class LoginController extends HttpServlet {
 
             String userToken = authClient.getAccessToken().getTokenValue();
 
-            protectedInfo.append("Welcome, " + userAttributes.get("name") + "<br><br>");
+            /*protectedInfo.append("Welcome, " + userAttributes.get("name") + "<br><br>");  uncomment for debug
             protectedInfo.append("e-mail: " + userAttributes.get("email") + "<br><br>");
             protectedInfo.append("Access Token: " + userToken + "<br><br>");
-            protectedInfo.append("test: " + userAttributes + "<br><br>");
+            protectedInfo.append("test: " + userAttributes + "<br><br>");*/
             userService.processOAuthPostLogin(
-                 userAttributes.get("name") == null
+                userAttributes.get("name") == null
                     ? (String) userAttributes.get("login")
                     : (String) userAttributes.get("name"),
                 userAttributes.get("sub") == null
@@ -77,12 +75,12 @@ public class LoginController extends HttpServlet {
                 null,
                 userToken,
                 false
-            );
-            this.cookie = new Cookie("token", userToken);
+            ); // create user in db with OAuth2 informations
+            this.cookie = new Cookie("token", userToken); // create cookie with token
             this.cookie.setPath("/");
             this.cookie.setMaxAge(8 * 60 * 60);
-            OidcIdToken idToken = getIdToken(principal);
-            if (idToken != null) {
+            /*OidcIdToken idToken = getIdToken(principal);
+            if (idToken != null) {                            uncomment to debug
                 protectedInfo.append("idToken value: " + idToken.getTokenValue() + "<br><br>");
                 protectedInfo.append("Token mapped values <br><br>");
 
@@ -91,7 +89,7 @@ public class LoginController extends HttpServlet {
                 for (String key : claims.keySet()) {
                     protectedInfo.append("  " + key + ": " + claims.get(key) + "<br>");
                 }
-            }
+            }*/
         } else {
             protectedInfo.append("NA");
         }
@@ -99,7 +97,7 @@ public class LoginController extends HttpServlet {
         return protectedInfo;
     }
 
-    private StringBuffer getUsernamePasswordLoginInfo(Principal user) {
+    private StringBuffer getUsernamePasswordLoginInfo(Principal user) { // function if user not login with OAuth2 (unused)
         StringBuffer usernameInfo = new StringBuffer();
 
         UsernamePasswordAuthenticationToken token = ((UsernamePasswordAuthenticationToken) user);
@@ -112,11 +110,11 @@ public class LoginController extends HttpServlet {
         return usernameInfo;
     }
 
-    private OidcIdToken getIdToken(OAuth2User principal) {
+    /*private OidcIdToken getIdToken(OAuth2User principal) { uncomment to debug
         if (principal instanceof DefaultOidcUser) {
             DefaultOidcUser oidcUser = (DefaultOidcUser) principal;
             return oidcUser.getIdToken();
         }
         return null;
-    }
+    }*/
 }
