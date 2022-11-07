@@ -17,7 +17,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String name;
 
     @Column(unique = true)
@@ -41,7 +41,9 @@ public class User implements UserDetails {
     public User(String name, String username, String hashPassword, String oauthToken, boolean isAdmin) {
         this.name = name;
         this.username = username;
-        this.hashPassword = new BCryptPasswordEncoder().encode(hashPassword);
+        if(hashPassword!=null){
+            this.hashPassword = new BCryptPasswordEncoder().encode(hashPassword);
+        }
         this.oauthToken = oauthToken;
         this.isAdmin = isAdmin;
         this.createdAt = new Date();
@@ -77,7 +79,9 @@ public class User implements UserDetails {
     }
 
     public void setHashPassword(String hashPassword) {
-        this.hashPassword = new BCryptPasswordEncoder().encode(hashPassword);
+        if(hashPassword!=null) {
+            this.hashPassword = new BCryptPasswordEncoder().encode(hashPassword);
+        }
     }
 
     public Date getCreatedAt() {

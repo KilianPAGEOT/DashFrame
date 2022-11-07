@@ -14,11 +14,13 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.antMatcher("/**").authorizeRequests()
                 .antMatchers(new String[]{"/*"}).permitAll()
+                .antMatchers("/api/v1/user").permitAll()
+                .antMatchers("/http://localhost:5174").permitAll()
                 .anyRequest().authenticated()
-                .and().formLogin().and()
-                .oauth2Login().defaultSuccessUrl("/api/v1/user", true);
-
-
+                .and().formLogin()
+                .and()
+                .oauth2Login()
+                .defaultSuccessUrl("/api/v1/user", true).permitAll();
         return httpSecurity.build();
     }
 
