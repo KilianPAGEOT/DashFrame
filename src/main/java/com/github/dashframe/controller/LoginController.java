@@ -10,14 +10,19 @@ import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.Map;
 
 @RestController
-public class LoginController {
+public class LoginController  extends HttpServlet {
 
     private final OAuth2AuthorizedClientService authorizedClientService;
     private final UserService userService;
@@ -43,20 +48,20 @@ public class LoginController {
 //    }
 
     @GetMapping("/user")
-    public String getUserInfo(Principal user) {
-
+    public String getUserInfo(Principal user,HttpServletResponse response) throws IOException {
+        System.out.println(user);
         StringBuffer userInfo= new StringBuffer();
         if(user instanceof UsernamePasswordAuthenticationToken){
             userInfo.append(getUsernamePasswordLoginInfo(user));
         }
         else if(user instanceof OAuth2AuthenticationToken){
             userInfo.append(getOauth2LoginInfo(user));
-
         }
+        response.sendRedirect("http://localhost:5176");
         return userInfo.toString();
     }
 
-    private StringBuffer getOauth2LoginInfo(Principal user){
+    private StringBuffer getOauth2LoginInfo(Principal user) {
 
         StringBuffer protectedInfo = new StringBuffer();
 
@@ -73,7 +78,7 @@ public class LoginController {
             protectedInfo.append("e-mail: " + userAttributes.get("email")+"<br><br>");
             protectedInfo.append("Access Token: " + userToken+"<br><br>");
             protectedInfo.append("test: "+userAttributes+"<br><br>");
-            userService.processOAuthPostLogin((String) userAttributes.get("name"), (String) userAttributes.get("email"),(String) userAttributes.get("at_hash"),userToken,false);
+            userService.processOAuthPostLogin((String) userAttributes.get("name")==null?(String) userAttributes.get("login"): (String) userAttributes.get("name"),userAttributes.get("sub")==null?userAttributes.get("id").toString():userAttributes.get("sub").toString(),null,userToken,false);
             OidcIdToken idToken = getIdToken(principal);
             if(idToken != null) {
 
@@ -90,6 +95,7 @@ public class LoginController {
         else{
             protectedInfo.append("NA");
         }
+
         return protectedInfo;
     }
     private StringBuffer getUsernamePasswordLoginInfo(Principal user)

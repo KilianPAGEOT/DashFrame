@@ -126,7 +126,7 @@ export class BaseAPI {
     return this.withMiddleware<T>(...middlewares);
   }
 
-  protected async request(
+  public async request(
     context: RequestOpts,
     initOverrides?: RequestInit | InitOverrideFunction
   ): Promise<Response> {
