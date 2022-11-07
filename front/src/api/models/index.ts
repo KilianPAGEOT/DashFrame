@@ -604,7 +604,7 @@ export interface ServiceInstance {
    */
   type: ServiceType;
   /**
-   * An username/email, unique accross service instances of a user
+   * An username/username, unique accross service instances of a user
    * @type {string}
    * @memberof ServiceInstance
    */
