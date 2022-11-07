@@ -1,5 +1,16 @@
 package com.github.dashframe.config;
 
+import java.util.List;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -23,6 +34,49 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+@Configuration
+public class SecurityConfig {
+
+ @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
+            // Disable Cross-Site Request Forgery (CSRF)
+            .csrf(AbstractHttpConfigurer::disable)
+            .cors()
+            .configurationSource(corsConfigurationSource())
+            // The user should be authenticated for any request ...
+            .authorizeRequests(auth ->
+                auth
+                    // ... except these
+                    .mvcMatchers(WebMvcConfig.API_BASE + "/users")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated()
+            )
+            // OAUTH2
+            .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+            //
+            // Spring Security will never create an HttpSession and use it to obtain the Security Context
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            // Spring Security’s HTTP Basic Authentication support is enabled by default
+            // However, as soon as any servlet-based configuration is provided, HTTP Basic must be explicitly provided
+            .httpBasic(Customizer.withDefaults())
+            .oauth2Login()
+            .defaultSuccessUrl("/api/v1/userOAuth2", true)
+            .permitAll()
+            .build();
+    }
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:5176/"));
+        configuration.setAllowedMethods(List.of("*"));
+        configuration.setAllowedHeaders(List.of("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+}
 
 @Configuration
 @EnableWebSecurity
@@ -53,30 +107,7 @@ public class SecurityConfig {
         return roleHierarchy;
     }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-            // Disable Cross-Site Request Forgery (CSRF)
-            .csrf(AbstractHttpConfigurer::disable)
-            // The user should be authenticated for any request ...
-            .authorizeRequests(auth ->
-                auth
-                    // ... except these
-                    .mvcMatchers(WebMvcConfig.API_BASE + "/users")
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated()
-            )
-            // OAUTH2
-            .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
-            //
-            // Spring Security will never create an HttpSession and use it to obtain the Security Context
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            // Spring Security’s HTTP Basic Authentication support is enabled by default
-            // However, as soon as any servlet-based configuration is provided, HTTP Basic must be explicitly provided
-            .httpBasic(Customizer.withDefaults())
-            .build();
-    }
+   
 
     @Bean
     PasswordEncoder getPasswordEncoder() {

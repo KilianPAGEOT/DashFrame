@@ -1,4 +1,4 @@
-package com.github.dashframe.controller;
+package com.github.dashframe.rest;
 
 import com.github.dashframe.models.User;
 import com.github.dashframe.service.UserService;
