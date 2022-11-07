@@ -1,11 +1,17 @@
 package com.github.dashframe.models;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.*;
+import org.hibernate.annotations.Comment;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,13 +20,14 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, unique = true)
-    private String email;
+    @Column(unique = true)
+    @Comment("Username is a unique identifier that can be any format like email or number sequence")
+    private String username;
 
-    @Column(nullable = false, unique = true)
+    @Column
     private String hashPassword;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String oauthToken;
 
     @Column(nullable = false)
@@ -31,10 +38,9 @@ public class User {
 
     public User() {}
 
-    public User(Integer id, String name, String email, String hashPassword, String oauthToken, boolean isAdmin) {
-        this.id = id;
+    public User(String name, String username, String hashPassword, String oauthToken, boolean isAdmin) {
         this.name = name;
-        this.email = email;
+        this.username = username;
         this.hashPassword = new BCryptPasswordEncoder().encode(hashPassword);
         this.oauthToken = oauthToken;
         this.isAdmin = isAdmin;
@@ -57,12 +63,13 @@ public class User {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+    @Override
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getHashPassword() {
@@ -100,5 +107,41 @@ public class User {
     @PrePersist
     public void onCreate() {
         this.createdAt = new Date();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        if (this.isAdmin()) {
+            authorities.add(new SimpleGrantedAuthority("ADMIN"));
+        } else {
+            authorities.add(new SimpleGrantedAuthority("USER"));
+        }
+        return authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.hashPassword;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
