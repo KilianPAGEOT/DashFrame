@@ -1,11 +1,13 @@
 package com.github.dashframe.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerTypePredicate;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
+@CrossOrigin(origins = "http://localhost:5176")
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
@@ -18,4 +20,5 @@ public class WebMvcConfig implements WebMvcConfigurer {
         // Adds the API prefix to all routes located inside a REST controller
         configurer.addPathPrefix(API_BASE, HandlerTypePredicate.forAnnotation(RestController.class));
     }
+
 }

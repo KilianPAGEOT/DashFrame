@@ -22,6 +22,8 @@ public class UserService {
             newUser.setToken(oauthToken);
             newUser.setAdmin(isAdmin);
             repo.save(newUser);
+        }else {
+            existUser.setToken(oauthToken);
         }
 
     }
