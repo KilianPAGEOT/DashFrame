@@ -15,7 +15,7 @@ public class Service {
     private User user;
 
     @Column
-    private String name;
+    private String type;
 
     @Column(nullable = false)
     private String token;
@@ -28,10 +28,10 @@ public class Service {
 
     public Service() {}
 
-    public Service(Integer id, User user, String name, String token, Date expirationDate) {
+    public Service(Integer id, User user, String type, String token, Date expirationDate) {
         this.id = id;
         this.user = user;
-        this.name = name;
+        this.type = type;
         this.token = token;
         this.expirationDate = expirationDate;
         this.createdAt = new Date();
@@ -53,12 +53,12 @@ public class Service {
         this.user = user;
     }
 
-    public String getName() {
-        return name;
+    public String getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(String name) {
+        this.type = name;
     }
 
     public String getToken() {
