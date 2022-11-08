@@ -35,13 +35,16 @@ public class LoginController extends HttpServlet {
     @GetMapping("/users-oauth2")
     public void getUserInfo(Principal user, HttpServletResponse response) throws IOException {
         StringBuffer userInfo = new StringBuffer();
+        System.out.println(user);
         if (user instanceof UsernamePasswordAuthenticationToken) { //check if user is login with OAuth or not
             userInfo.append(getUsernamePasswordLoginInfo(user));
         } else if (user instanceof OAuth2AuthenticationToken) {
             userInfo.append(getOauth2LoginInfo(user));
         }
-        response.addCookie(this.cookie); //add cookie and redirect to fronted client
-        response.sendRedirect("http://localhost:5176");
+        if (this.cookie!=null) {
+            response.addCookie(this.cookie); //add cookie and redirect to fronted client
+        }
+        response.sendRedirect("http://localhost:5173");
         //return userInfo.toString(); return for debug
     }
 
@@ -79,6 +82,8 @@ public class LoginController extends HttpServlet {
             this.cookie = new Cookie("token", userToken); // create cookie with token
             this.cookie.setPath("/");
             this.cookie.setMaxAge(8 * 60 * 60);
+            System.out.println(userToken);
+            System.out.println(userAttributes);
             /*OidcIdToken idToken = getIdToken(principal);
             if (idToken != null) {                            uncomment to debug
                 protectedInfo.append("idToken value: " + idToken.getTokenValue() + "<br><br>");
