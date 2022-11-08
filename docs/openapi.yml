@@ -755,7 +755,6 @@ paths:
                 "username": "patrick@gmail.com",
                 "hashPassword": "123",
                 "oauthToken": "c3VwZXIgc2VjcmV0IHRva2VuCg==",
-                "isAdmin": false,
               }
             schema:
               type: object
@@ -775,14 +774,10 @@ paths:
                     oauthToken:
                       type: string
                       description: The token returned by the external service, optional if not needed
-                    isAdmin:
-                      type: boolean
-                      description: If the user is admin or not
                   required:
                     - name
                     - username
                     - hashPassword
-                    - isAdmin
       responses:
         "200":
           description: Expected response to a valid request

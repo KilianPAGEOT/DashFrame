@@ -18,7 +18,7 @@ import javax.validation.constraints.*;
 @JsonTypeName("create_user_request_allOf")
 @Generated(
     value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2022-11-08T15:27:52.118173200+01:00[Europe/Paris]"
+    date = "2022-11-08T16:03:51.937911500+01:00[Europe/Paris]"
 )
 public class CreateUserRequestAllOf {
 
@@ -33,9 +33,6 @@ public class CreateUserRequestAllOf {
 
     @JsonProperty("oauthToken")
     private String oauthToken;
-
-    @JsonProperty("isAdmin")
-    private Boolean isAdmin;
 
     public CreateUserRequestAllOf name(String name) {
         this.name = name;
@@ -109,24 +106,6 @@ public class CreateUserRequestAllOf {
         this.oauthToken = oauthToken;
     }
 
-    public CreateUserRequestAllOf isAdmin(Boolean isAdmin) {
-        this.isAdmin = isAdmin;
-        return this;
-    }
-
-    /**
-     * If the user is admin or not
-     * @return isAdmin
-     */
-    @NotNull
-    public Boolean getIsAdmin() {
-        return isAdmin;
-    }
-
-    public void setIsAdmin(Boolean isAdmin) {
-        this.isAdmin = isAdmin;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -140,14 +119,13 @@ public class CreateUserRequestAllOf {
             Objects.equals(this.name, createUserRequestAllOf.name) &&
             Objects.equals(this.username, createUserRequestAllOf.username) &&
             Objects.equals(this.hashPassword, createUserRequestAllOf.hashPassword) &&
-            Objects.equals(this.oauthToken, createUserRequestAllOf.oauthToken) &&
-            Objects.equals(this.isAdmin, createUserRequestAllOf.isAdmin)
+            Objects.equals(this.oauthToken, createUserRequestAllOf.oauthToken)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, username, hashPassword, oauthToken, isAdmin);
+        return Objects.hash(name, username, hashPassword, oauthToken);
     }
 
     @Override
@@ -158,7 +136,6 @@ public class CreateUserRequestAllOf {
         sb.append("    username: ").append(toIndentedString(username)).append("\n");
         sb.append("    hashPassword: ").append(toIndentedString(hashPassword)).append("\n");
         sb.append("    oauthToken: ").append(toIndentedString(oauthToken)).append("\n");
-        sb.append("    isAdmin: ").append(toIndentedString(isAdmin)).append("\n");
         sb.append("}");
         return sb.toString();
     }

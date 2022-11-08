@@ -23,7 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Generated(
     value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2022-11-08T15:27:52.118173200+01:00[Europe/Paris]"
+    date = "2022-11-08T16:03:51.937911500+01:00[Europe/Paris]"
 )
 @Validated
 public interface TokenApi {
