@@ -1,9 +1,13 @@
 src/main/java/com/github/dashframe/models/json/BaseEvent.java
 src/main/java/com/github/dashframe/models/json/BaseWidgetConfiguration.java
 src/main/java/com/github/dashframe/models/json/ClientInformation.java
-src/main/java/com/github/dashframe/models/json/CreateService400Response.java
 src/main/java/com/github/dashframe/models/json/CreateServiceRequest.java
 src/main/java/com/github/dashframe/models/json/CreateServiceRequestAllOf.java
+src/main/java/com/github/dashframe/models/json/CreateToken400Response.java
+src/main/java/com/github/dashframe/models/json/CreateToken401Response.java
+src/main/java/com/github/dashframe/models/json/CreateUser404Response.java
+src/main/java/com/github/dashframe/models/json/CreateUserRequest.java
+src/main/java/com/github/dashframe/models/json/CreateUserRequestAllOf.java
 src/main/java/com/github/dashframe/models/json/CreateWidgetRequest.java
 src/main/java/com/github/dashframe/models/json/CreateWidgetRequestAllOf.java
 src/main/java/com/github/dashframe/models/json/EpicGamesFreeGamesWidgetConfiguration.java
@@ -15,8 +19,6 @@ src/main/java/com/github/dashframe/models/json/Event.java
 src/main/java/com/github/dashframe/models/json/EventType.java
 src/main/java/com/github/dashframe/models/json/GetAboutJson200Response.java
 src/main/java/com/github/dashframe/models/json/ListServices200Response.java
-src/main/java/com/github/dashframe/models/json/ListServices401Response.java
-src/main/java/com/github/dashframe/models/json/ListServices404Response.java
 src/main/java/com/github/dashframe/models/json/OptionalUserIdentifier.java
 src/main/java/com/github/dashframe/models/json/RssFeedWidgetConfiguration.java
 src/main/java/com/github/dashframe/models/json/RssFeedWidgetConfigurationAllOf.java
@@ -37,6 +39,7 @@ src/main/java/com/github/dashframe/models/json/TwitchFollowedChannelsWidgetConfi
 src/main/java/com/github/dashframe/models/json/TwitchFollowedChannelsWidgetConfigurationAllOfParameters.java
 src/main/java/com/github/dashframe/models/json/UnknownWidgetConfiguration.java
 src/main/java/com/github/dashframe/models/json/UpdateWidgetRequest.java
+src/main/java/com/github/dashframe/models/json/UserInstance.java
 src/main/java/com/github/dashframe/models/json/WeatherTimeWidgetConfiguration.java
 src/main/java/com/github/dashframe/models/json/WeatherTimeWidgetConfigurationAllOf.java
 src/main/java/com/github/dashframe/models/json/WeatherTimeWidgetConfigurationAllOfParameters.java
@@ -67,5 +70,7 @@ src/main/java/com/github/dashframe/models/json/YouTubeVideoStatisticsWidgetConfi
 src/main/java/com/github/dashframe/rest/api/AboutJsonApi.java
 src/main/java/com/github/dashframe/rest/api/ApiUtil.java
 src/main/java/com/github/dashframe/rest/api/ServicesApi.java
+src/main/java/com/github/dashframe/rest/api/TokenApi.java
+src/main/java/com/github/dashframe/rest/api/UsersApi.java
 src/main/java/com/github/dashframe/rest/api/WidgetsApi.java
 src/main/java/com/github/dashframe/rest/api/WsApi.java

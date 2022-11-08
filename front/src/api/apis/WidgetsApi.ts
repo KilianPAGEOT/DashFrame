@@ -14,10 +14,10 @@
 
 import * as runtime from "../runtime";
 import type {
-  CreateService400Response,
+  CreateToken400Response,
+  CreateToken401Response,
+  CreateUser404Response,
   CreateWidgetRequest,
-  ListServices401Response,
-  ListServices404Response,
   UpdateWidgetRequest,
   WidgetInstance,
 } from "../models";

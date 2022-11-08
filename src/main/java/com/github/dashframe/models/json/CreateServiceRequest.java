@@ -19,7 +19,7 @@ import javax.validation.constraints.*;
 @JsonTypeName("create_service_request")
 @Generated(
     value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2022-11-06T17:27:32.778551651+01:00[Europe/Paris]"
+    date = "2022-11-08T15:27:52.118173200+01:00[Europe/Paris]"
 )
 public class CreateServiceRequest {
 

@@ -3,7 +3,7 @@ info:
   title: DashFrame API
   version: 0.1.0
   description: |
-    ## Authentification
+    ## Authentication
 
     This API uses tokens of an unknown type.
     The token is in the `Authorization` header of the request.  
@@ -217,6 +217,7 @@ components:
           "type": "steam",
           "username": "Xx_DarkGam3R_xX",
           "token": "c3VwZXIgc2VjcmV0IHRva2VuCg==",
+          "createdAt": "2022-11-07 15:17:56.69100",
         }
       properties:
         id:
@@ -229,9 +230,44 @@ components:
         token:
           type: string
           description: Login token for the service
+        createdAt:
+          type: string
+          format: date-time
+          description: Created date-time
       required:
         - id
         - type
+    UserInstance:
+      type: object
+      description: A user instance
+      example:
+        {
+          "id": 5,
+          "name": "patrick",
+          "username": "patrick@gmail.com",
+          "isAdmin": "false",
+          "createdAt": "2022-11-07 15:17:56.69100",
+        }
+      properties:
+        id:
+          $ref: "#/components/schemas/Identifier"
+        name:
+          type: string
+          description: The user's name
+        username:
+          type: string
+          description: A unique identifier that can be any format like email or number sequence
+        isAdmin:
+          type: boolean
+          description: If the user is admin or not
+        createdAt:
+          type: string
+          format: date-time
+          description: Created date-time
+      required:
+        - id
+        - name
+        - isAdmin
     ServiceType:
       description: "Service unique identifier"
       enum: ["epic_games", "rss", "steam", "twitch", "weather_time", "youtube"]
@@ -430,6 +466,7 @@ components:
               "type": "steam/friends_list",
               "parameters": { "showOffline": 1 },
             },
+          "createdAt": "2022-11-07 15:17:56.69100",
         }
       properties:
         id:
@@ -449,6 +486,10 @@ components:
           minimum: 0
         config:
           $ref: "#/components/schemas/WidgetConfiguration"
+        createdAt:
+          type: string
+          format: date-time
+          description: Created date-time
       required:
         - id
         - service_id
@@ -636,6 +677,9 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+    basicAuth:
+      type: http
+      scheme: basic
 
 tags:
   - name: widgets
@@ -644,6 +688,12 @@ tags:
     description: External services that provides board widgets
   - name: events
     description: Server-sent events
+  - name: information
+    description: Additional Information on the server
+  - name: users
+    description: User accounts linked to services and widgets
+  - name: authentication
+    description: Authentication system for users
 
 paths:
   /about.json:
@@ -671,12 +721,87 @@ paths:
                 required:
                   - client
                   - server
+  /token:
+    post:
+      operationId: create_token
+      summary: Generate a new token for the user found by authentication infos in the header
+      security:
+        - basicAuth: []
+      tags:
+        - authentication
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            text/plain:
+              schema:
+                type: string
+        "400":
+          $ref: "#/components/responses/badRequest"
+        "401":
+          $ref: "#/components/responses/notLoggedIn"
+  /users:
+    post:
+      operationId: create_user
+      summary: Create a new user instance
+      tags:
+        - users
+      requestBody:
+        content:
+          application/json:
+            example:
+              {
+                "name": "patrick",
+                "username": "patrick@gmail.com",
+                "hashPassword": "123",
+                "oauthToken": "c3VwZXIgc2VjcmV0IHRva2VuCg==",
+                "isAdmin": false,
+              }
+            schema:
+              type: object
+              allOf:
+                - $ref: "#/components/schemas/OptionalUserIdentifier"
+                - type: object
+                  properties:
+                    name:
+                      type: string
+                      description: The user's name
+                    username:
+                      type: string
+                      description: A unique identifier that can be any format like email or number sequence
+                    hashPassword:
+                      type: string
+                      description: The password of the user
+                    oauthToken:
+                      type: string
+                      description: The token returned by the external service, optional if not needed
+                    isAdmin:
+                      type: boolean
+                      description: If the user is admin or not
+                  required:
+                    - name
+                    - username
+                    - hashPassword
+                    - isAdmin
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserInstance"
+        "400":
+          $ref: "#/components/responses/badRequest"
+        "401":
+          $ref: "#/components/responses/notLoggedIn"
+        "404":
+          $ref: "#/components/responses/notFound"
   /services:
     get:
       operationId: list_services
       summary: Returns the list of available services and services instances registered by the user
       security:
-        - "apiKey": []
+        - apiKey: []
       tags:
         - services
       parameters:
@@ -709,7 +834,7 @@ paths:
       operationId: create_service
       summary: Create a new service instance
       security:
-        - "apiKey": []
+        - apiKey: []
       tags:
         - services
       requestBody:
@@ -754,7 +879,7 @@ paths:
       operationId: delete_services
       summary: Removes all registered service instances of the user
       security:
-        - "apiKey": []
+        - apiKey: []
       tags:
         - services
       parameters:
@@ -771,7 +896,7 @@ paths:
       operationId: delete_service
       summary: "Delete a specific service instance"
       security:
-        - "apiKey": []
+        - apiKey: []
       tags:
         - services
       parameters:
@@ -792,7 +917,7 @@ paths:
       operationId: list_widgets
       summary: Returns the layout of the requested user's board
       security:
-        - "apiKey": []
+        - apiKey: []
       tags:
         - widgets
       parameters:
@@ -814,7 +939,7 @@ paths:
       operationId: create_widget
       summary: Create a new widget instance in the given user's board
       security:
-        - "apiKey": []
+        - apiKey: []
       tags:
         - widgets
       requestBody:
@@ -849,7 +974,7 @@ paths:
       operationId: delete_widgets
       summary: Clear all the widgets in the user's board
       security:
-        - "apiKey": []
+        - apiKey: []
       tags:
         - widgets
       parameters:
@@ -866,7 +991,7 @@ paths:
       operationId: get_widget
       summary: Get information about a specific widget
       security:
-        - "apiKey": []
+        - apiKey: []
       tags:
         - widgets
       parameters:
@@ -886,7 +1011,7 @@ paths:
       operationId: update_widget
       summary: Update an existing widget's configuration
       security:
-        - "apiKey": []
+        - apiKey: []
       tags:
         - widgets
       parameters:
@@ -914,7 +1039,7 @@ paths:
       operationId: delete_widget
       summary: Delete a widget
       security:
-        - "apiKey": []
+        - apiKey: []
       tags:
         - widgets
       parameters:
@@ -931,7 +1056,7 @@ paths:
       operationId: events_websocket
       summary: Subscribes to the events WebSocket of the given user, or the current user if not present
       security:
-        - "apiKey": []
+        - apiKey: []
       tags:
         - events
       parameters:

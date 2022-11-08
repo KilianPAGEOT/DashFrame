@@ -18,6 +18,9 @@ public class Service {
     private String type;
 
     @Column(nullable = false)
+    private String username;
+
+    @Column(nullable = false)
     private String token;
 
     @Column(nullable = false)

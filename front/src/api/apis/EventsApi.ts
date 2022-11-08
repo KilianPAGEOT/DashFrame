@@ -13,10 +13,7 @@
  */
 
 import * as runtime from "../runtime";
-import type {
-  ListServices401Response,
-  ListServices404Response,
-} from "../models";
+import type { CreateToken401Response, CreateUser404Response } from "../models";
 
 export interface EventsWebsocketRequest {
   userId?: number;

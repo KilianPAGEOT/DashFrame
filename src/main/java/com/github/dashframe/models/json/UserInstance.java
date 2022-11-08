@@ -2,7 +2,6 @@ package com.github.dashframe.models.json;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.dashframe.models.json.ServiceType;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.time.OffsetDateTime;
@@ -14,32 +13,32 @@ import javax.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- * A service instance, a user may possess multiple instances (accounts) for any given service
+ * A user instance
  */
 
 @Generated(
     value = "org.openapitools.codegen.languages.SpringCodegen",
     date = "2022-11-08T15:27:52.118173200+01:00[Europe/Paris]"
 )
-public class ServiceInstance {
+public class UserInstance {
 
     @JsonProperty("id")
     private Integer id;
 
-    @JsonProperty("type")
-    private ServiceType type;
+    @JsonProperty("name")
+    private String name;
 
     @JsonProperty("username")
     private String username;
 
-    @JsonProperty("token")
-    private String token;
+    @JsonProperty("isAdmin")
+    private Boolean isAdmin;
 
     @JsonProperty("createdAt")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private OffsetDateTime createdAt;
 
-    public ServiceInstance id(Integer id) {
+    public UserInstance id(Integer id) {
         this.id = id;
         return this;
     }
@@ -59,32 +58,31 @@ public class ServiceInstance {
         this.id = id;
     }
 
-    public ServiceInstance type(ServiceType type) {
-        this.type = type;
+    public UserInstance name(String name) {
+        this.name = name;
         return this;
     }
 
     /**
-     * Get type
-     * @return type
+     * The user's name
+     * @return name
      */
     @NotNull
-    @Valid
-    public ServiceType getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
-    public void setType(ServiceType type) {
-        this.type = type;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public ServiceInstance username(String username) {
+    public UserInstance username(String username) {
         this.username = username;
         return this;
     }
 
     /**
-     * An username/email, unique accross service instances of a user
+     * A unique identifier that can be any format like email or number sequence
      * @return username
      */
 
@@ -96,25 +94,25 @@ public class ServiceInstance {
         this.username = username;
     }
 
-    public ServiceInstance token(String token) {
-        this.token = token;
+    public UserInstance isAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
         return this;
     }
 
     /**
-     * Login token for the service
-     * @return token
+     * If the user is admin or not
+     * @return isAdmin
      */
-
-    public String getToken() {
-        return token;
+    @NotNull
+    public Boolean getIsAdmin() {
+        return isAdmin;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
-    public ServiceInstance createdAt(OffsetDateTime createdAt) {
+    public UserInstance createdAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
         return this;
     }
@@ -140,29 +138,29 @@ public class ServiceInstance {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ServiceInstance serviceInstance = (ServiceInstance) o;
+        UserInstance userInstance = (UserInstance) o;
         return (
-            Objects.equals(this.id, serviceInstance.id) &&
-            Objects.equals(this.type, serviceInstance.type) &&
-            Objects.equals(this.username, serviceInstance.username) &&
-            Objects.equals(this.token, serviceInstance.token) &&
-            Objects.equals(this.createdAt, serviceInstance.createdAt)
+            Objects.equals(this.id, userInstance.id) &&
+            Objects.equals(this.name, userInstance.name) &&
+            Objects.equals(this.username, userInstance.username) &&
+            Objects.equals(this.isAdmin, userInstance.isAdmin) &&
+            Objects.equals(this.createdAt, userInstance.createdAt)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, type, username, token, createdAt);
+        return Objects.hash(id, name, username, isAdmin, createdAt);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class ServiceInstance {\n");
+        sb.append("class UserInstance {\n");
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    type: ").append(toIndentedString(type)).append("\n");
+        sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    username: ").append(toIndentedString(username)).append("\n");
-        sb.append("    token: ").append(toIndentedString(token)).append("\n");
+        sb.append("    isAdmin: ").append(toIndentedString(isAdmin)).append("\n");
         sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
         sb.append("}");
         return sb.toString();
