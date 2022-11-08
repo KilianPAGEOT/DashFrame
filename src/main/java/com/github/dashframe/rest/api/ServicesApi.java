@@ -5,11 +5,11 @@
  */
 package com.github.dashframe.rest.api;
 
-import com.github.dashframe.models.json.CreateService400Response;
 import com.github.dashframe.models.json.CreateServiceRequest;
+import com.github.dashframe.models.json.CreateToken400Response;
+import com.github.dashframe.models.json.CreateToken401Response;
+import com.github.dashframe.models.json.CreateUser404Response;
 import com.github.dashframe.models.json.ListServices200Response;
-import com.github.dashframe.models.json.ListServices401Response;
-import com.github.dashframe.models.json.ListServices404Response;
 import com.github.dashframe.models.json.ServiceInstance;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Generated(
     value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2022-11-06T17:27:32.778551651+01:00[Europe/Paris]"
+    date = "2022-11-08T15:27:52.118173200+01:00[Europe/Paris]"
 )
 @Validated
 public interface ServicesApi {
@@ -58,7 +58,7 @@ public interface ServicesApi {
                 for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                     if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                         String exampleString =
-                            "{ \"id\" : 24, \"type\" : \"steam\", \"username\" : \"Xx_DarkGam3R_xX\", \"token\" : \"c3VwZXIgc2VjcmV0IHRva2VuCg==\" }";
+                            "{ \"id\" : 24, \"type\" : \"steam\", \"username\" : \"Xx_DarkGam3R_xX\", \"token\" : \"c3VwZXIgc2VjcmV0IHRva2VuCg==\", \"createdAt\" : \"2022-11-07 15:17:56.69100\" }";
                         ApiUtil.setExampleResponse(request, "application/json", exampleString);
                         break;
                     }
@@ -112,7 +112,7 @@ public interface ServicesApi {
                 for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                     if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                         String exampleString =
-                            "{ \"instances\" : [ { \"id\" : 24, \"type\" : \"steam\", \"username\" : \"Xx_DarkGam3R_xX\", \"token\" : \"c3VwZXIgc2VjcmV0IHRva2VuCg==\" }, { \"id\" : 24, \"type\" : \"steam\", \"username\" : \"Xx_DarkGam3R_xX\", \"token\" : \"c3VwZXIgc2VjcmV0IHRva2VuCg==\" } ], \"available\" : [ { \"name\" : \"weather\", \"description\" : \"description\", \"iconUrl\" : \"https://openapi-generator.tech\", \"widgets\" : [ { \"name\" : \"city_temperature\", \"description\" : \"Display temperature for a city\", \"params\" : [ { \"name\" : \"city\", \"type\" : \"string\" }, { \"name\" : \"city\", \"type\" : \"string\" } ] }, { \"name\" : \"city_temperature\", \"description\" : \"Display temperature for a city\", \"params\" : [ { \"name\" : \"city\", \"type\" : \"string\" }, { \"name\" : \"city\", \"type\" : \"string\" } ] } ] }, { \"name\" : \"weather\", \"description\" : \"description\", \"iconUrl\" : \"https://openapi-generator.tech\", \"widgets\" : [ { \"name\" : \"city_temperature\", \"description\" : \"Display temperature for a city\", \"params\" : [ { \"name\" : \"city\", \"type\" : \"string\" }, { \"name\" : \"city\", \"type\" : \"string\" } ] }, { \"name\" : \"city_temperature\", \"description\" : \"Display temperature for a city\", \"params\" : [ { \"name\" : \"city\", \"type\" : \"string\" }, { \"name\" : \"city\", \"type\" : \"string\" } ] } ] } ] }";
+                            "{ \"instances\" : [ { \"id\" : 24, \"type\" : \"steam\", \"username\" : \"Xx_DarkGam3R_xX\", \"token\" : \"c3VwZXIgc2VjcmV0IHRva2VuCg==\", \"createdAt\" : \"2022-11-07 15:17:56.69100\" }, { \"id\" : 24, \"type\" : \"steam\", \"username\" : \"Xx_DarkGam3R_xX\", \"token\" : \"c3VwZXIgc2VjcmV0IHRva2VuCg==\", \"createdAt\" : \"2022-11-07 15:17:56.69100\" } ], \"available\" : [ { \"name\" : \"weather\", \"description\" : \"description\", \"iconUrl\" : \"https://openapi-generator.tech\", \"widgets\" : [ { \"name\" : \"city_temperature\", \"description\" : \"Display temperature for a city\", \"params\" : [ { \"name\" : \"city\", \"type\" : \"string\" }, { \"name\" : \"city\", \"type\" : \"string\" } ] }, { \"name\" : \"city_temperature\", \"description\" : \"Display temperature for a city\", \"params\" : [ { \"name\" : \"city\", \"type\" : \"string\" }, { \"name\" : \"city\", \"type\" : \"string\" } ] } ] }, { \"name\" : \"weather\", \"description\" : \"description\", \"iconUrl\" : \"https://openapi-generator.tech\", \"widgets\" : [ { \"name\" : \"city_temperature\", \"description\" : \"Display temperature for a city\", \"params\" : [ { \"name\" : \"city\", \"type\" : \"string\" }, { \"name\" : \"city\", \"type\" : \"string\" } ] }, { \"name\" : \"city_temperature\", \"description\" : \"Display temperature for a city\", \"params\" : [ { \"name\" : \"city\", \"type\" : \"string\" }, { \"name\" : \"city\", \"type\" : \"string\" } ] } ] } ] }";
                         ApiUtil.setExampleResponse(request, "application/json", exampleString);
                         break;
                     }

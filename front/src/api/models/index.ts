@@ -77,19 +77,6 @@ export type ClientInformationTypeEnum =
 /**
  *
  * @export
- * @interface CreateService400Response
- */
-export interface CreateService400Response {
-  /**
-   *
-   * @type {Error}
-   * @memberof CreateService400Response
-   */
-  error?: Error;
-}
-/**
- *
- * @export
  * @interface CreateServiceRequest
  */
 export interface CreateServiceRequest {
@@ -142,6 +129,125 @@ export interface CreateServiceRequestAllOf {
    * @memberof CreateServiceRequestAllOf
    */
   username?: string;
+}
+/**
+ *
+ * @export
+ * @interface CreateToken400Response
+ */
+export interface CreateToken400Response {
+  /**
+   *
+   * @type {Error}
+   * @memberof CreateToken400Response
+   */
+  error?: Error;
+}
+/**
+ *
+ * @export
+ * @interface CreateToken401Response
+ */
+export interface CreateToken401Response {
+  /**
+   *
+   * @type {Error}
+   * @memberof CreateToken401Response
+   */
+  error?: Error;
+}
+/**
+ *
+ * @export
+ * @interface CreateUser404Response
+ */
+export interface CreateUser404Response {
+  /**
+   *
+   * @type {Error}
+   * @memberof CreateUser404Response
+   */
+  error?: Error;
+}
+/**
+ *
+ * @export
+ * @interface CreateUserRequest
+ */
+export interface CreateUserRequest {
+  /**
+   * A resource identifier
+   * @type {number}
+   * @memberof CreateUserRequest
+   */
+  userId?: number;
+  /**
+   * The user's name
+   * @type {string}
+   * @memberof CreateUserRequest
+   */
+  name: string;
+  /**
+   * A unique identifier that can be any format like email or number sequence
+   * @type {string}
+   * @memberof CreateUserRequest
+   */
+  username: string;
+  /**
+   * The password of the user
+   * @type {string}
+   * @memberof CreateUserRequest
+   */
+  hashPassword: string;
+  /**
+   * The token returned by the external service, optional if not needed
+   * @type {string}
+   * @memberof CreateUserRequest
+   */
+  oauthToken?: string;
+  /**
+   * If the user is admin or not
+   * @type {boolean}
+   * @memberof CreateUserRequest
+   */
+  isAdmin: boolean;
+}
+/**
+ *
+ * @export
+ * @interface CreateUserRequestAllOf
+ */
+export interface CreateUserRequestAllOf {
+  /**
+   * The user's name
+   * @type {string}
+   * @memberof CreateUserRequestAllOf
+   */
+  name: string;
+  /**
+   * A unique identifier that can be any format like email or number sequence
+   * @type {string}
+   * @memberof CreateUserRequestAllOf
+   */
+  username: string;
+  /**
+   * The password of the user
+   * @type {string}
+   * @memberof CreateUserRequestAllOf
+   */
+  hashPassword: string;
+  /**
+   * The token returned by the external service, optional if not needed
+   * @type {string}
+   * @memberof CreateUserRequestAllOf
+   */
+  oauthToken?: string;
+  /**
+   * If the user is admin or not
+   * @type {boolean}
+   * @memberof CreateUserRequestAllOf
+   */
+  isAdmin: boolean;
 }
 /**
  *
@@ -341,32 +447,6 @@ export interface ListServices200Response {
   instances: Array<ServiceInstance>;
 }
 /**
- *
- * @export
- * @interface ListServices401Response
- */
-export interface ListServices401Response {
-  /**
-   *
-   * @type {Error}
-   * @memberof ListServices401Response
-   */
-  error?: Error;
-}
-/**
- *
- * @export
- * @interface ListServices404Response
- */
-export interface ListServices404Response {
-  /**
-   *
-   * @type {Error}
-   * @memberof ListServices404Response
-   */
-  error?: Error;
-}
-/**
  * An error response object
  * @export
  * @interface ModelError
@@ -547,6 +627,12 @@ export interface ServiceInstance {
    * @memberof ServiceInstance
    */
   token?: string;
+  /**
+   * Created date-time
+   * @type {string}
+   * @memberof ServiceInstance
+   */
+  createdAt?: string;
 }
 
 /**
@@ -814,6 +900,43 @@ export interface UpdateWidgetRequest {
    * @memberof UpdateWidgetRequest
    */
   config: WidgetConfiguration;
+}
+/**
+ * A user instance
+ * @export
+ * @interface UserInstance
+ */
+export interface UserInstance {
+  /**
+   * A resource identifier
+   * @type {number}
+   * @memberof UserInstance
+   */
+  id: number;
+  /**
+   * The user's name
+   * @type {string}
+   * @memberof UserInstance
+   */
+  name: string;
+  /**
+   * A unique identifier that can be any format like email or number sequence
+   * @type {string}
+   * @memberof UserInstance
+   */
+  username?: string;
+  /**
+   * If the user is admin or not
+   * @type {boolean}
+   * @memberof UserInstance
+   */
+  isAdmin: boolean;
+  /**
+   * Created date-time
+   * @type {string}
+   * @memberof UserInstance
+   */
+  createdAt?: string;
 }
 /**
  *
@@ -1087,6 +1210,12 @@ export interface WidgetInstance {
    * @memberof WidgetInstance
    */
   config?: WidgetConfiguration;
+  /**
+   * Created date-time
+   * @type {string}
+   * @memberof WidgetInstance
+   */
+  createdAt?: string;
 }
 /**
  * Describes a widget parameter

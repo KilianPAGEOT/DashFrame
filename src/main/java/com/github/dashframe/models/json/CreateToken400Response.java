@@ -13,20 +13,20 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * ListServices404Response
+ * CreateToken400Response
  */
 
-@JsonTypeName("list_services_404_response")
+@JsonTypeName("create_token_400_response")
 @Generated(
     value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2022-11-06T17:27:32.778551651+01:00[Europe/Paris]"
+    date = "2022-11-08T15:27:52.118173200+01:00[Europe/Paris]"
 )
-public class ListServices404Response {
+public class CreateToken400Response {
 
     @JsonProperty("error")
     private Error error;
 
-    public ListServices404Response error(Error error) {
+    public CreateToken400Response error(Error error) {
         this.error = error;
         return this;
     }
@@ -52,8 +52,8 @@ public class ListServices404Response {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ListServices404Response listServices404Response = (ListServices404Response) o;
-        return Objects.equals(this.error, listServices404Response.error);
+        CreateToken400Response createToken400Response = (CreateToken400Response) o;
+        return Objects.equals(this.error, createToken400Response.error);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class ListServices404Response {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class ListServices404Response {\n");
+        sb.append("class CreateToken400Response {\n");
         sb.append("    error: ").append(toIndentedString(error)).append("\n");
         sb.append("}");
         return sb.toString();

@@ -5,10 +5,10 @@
  */
 package com.github.dashframe.rest.api;
 
-import com.github.dashframe.models.json.CreateService400Response;
+import com.github.dashframe.models.json.CreateToken400Response;
+import com.github.dashframe.models.json.CreateToken401Response;
+import com.github.dashframe.models.json.CreateUser404Response;
 import com.github.dashframe.models.json.CreateWidgetRequest;
-import com.github.dashframe.models.json.ListServices401Response;
-import com.github.dashframe.models.json.ListServices404Response;
 import com.github.dashframe.models.json.UpdateWidgetRequest;
 import com.github.dashframe.models.json.WidgetInstance;
 import java.util.List;
@@ -27,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Generated(
     value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2022-11-06T17:27:32.778551651+01:00[Europe/Paris]"
+    date = "2022-11-08T15:27:52.118173200+01:00[Europe/Paris]"
 )
 @Validated
 public interface WidgetsApi {
@@ -58,7 +58,7 @@ public interface WidgetsApi {
                 for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                     if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                         String exampleString =
-                            "{ \"id\" : 42, \"service_id\" : 1, \"order\" : 3, \"column_pos\" : 1, \"config\" : { \"type\" : \"steam/friends_list\", \"parameters\" : { \"showOffline\" : 1 } } }";
+                            "{ \"id\" : 42, \"service_id\" : 1, \"order\" : 3, \"column_pos\" : 1, \"config\" : { \"type\" : \"steam/friends_list\", \"parameters\" : { \"showOffline\" : 1 } }, \"createdAt\" : \"2022-11-07 15:17:56.69100\" }";
                         ApiUtil.setExampleResponse(request, "application/json", exampleString);
                         break;
                     }
@@ -110,7 +110,7 @@ public interface WidgetsApi {
                 for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                     if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                         String exampleString =
-                            "{ \"id\" : 42, \"service_id\" : 1, \"order\" : 3, \"column_pos\" : 1, \"config\" : { \"type\" : \"steam/friends_list\", \"parameters\" : { \"showOffline\" : 1 } } }";
+                            "{ \"id\" : 42, \"service_id\" : 1, \"order\" : 3, \"column_pos\" : 1, \"config\" : { \"type\" : \"steam/friends_list\", \"parameters\" : { \"showOffline\" : 1 } }, \"createdAt\" : \"2022-11-07 15:17:56.69100\" }";
                         ApiUtil.setExampleResponse(request, "application/json", exampleString);
                         break;
                     }
@@ -136,7 +136,7 @@ public interface WidgetsApi {
                 for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                     if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                         String exampleString =
-                            "{ \"id\" : 42, \"service_id\" : 1, \"order\" : 3, \"column_pos\" : 1, \"config\" : { \"type\" : \"steam/friends_list\", \"parameters\" : { \"showOffline\" : 1 } } }";
+                            "{ \"id\" : 42, \"service_id\" : 1, \"order\" : 3, \"column_pos\" : 1, \"config\" : { \"type\" : \"steam/friends_list\", \"parameters\" : { \"showOffline\" : 1 } }, \"createdAt\" : \"2022-11-07 15:17:56.69100\" }";
                         ApiUtil.setExampleResponse(request, "application/json", exampleString);
                         break;
                     }

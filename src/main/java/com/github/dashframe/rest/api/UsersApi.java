@@ -5,8 +5,11 @@
  */
 package com.github.dashframe.rest.api;
 
+import com.github.dashframe.models.json.CreateToken400Response;
 import com.github.dashframe.models.json.CreateToken401Response;
 import com.github.dashframe.models.json.CreateUser404Response;
+import com.github.dashframe.models.json.CreateUserRequest;
+import com.github.dashframe.models.json.UserInstance;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,31 +29,40 @@ import org.springframework.web.multipart.MultipartFile;
     date = "2022-11-08T15:27:52.118173200+01:00[Europe/Paris]"
 )
 @Validated
-public interface WsApi {
+public interface UsersApi {
     default Optional<NativeWebRequest> getRequest() {
         return Optional.empty();
     }
 
     /**
-     * GET /ws/events : Subscribes to the events WebSocket of the given user, or the current user if not present
+     * POST /users : Create a new user instance
      *
-     * @param userId The ID of an user, assumed to be the current user if not specified (optional)
-     * @param upgrade  (optional)
-     * @param secWebSocketKey  (optional)
-     * @param secWebSocketProtocol  (optional)
-     * @param secWebSocketVersion  (optional)
-     * @return Switching protocols (to WebSocket protocol) (status code 101)
+     * @param createUserRequest  (optional)
+     * @return Expected response to a valid request (status code 200)
+     *         or Returned if the requested was malformed (status code 400)
      *         or The user is not logged in (status code 401)
      *         or Returned if the requested resource doesn&#39;t exist, or the user does not have access (status code 404)
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/ws/events", produces = { "application/json" })
-    default ResponseEntity<Void> eventsWebsocket(
-        @Min(0) @Valid @RequestParam(value = "userId", required = false) Integer userId,
-        @RequestHeader(value = "Upgrade", required = false) String upgrade,
-        @RequestHeader(value = "Sec-WebSocket-Key", required = false) String secWebSocketKey,
-        @RequestHeader(value = "Sec-WebSocket-Protocol", required = false) String secWebSocketProtocol,
-        @RequestHeader(value = "Sec-WebSocket-Version", required = false) String secWebSocketVersion
+    @RequestMapping(
+        method = RequestMethod.POST,
+        value = "/users",
+        produces = { "application/json" },
+        consumes = { "application/json" }
+    )
+    default ResponseEntity<UserInstance> createUser(
+        @Valid @RequestBody(required = false) CreateUserRequest createUserRequest
     ) {
+        getRequest()
+            .ifPresent(request -> {
+                for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                    if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                        String exampleString =
+                            "{ \"id\" : 5, \"name\" : \"patrick\", \"username\" : \"patrick@gmail.com\", \"isAdmin\" : \"false\", \"createdAt\" : \"2022-11-07 15:17:56.69100\" }";
+                        ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                        break;
+                    }
+                }
+            });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 }

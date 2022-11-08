@@ -1,6 +1,9 @@
+.openapi-generator-ignore
+apis/AuthenticationApi.ts
 apis/EventsApi.ts
 apis/InformationApi.ts
 apis/ServicesApi.ts
+apis/UsersApi.ts
 apis/WidgetsApi.ts
 apis/index.ts
 index.ts
