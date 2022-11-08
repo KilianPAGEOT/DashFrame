@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * DashFrame API
- * ## Authentification  This API uses tokens of an unknown type. The token is in the `Authorization` header of the request.    Example: ``` Authorization: gho_pJ9dGXVKpfzZp4PUHSxYEq9hjk0h288Gwj4S ```  ## Typical usage:  Once logged-in, the client will fetch the widgets on the board: ``` GET $API_URL/widgets ```  Then it will listen for widget update events by starting a WebSocket connection: ``` GET $API_URL/ws/events ```  In the meantime, the client will fetch the list of available widget and services: ``` GET $API_URL/services ```
+ * ## Authentication  This API uses tokens of an unknown type. The token is in the `Authorization` header of the request.    Example: ``` Authorization: gho_pJ9dGXVKpfzZp4PUHSxYEq9hjk0h288Gwj4S ```  ## Typical usage:  Once logged-in, the client will fetch the widgets on the board: ``` GET $API_URL/widgets ```  Then it will listen for widget update events by starting a WebSocket connection: ``` GET $API_URL/ws/events ```  In the meantime, the client will fetch the list of available widget and services: ``` GET $API_URL/services ```
  *
  * The version of the OpenAPI document: 0.1.0
  *

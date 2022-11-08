@@ -205,12 +205,6 @@ export interface CreateUserRequest {
    * @memberof CreateUserRequest
    */
   oauthToken?: string;
-  /**
-   * If the user is admin or not
-   * @type {boolean}
-   * @memberof CreateUserRequest
-   */
-  isAdmin: boolean;
 }
 /**
  *
@@ -242,12 +236,6 @@ export interface CreateUserRequestAllOf {
    * @memberof CreateUserRequestAllOf
    */
   oauthToken?: string;
-  /**
-   * If the user is admin or not
-   * @type {boolean}
-   * @memberof CreateUserRequestAllOf
-   */
-  isAdmin: boolean;
 }
 /**
  *

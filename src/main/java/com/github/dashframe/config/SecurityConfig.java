@@ -62,7 +62,7 @@ public class SecurityConfig {
             .authorizeRequests(auth ->
                 auth
                     // ... except these
-                    .mvcMatchers(WebMvcConfig.API_BASE + "/user")
+                    .mvcMatchers(WebMvcConfig.API_BASE + "/users")
                     .permitAll()
                     .anyRequest()
                     .authenticated()

@@ -5,7 +5,8 @@ import com.github.dashframe.config.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,8 +21,8 @@ public class AuthenticationController {
         this.tokenService = tokenService;
     }
 
-    @PostMapping("/token")
-    public String login(Authentication authentication) {
+    @RequestMapping(method = RequestMethod.POST, value = "/token", produces = { "text/plain", "application/json" })
+    public String createToken(Authentication authentication) {
         if (this.userDetailsService.loadUserByUsername(authentication.getName()) == null) {
             throw new UsernameNotFoundException(authentication.getName());
         }
