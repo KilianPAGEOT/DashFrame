@@ -43,16 +43,19 @@ public class SecurityConfig {
             // Disable Cross-Site Request Forgery (CSRF)
             .csrf(AbstractHttpConfigurer::disable)
             .cors()
-            .configurationSource(corsConfigurationSource())
+            .configurationSource(corsConfigurationSource()).and()
             // The user should be authenticated for any request ...
             .authorizeRequests(auth ->
-                auth
-                    // ... except these
-                    .mvcMatchers(WebMvcConfig.API_BASE + "/users")
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated()
-            )
+                    {
+                            auth
+                                // ... except these
+                                .mvcMatchers(WebMvcConfig.API_BASE + "/users*")
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated();
+                    }
+            ).oauth2Login().defaultSuccessUrl("http://localhost:8080/api/v1/users-oauth2", true).and()
+
             // OAUTH2
             .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
             //
@@ -61,26 +64,18 @@ public class SecurityConfig {
             // Spring Security’s HTTP Basic Authentication support is enabled by default
             // However, as soon as any servlet-based configuration is provided, HTTP Basic must be explicitly provided
             .httpBasic(Customizer.withDefaults())
-            .oauth2Login()
-            .defaultSuccessUrl("/api/v1/userOAuth2", true)
-            .permitAll()
             .build();
     }
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5176/"));
+        configuration.setAllowedOrigins(List.of("http://localhost:5173/"));
         configuration.setAllowedMethods(List.of("*"));
         configuration.setAllowedHeaders(List.of("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-}
-
-@Configuration
-@EnableWebSecurity
-public class SecurityConfig {
 
     private final RsaKeyProperties rsaKeys;
 
@@ -106,8 +101,6 @@ public class SecurityConfig {
         roleHierarchy.setHierarchy("ADMIN > USER");
         return roleHierarchy;
     }
-
-   
 
     @Bean
     PasswordEncoder getPasswordEncoder() {
