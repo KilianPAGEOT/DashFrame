@@ -1,5 +1,6 @@
 package com.github.dashframe.config;
 
+import com.github.dashframe.rest.EventsWebSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
@@ -17,6 +18,6 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(eventsWebSocketHandler, WS_BASE_PATH + "events").setAllowedOrigins("*");
+        registry.addHandler(this.eventsWebSocketHandler, WS_BASE_PATH + "events").setAllowedOrigins("*");
     }
 }
