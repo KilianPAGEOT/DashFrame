@@ -43,7 +43,7 @@ public class AuthenticationController {
         this.userController = userController;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/token", produces = { "text/plain", "application/json" })
+    @RequestMapping(method = RequestMethod.POST, value = "/login", produces = { "text/plain", "application/json" })
     public String createToken(Authentication authentication) {
         if (this.userDetailsService.loadUserByUsername(authentication.getName()) == null) {
             throw new UsernameNotFoundException(authentication.getName());

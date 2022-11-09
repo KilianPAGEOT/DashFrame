@@ -7,7 +7,7 @@ import org.springframework.web.method.HandlerTypePredicate;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@CrossOrigin(origins = "http://localhost:5176")
+@CrossOrigin
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 

@@ -38,14 +38,14 @@ public class SecurityConfig {
             .configurationSource(corsConfigurationSource())
             .and()
             // The user should be authenticated for any request ...
-            .authorizeRequests(auth -> {
+            .authorizeRequests(auth ->
                 auth
                     // ... except these
                     .mvcMatchers(WebMvcConfig.API_BASE + "/users")
                     .permitAll()
                     .anyRequest()
-                    .authenticated();
-            })
+                    .authenticated()
+            )
             .oauth2Login()
             .defaultSuccessUrl("http://localhost:8080/api/v1/users-oauth2", true)
             .and()

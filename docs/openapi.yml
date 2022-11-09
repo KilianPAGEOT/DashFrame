@@ -721,7 +721,7 @@ paths:
                 required:
                   - client
                   - server
-  /token:
+  /login:
     post:
       operationId: create_token
       summary: Generate a new token for the user found by authentication infos in the header
