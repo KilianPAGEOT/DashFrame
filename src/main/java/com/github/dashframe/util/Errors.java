@@ -1,6 +1,7 @@
 package com.github.dashframe.util;
 
-import com.github.dashframe.models.json.Error;
+import com.github.dashframe.models.json.ApiError;
+import com.github.dashframe.models.json.WrappedApiError;
 import java.util.Map;
 
 /**
@@ -16,11 +17,14 @@ public final class Errors {
      * @param channelName The WebSocket channel name
      * @return The error instance.
      */
-    public static Error serverToClientOnlySocket(String channelName) {
-        return new Error()
-            .code(SOCKET_SERVER_TO_CLIENT_ONLY)
-            .message("WebSocket channel `" + channelName + "` cannot accept messages from clients")
-            .messageKey("error.socket.server_to_client_only")
-            .messageParams(Map.of("channelName", channelName));
+    public static WrappedApiError serverToClientOnlySocket(String channelName) {
+        return new WrappedApiError()
+            .error(
+                new ApiError()
+                    .code(SOCKET_SERVER_TO_CLIENT_ONLY)
+                    .message("WebSocket channel `" + channelName + "` cannot accept messages from clients")
+                    .messageKey("error.socket.server_to_client_only")
+                    .messageParams(Map.of("channelName", channelName))
+            );
     }
 }

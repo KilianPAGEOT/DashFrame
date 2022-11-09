@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Generated(
     value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2022-11-08T16:03:51.937911500+01:00[Europe/Paris]"
+    date = "2022-11-09T11:51:12.913786908+01:00[Europe/Paris]"
 )
 @Validated
 public interface AboutJsonApi {

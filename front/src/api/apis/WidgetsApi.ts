@@ -14,12 +14,10 @@
 
 import * as runtime from "../runtime";
 import type {
-  CreateToken400Response,
-  CreateToken401Response,
-  CreateUser404Response,
   CreateWidgetRequest,
   UpdateWidgetRequest,
   WidgetInstance,
+  WrappedApiError,
 } from "../models";
 
 export interface CreateWidgetOperationRequest {

@@ -1,11 +1,9 @@
+src/main/java/com/github/dashframe/models/json/ApiError.java
 src/main/java/com/github/dashframe/models/json/BaseEvent.java
 src/main/java/com/github/dashframe/models/json/BaseWidgetConfiguration.java
 src/main/java/com/github/dashframe/models/json/ClientInformation.java
 src/main/java/com/github/dashframe/models/json/CreateServiceRequest.java
 src/main/java/com/github/dashframe/models/json/CreateServiceRequestAllOf.java
-src/main/java/com/github/dashframe/models/json/CreateToken400Response.java
-src/main/java/com/github/dashframe/models/json/CreateToken401Response.java
-src/main/java/com/github/dashframe/models/json/CreateUser404Response.java
 src/main/java/com/github/dashframe/models/json/CreateUserRequest.java
 src/main/java/com/github/dashframe/models/json/CreateUserRequestAllOf.java
 src/main/java/com/github/dashframe/models/json/CreateWidgetRequest.java
@@ -14,7 +12,6 @@ src/main/java/com/github/dashframe/models/json/EpicGamesFreeGamesWidgetConfigura
 src/main/java/com/github/dashframe/models/json/EpicGamesFriendsListWidgetConfiguration.java
 src/main/java/com/github/dashframe/models/json/EpicGamesFriendsListWidgetConfigurationAllOf.java
 src/main/java/com/github/dashframe/models/json/EpicGamesFriendsListWidgetConfigurationAllOfParameters.java
-src/main/java/com/github/dashframe/models/json/Error.java
 src/main/java/com/github/dashframe/models/json/Event.java
 src/main/java/com/github/dashframe/models/json/EventType.java
 src/main/java/com/github/dashframe/models/json/GetAboutJson200Response.java
@@ -59,6 +56,7 @@ src/main/java/com/github/dashframe/models/json/WidgetRefreshEventAllOf.java
 src/main/java/com/github/dashframe/models/json/WidgetRefreshEventAllOfData.java
 src/main/java/com/github/dashframe/models/json/WidgetRefreshEventAllOfDataWidgets.java
 src/main/java/com/github/dashframe/models/json/WidgetType.java
+src/main/java/com/github/dashframe/models/json/WrappedApiError.java
 src/main/java/com/github/dashframe/models/json/YouTubeChannelStatisticsWidgetConfiguration.java
 src/main/java/com/github/dashframe/models/json/YouTubeChannelStatisticsWidgetConfigurationAllOf.java
 src/main/java/com/github/dashframe/models/json/YouTubeChannelStatisticsWidgetConfigurationAllOfParameters.java
@@ -69,8 +67,9 @@ src/main/java/com/github/dashframe/models/json/YouTubeVideoStatisticsWidgetConfi
 src/main/java/com/github/dashframe/models/json/YouTubeVideoStatisticsWidgetConfigurationAllOfParameters.java
 src/main/java/com/github/dashframe/rest/api/AboutJsonApi.java
 src/main/java/com/github/dashframe/rest/api/ApiUtil.java
+src/main/java/com/github/dashframe/rest/api/LoginApi.java
 src/main/java/com/github/dashframe/rest/api/ServicesApi.java
-src/main/java/com/github/dashframe/rest/api/TokenApi.java
 src/main/java/com/github/dashframe/rest/api/UsersApi.java
+src/main/java/com/github/dashframe/rest/api/UsersOauth2Api.java
 src/main/java/com/github/dashframe/rest/api/WidgetsApi.java
 src/main/java/com/github/dashframe/rest/api/WsApi.java

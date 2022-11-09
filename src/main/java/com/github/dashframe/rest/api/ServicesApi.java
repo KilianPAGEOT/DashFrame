@@ -6,11 +6,9 @@
 package com.github.dashframe.rest.api;
 
 import com.github.dashframe.models.json.CreateServiceRequest;
-import com.github.dashframe.models.json.CreateToken400Response;
-import com.github.dashframe.models.json.CreateToken401Response;
-import com.github.dashframe.models.json.CreateUser404Response;
 import com.github.dashframe.models.json.ListServices200Response;
 import com.github.dashframe.models.json.ServiceInstance;
+import com.github.dashframe.models.json.WrappedApiError;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -27,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Generated(
     value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2022-11-08T16:03:51.937911500+01:00[Europe/Paris]"
+    date = "2022-11-09T11:51:12.913786908+01:00[Europe/Paris]"
 )
 @Validated
 public interface ServicesApi {
@@ -40,9 +38,7 @@ public interface ServicesApi {
      *
      * @param createServiceRequest  (optional)
      * @return Expected response to a valid request (status code 200)
-     *         or Returned if the requested was malformed (status code 400)
-     *         or The user is not logged in (status code 401)
-     *         or Returned if the requested resource doesn&#39;t exist, or the user does not have access (status code 404)
+     *         or Error HTTP response.  Status codes: - 400: Returned if the requested was malformed - 401: The user is not logged in - 404: Returned if the requested resource doesn&#39;t exist, or the user does not have access   (status code 4XX)
      */
     @RequestMapping(
         method = RequestMethod.POST,
@@ -72,8 +68,7 @@ public interface ServicesApi {
      *
      * @param serviceId  (required)
      * @return All services of type or service was deleted successfully (status code 204)
-     *         or The user is not logged in (status code 401)
-     *         or Returned if the requested resource doesn&#39;t exist, or the user does not have access (status code 404)
+     *         or Error HTTP response.  Status codes: - 400: Returned if the requested was malformed - 401: The user is not logged in - 404: Returned if the requested resource doesn&#39;t exist, or the user does not have access   (status code 4XX)
      */
     @RequestMapping(method = RequestMethod.DELETE, value = "/services/{serviceId}", produces = { "application/json" })
     default ResponseEntity<Void> deleteService(@Min(0) @PathVariable("serviceId") Integer serviceId) {
@@ -85,8 +80,8 @@ public interface ServicesApi {
      *
      * @param userId The ID of an user, assumed to be the current user if not specified (optional)
      * @return All services were deleted successfully (status code 204)
-     *         or The user is not logged in (status code 401)
-     *         or Returned if the requested resource doesn&#39;t exist, or the user does not have access (status code 404)
+     *         or Error HTTP response.  Status codes: - 400: Returned if the requested was malformed - 401: The user is not logged in - 404: Returned if the requested resource doesn&#39;t exist, or the user does not have access   (status code 401)
+     *         or Error HTTP response.  Status codes: - 400: Returned if the requested was malformed - 401: The user is not logged in - 404: Returned if the requested resource doesn&#39;t exist, or the user does not have access   (status code 404)
      */
     @RequestMapping(method = RequestMethod.DELETE, value = "/services", produces = { "application/json" })
     default ResponseEntity<Void> deleteServices(
@@ -100,8 +95,7 @@ public interface ServicesApi {
      *
      * @param userId The ID of an user, assumed to be the current user if not specified (optional)
      * @return Expected response to a valid request (status code 200)
-     *         or The user is not logged in (status code 401)
-     *         or Returned if the requested resource doesn&#39;t exist, or the user does not have access (status code 404)
+     *         or Error HTTP response.  Status codes: - 400: Returned if the requested was malformed - 401: The user is not logged in - 404: Returned if the requested resource doesn&#39;t exist, or the user does not have access   (status code 4XX)
      */
     @RequestMapping(method = RequestMethod.GET, value = "/services", produces = { "application/json" })
     default ResponseEntity<ListServices200Response> listServices(

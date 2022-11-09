@@ -1,6 +1,37 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
+ * An error response object
+ * @export
+ * @interface ApiError
+ */
+export interface ApiError {
+  /**
+   * The unique error code
+   * @type {number}
+   * @memberof ApiError
+   */
+  code: number;
+  /**
+   * The error message in english, not required
+   * @type {string}
+   * @memberof ApiError
+   */
+  message?: string;
+  /**
+   * The error message localization key, not required
+   * @type {string}
+   * @memberof ApiError
+   */
+  messageKey?: string;
+  /**
+   * The parameters used in the localization of this error message, assumed to be empty if not present
+   * @type {{ [key: string]: string; }}
+   * @memberof ApiError
+   */
+  messageParams?: { [key: string]: string };
+}
+/**
  * Common properties shared by any server-sent event, not a full event by itself
  * @export
  * @interface BaseEvent
@@ -129,45 +160,6 @@ export interface CreateServiceRequestAllOf {
    * @memberof CreateServiceRequestAllOf
    */
   username?: string;
-}
-/**
- *
- * @export
- * @interface CreateToken400Response
- */
-export interface CreateToken400Response {
-  /**
-   *
-   * @type {Error}
-   * @memberof CreateToken400Response
-   */
-  error?: Error;
-}
-/**
- *
- * @export
- * @interface CreateToken401Response
- */
-export interface CreateToken401Response {
-  /**
-   *
-   * @type {Error}
-   * @memberof CreateToken401Response
-   */
-  error?: Error;
-}
-/**
- *
- * @export
- * @interface CreateUser404Response
- */
-export interface CreateUser404Response {
-  /**
-   *
-   * @type {Error}
-   * @memberof CreateUser404Response
-   */
-  error?: Error;
 }
 /**
  *
@@ -435,37 +427,6 @@ export interface ListServices200Response {
   instances: Array<ServiceInstance>;
 }
 /**
- * An error response object
- * @export
- * @interface ModelError
- */
-export interface ModelError {
-  /**
-   * The unique error code
-   * @type {number}
-   * @memberof ModelError
-   */
-  code?: number;
-  /**
-   * The error message in english, not required
-   * @type {string}
-   * @memberof ModelError
-   */
-  message?: string;
-  /**
-   * The error message localization key, not required
-   * @type {string}
-   * @memberof ModelError
-   */
-  messageKey?: string;
-  /**
-   * The parameters used in the localization of this error message, assumed to be empty if not present
-   * @type {{ [key: string]: string; }}
-   * @memberof ModelError
-   */
-  messageParams?: { [key: string]: string };
-}
-/**
  * The ID of an user, assumed to be the current user if not specified
  * @export
  * @interface OptionalUserIdentifier
@@ -604,7 +565,7 @@ export interface ServiceInstance {
    */
   type: ServiceType;
   /**
-   * An username/username, unique accross service instances of a user
+   * An username/email, unique accross service instances of a user
    * @type {string}
    * @memberof ServiceInstance
    */
@@ -1151,10 +1112,10 @@ export interface WidgetErrorEventAllOfDataWidgets {
   id: number;
   /**
    *
-   * @type {Error}
+   * @type {ApiError}
    * @memberof WidgetErrorEventAllOfDataWidgets
    */
-  error: Error;
+  error: ApiError;
 }
 /**
  *
@@ -1325,6 +1286,20 @@ export const WidgetType = {
 } as const;
 export type WidgetType = typeof WidgetType[keyof typeof WidgetType];
 
+/**
+ * An API error object wrapped as an object with an "error" key.
+ * Used to distinguish between different types of values
+ * @export
+ * @interface WrappedApiError
+ */
+export interface WrappedApiError {
+  /**
+   *
+   * @type {ApiError}
+   * @memberof WrappedApiError
+   */
+  error: ApiError;
+}
 /**
  *
  * @export

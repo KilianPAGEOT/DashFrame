@@ -5,8 +5,6 @@
  */
 package com.github.dashframe.rest.api;
 
-import com.github.dashframe.models.json.CreateUserRequest;
-import com.github.dashframe.models.json.UserInstance;
 import com.github.dashframe.models.json.WrappedApiError;
 import java.util.List;
 import java.util.Map;
@@ -27,38 +25,19 @@ import org.springframework.web.multipart.MultipartFile;
     date = "2022-11-09T11:51:12.913786908+01:00[Europe/Paris]"
 )
 @Validated
-public interface UsersApi {
+public interface LoginApi {
     default Optional<NativeWebRequest> getRequest() {
         return Optional.empty();
     }
 
     /**
-     * POST /users : Create a new user instance
+     * POST /login : Generate a new token for the user found by authentication infos in the header
      *
-     * @param createUserRequest  (optional)
      * @return Expected response to a valid request (status code 200)
      *         or Error HTTP response.  Status codes: - 400: Returned if the requested was malformed - 401: The user is not logged in - 404: Returned if the requested resource doesn&#39;t exist, or the user does not have access   (status code 4XX)
      */
-    @RequestMapping(
-        method = RequestMethod.POST,
-        value = "/users",
-        produces = { "application/json" },
-        consumes = { "application/json" }
-    )
-    default ResponseEntity<UserInstance> createUser(
-        @Valid @RequestBody(required = false) CreateUserRequest createUserRequest
-    ) {
-        getRequest()
-            .ifPresent(request -> {
-                for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                    if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                        String exampleString =
-                            "{ \"id\" : 5, \"name\" : \"patrick\", \"username\" : \"patrick@gmail.com\", \"isAdmin\" : \"false\", \"createdAt\" : \"2022-11-07 15:17:56.69100\" }";
-                        ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                        break;
-                    }
-                }
-            });
+    @RequestMapping(method = RequestMethod.POST, value = "/login", produces = { "text/plain", "application/json" })
+    default ResponseEntity<String> createToken() {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 }

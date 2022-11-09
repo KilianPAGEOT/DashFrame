@@ -14,11 +14,9 @@
 
 import * as runtime from "../runtime";
 import type {
-  CreateToken400Response,
-  CreateToken401Response,
-  CreateUser404Response,
   CreateUserRequest,
   UserInstance,
+  WrappedApiError,
 } from "../models";
 
 export interface CreateUserOperationRequest {

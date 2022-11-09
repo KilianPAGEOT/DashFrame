@@ -2,8 +2,7 @@ package com.github.dashframe.models.json;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.github.dashframe.models.json.Error;
+import com.github.dashframe.models.json.ApiError;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -13,20 +12,19 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * CreateUser404Response
+ * An API error object wrapped as an object with an \&quot;error\&quot; key. Used to distinguish between different types of values
  */
 
-@JsonTypeName("create_user_404_response")
 @Generated(
     value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2022-11-08T16:03:51.937911500+01:00[Europe/Paris]"
+    date = "2022-11-09T11:51:12.913786908+01:00[Europe/Paris]"
 )
-public class CreateUser404Response {
+public class WrappedApiError {
 
     @JsonProperty("error")
-    private Error error;
+    private ApiError error;
 
-    public CreateUser404Response error(Error error) {
+    public WrappedApiError error(ApiError error) {
         this.error = error;
         return this;
     }
@@ -35,12 +33,13 @@ public class CreateUser404Response {
      * Get error
      * @return error
      */
+    @NotNull
     @Valid
-    public Error getError() {
+    public ApiError getError() {
         return error;
     }
 
-    public void setError(Error error) {
+    public void setError(ApiError error) {
         this.error = error;
     }
 
@@ -52,8 +51,8 @@ public class CreateUser404Response {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CreateUser404Response createUser404Response = (CreateUser404Response) o;
-        return Objects.equals(this.error, createUser404Response.error);
+        WrappedApiError wrappedApiError = (WrappedApiError) o;
+        return Objects.equals(this.error, wrappedApiError.error);
     }
 
     @Override
@@ -64,7 +63,7 @@ public class CreateUser404Response {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class CreateUser404Response {\n");
+        sb.append("class WrappedApiError {\n");
         sb.append("    error: ").append(toIndentedString(error)).append("\n");
         sb.append("}");
         return sb.toString();

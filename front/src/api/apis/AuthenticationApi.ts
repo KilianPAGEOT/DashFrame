@@ -13,7 +13,7 @@
  */
 
 import * as runtime from "../runtime";
-import type { CreateToken400Response, CreateToken401Response } from "../models";
+import type { WrappedApiError } from "../models";
 
 /**
  *
@@ -40,7 +40,7 @@ export class AuthenticationApi extends runtime.BaseAPI {
     }
     const response = await this.request(
       {
-        path: `/token`,
+        path: `/login`,
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
@@ -59,5 +59,37 @@ export class AuthenticationApi extends runtime.BaseAPI {
   ): Promise<string> {
     const response = await this.createTokenRaw(initOverrides);
     return await response.value();
+  }
+
+  /**
+   * Create user with OAuth login and add OAuth token to cookie
+   */
+  async createUserOauth2Raw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<void>> {
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/users-oauth2`,
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   * Create user with OAuth login and add OAuth token to cookie
+   */
+  async createUserOauth2(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<void> {
+    await this.createUserOauth2Raw(initOverrides);
   }
 }

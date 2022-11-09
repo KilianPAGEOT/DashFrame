@@ -37,6 +37,33 @@ servers:
         default: v1
 components:
   schemas:
+    ApiError:
+      type: object
+      description: An error response object
+      example:
+        {
+          "code": 42069,
+          "message": "The requested Steam game 'Half-Life 3' was not found",
+          "messageKey": "error.widget.steam.unknown_game",
+          "messageParams": { "game": "Half-Life 3" },
+        }
+      properties:
+        code:
+          type: integer
+          description: The unique error code
+        message:
+          type: string
+          description: The error message in english, not required
+        messageKey:
+          type: string
+          description: The error message localization key, not required
+        messageParams:
+          type: object
+          description: The parameters used in the localization of this error message, assumed to be empty if not present
+          additionalProperties:
+            type: string
+      required:
+        - code
     BaseEvent:
       type: object
       description: Common properties shared by any server-sent event, not a full event by itself
@@ -100,31 +127,6 @@ components:
                 - showOffline
           required:
             - parameters
-    Error:
-      type: object
-      description: An error response object
-      example:
-        {
-          "code": 42069,
-          "message": "The requested Steam game 'Half-Life 3' was not found",
-          "messageKey": "error.widget.steam.unknown_game",
-          "messageParams": { "game": "Half-Life 3" },
-        }
-      properties:
-        code:
-          type: integer
-          description: The unique error code
-        message:
-          type: string
-          description: The error message in english, not required
-        messageKey:
-          type: string
-          description: The error message localization key, not required
-        messageParams:
-          type: object
-          description: The parameters used in the localization of this error message, assumed to be empty if not present
-          additionalProperties:
-            type: string
     Event:
       description: Any server-sent event
       oneOf:
@@ -445,7 +447,7 @@ components:
                       id:
                         $ref: "#/components/schemas/Identifier"
                       error:
-                        $ref: "#/components/schemas/Error"
+                        $ref: "#/components/schemas/ApiError"
                     required:
                       - id
                       - error
@@ -552,6 +554,27 @@ components:
         - youtube/channel_statistics
         - youtube/subsribed_channels
         - youtube/video_statistics
+    WrappedApiError:
+      type: object
+      description: |
+        An API error object wrapped as an object with an "error" key.
+        Used to distinguish between different types of values
+      example:
+        {
+          "error":
+            {
+              "code": 3,
+              "message": 'Missing string parameter "config"."name"',
+              "messageKey": "error.missing_parameter",
+              "messageParameters":
+                { "path": '"config"."name"', "type": "string" },
+            },
+        }
+      properties:
+        error:
+          $ref: "#/components/schemas/ApiError"
+      required:
+        - error
     YouTubeChannelStatisticsWidgetConfiguration:
       allOf:
         - $ref: "#/components/schemas/BaseWidgetConfiguration"
@@ -600,63 +623,18 @@ components:
           required:
             - parameters
   responses:
-    badRequest:
-      description: Returned if the requested was malformed
+    ErrorResponse:
+      description: |
+        Error HTTP response.
+
+        Status codes:
+        - 400: Returned if the requested was malformed
+        - 401: The user is not logged in
+        - 404: Returned if the requested resource doesn't exist, or the user does not have access 
       content:
         application/json:
           schema:
-            type: object
-            example:
-              {
-                "error":
-                  {
-                    "code": 3,
-                    "message": 'Missing string parameter "config"."name"',
-                    "messageKey": "error.missing_parameter",
-                    "messageParameters":
-                      { "path": '"config"."name"', "type": "string" },
-                  },
-              }
-            properties:
-              error:
-                $ref: "#/components/schemas/Error"
-    notFound:
-      description: Returned if the requested resource doesn't exist, or the user does not have access
-      content:
-        application/json:
-          schema:
-            type: object
-            example:
-              {
-                "error":
-                  {
-                    "code": 2,
-                    "message": "Not found: /widgets/42",
-                    "messageKey": "error.not_found",
-                    "messageParameters": { "url": "/widgets/42" },
-                  },
-              }
-            properties:
-              error:
-                $ref: "#/components/schemas/Error"
-    notLoggedIn:
-      description: The user is not logged in
-      content:
-        application/json:
-          schema:
-            type: object
-            example:
-              {
-                "error":
-                  {
-                    "code": 1,
-                    "message": "Not logged in",
-                    "messageKey": "error.not_logged",
-                  },
-              }
-            properties:
-              error:
-                $ref: "#/components/schemas/Error"
+            $ref: "#/components/schemas/WrappedApiError"
   parameters:
     optionalUserId:
       name: userId
@@ -736,10 +714,8 @@ paths:
             text/plain:
               schema:
                 type: string
-        "400":
-          $ref: "#/components/responses/badRequest"
-        "401":
-          $ref: "#/components/responses/notLoggedIn"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
   /users-oauth2:
     get:
       operationId: create_user_oauth2
@@ -753,10 +729,8 @@ paths:
             Set-Cookie:
               schema:
                 type: string
-        "400":
-          $ref: "#/components/responses/badRequest"
-        "401":
-          $ref: "#/components/responses/notLoggedIn"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
   /users:
     post:
       operationId: create_user
@@ -802,12 +776,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserInstance"
-        "400":
-          $ref: "#/components/responses/badRequest"
-        "401":
-          $ref: "#/components/responses/notLoggedIn"
-        "404":
-          $ref: "#/components/responses/notFound"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
   /services:
     get:
       operationId: list_services
@@ -838,10 +808,8 @@ paths:
                 required:
                   - available
                   - instances
-        "401":
-          $ref: "#/components/responses/notLoggedIn"
-        "404":
-          $ref: "#/components/responses/notFound"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
     post:
       operationId: create_service
       summary: Create a new service instance
@@ -881,12 +849,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ServiceInstance"
-        "400":
-          $ref: "#/components/responses/badRequest"
-        "401":
-          $ref: "#/components/responses/notLoggedIn"
-        "404":
-          $ref: "#/components/responses/notFound"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
     delete:
       operationId: delete_services
       summary: Removes all registered service instances of the user
@@ -900,9 +864,9 @@ paths:
         "204":
           description: All services were deleted successfully
         "401":
-          $ref: "#/components/responses/notLoggedIn"
+          $ref: "#/components/responses/ErrorResponse"
         "404":
-          $ref: "#/components/responses/notFound"
+          $ref: "#/components/responses/ErrorResponse"
   /services/{serviceId}:
     delete:
       operationId: delete_service
@@ -920,10 +884,8 @@ paths:
       responses:
         "204":
           description: All services of type or service was deleted successfully
-        "401":
-          $ref: "#/components/responses/notLoggedIn"
-        "404":
-          $ref: "#/components/responses/notFound"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
   /widgets:
     get:
       operationId: list_widgets
@@ -943,10 +905,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/WidgetInstance"
-        "401":
-          $ref: "#/components/responses/notLoggedIn"
-        "404":
-          $ref: "#/components/responses/notFound"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
     post:
       operationId: create_widget
       summary: Create a new widget instance in the given user's board
@@ -976,12 +936,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WidgetInstance"
-        "400":
-          $ref: "#/components/responses/badRequest"
-        "401":
-          $ref: "#/components/responses/notLoggedIn"
-        "404":
-          $ref: "#/components/responses/notFound"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
     delete:
       operationId: delete_widgets
       summary: Clear all the widgets in the user's board
@@ -994,10 +950,8 @@ paths:
       responses:
         "204":
           description: Board was cleared successfully
-        "401":
-          $ref: "#/components/responses/notLoggedIn"
-        "404":
-          $ref: "#/components/responses/notFound"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
   /widgets/{widgetId}:
     get:
       operationId: get_widget
@@ -1015,10 +969,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WidgetInstance"
-        "401":
-          $ref: "#/components/responses/notLoggedIn"
-        "404":
-          $ref: "#/components/responses/notFound"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
     patch:
       operationId: update_widget
       summary: Update an existing widget's configuration
@@ -1041,12 +993,8 @@ paths:
       responses:
         "204":
           description: The widget was updated successfully
-        "400":
-          $ref: "#/components/responses/badRequest"
-        "401":
-          $ref: "#/components/responses/notLoggedIn"
-        "404":
-          $ref: "#/components/responses/notFound"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
     delete:
       operationId: delete_widget
       summary: Delete a widget
@@ -1059,10 +1007,8 @@ paths:
       responses:
         "204":
           description: The widget was deleted successfully
-        "401":
-          $ref: "#/components/responses/notLoggedIn"
-        "404":
-          $ref: "#/components/responses/notFound"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
   /ws/events:
     get:
       operationId: events_websocket
@@ -1092,7 +1038,5 @@ paths:
       responses:
         "101":
           description: Switching protocols (to WebSocket protocol)
-        "401":
-          $ref: "#/components/responses/notLoggedIn"
-        "404":
-          $ref: "#/components/responses/notFound"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"

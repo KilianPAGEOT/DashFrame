@@ -3,7 +3,7 @@ package com.github.dashframe.models.json;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.github.dashframe.models.json.Error;
+import com.github.dashframe.models.json.ApiError;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -19,7 +19,7 @@ import javax.validation.constraints.*;
 @JsonTypeName("WidgetErrorEvent_allOf_data_widgets")
 @Generated(
     value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2022-11-08T16:03:51.937911500+01:00[Europe/Paris]"
+    date = "2022-11-09T11:51:12.913786908+01:00[Europe/Paris]"
 )
 public class WidgetErrorEventAllOfDataWidgets {
 
@@ -27,7 +27,7 @@ public class WidgetErrorEventAllOfDataWidgets {
     private Integer id;
 
     @JsonProperty("error")
-    private Error error;
+    private ApiError error;
 
     public WidgetErrorEventAllOfDataWidgets id(Integer id) {
         this.id = id;
@@ -49,7 +49,7 @@ public class WidgetErrorEventAllOfDataWidgets {
         this.id = id;
     }
 
-    public WidgetErrorEventAllOfDataWidgets error(Error error) {
+    public WidgetErrorEventAllOfDataWidgets error(ApiError error) {
         this.error = error;
         return this;
     }
@@ -60,11 +60,11 @@ public class WidgetErrorEventAllOfDataWidgets {
      */
     @NotNull
     @Valid
-    public Error getError() {
+    public ApiError getError() {
         return error;
     }
 
-    public void setError(Error error) {
+    public void setError(ApiError error) {
         this.error = error;
     }
 
