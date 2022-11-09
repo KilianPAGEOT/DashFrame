@@ -740,6 +740,23 @@ paths:
           $ref: "#/components/responses/badRequest"
         "401":
           $ref: "#/components/responses/notLoggedIn"
+  /users-oauth2:
+    get:
+      operationId: create_user_oauth2
+      summary: Create user with OAuth login and add OAuth token to cookie
+      tags:
+        - authentication
+      responses:
+        "200":
+          description: Return cookie with Oauth2 token
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+        "400":
+          $ref: "#/components/responses/badRequest"
+        "401":
+          $ref: "#/components/responses/notLoggedIn"
   /users:
     post:
       operationId: create_user
