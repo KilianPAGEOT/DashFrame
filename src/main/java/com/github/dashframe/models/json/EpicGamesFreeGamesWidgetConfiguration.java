@@ -21,7 +21,7 @@ import javax.validation.constraints.*;
     value = "org.openapitools.codegen.languages.SpringCodegen",
     date = "2022-11-08T16:03:51.937911500+01:00[Europe/Paris]"
 )
-public class EpicGamesFreeGamesWidgetConfiguration implements WidgetConfiguration {
+public class EpicGamesFreeGamesWidgetConfiguration extends WidgetConfiguration {
 
     @JsonProperty("type")
     private String type;

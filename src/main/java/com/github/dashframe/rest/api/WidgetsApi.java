@@ -48,7 +48,7 @@ public interface WidgetsApi {
     )
     default ResponseEntity<WidgetInstance> createWidget(
         @Valid @RequestBody(required = false) CreateWidgetRequest createWidgetRequest
-    ) {
+    ) throws NoSuchFieldException {
         getRequest()
             .ifPresent(request -> {
                 for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {

@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ServiceDAO extends JpaRepository<Service, Integer> {
     Service findById(int id);
+
 }

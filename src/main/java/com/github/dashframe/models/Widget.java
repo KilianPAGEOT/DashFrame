@@ -1,5 +1,7 @@
 package com.github.dashframe.models;
 
+import com.github.dashframe.models.json.ServiceType;
+
 import java.util.Date;
 import javax.persistence.*;
 
@@ -26,15 +28,21 @@ public class Widget {
     @Column(nullable = false)
     private Date createdAt;
 
+    @Column
+    private String type;
+
+    @Column
+    private int refreshRate;
     public Widget() {}
 
-    public Widget(Integer id, Service service, String name, int position, int column_pos) {
-        this.id = id;
+    public Widget(Service service, String name, int position, int column_pos,String type,int refreshRate) {
         this.service = service;
         this.name = name;
         this.position = position;
         this.column_pos = column_pos;
         this.createdAt = new Date();
+        this.type=type;
+        this.refreshRate=refreshRate;
     }
 
     public Integer getId() {

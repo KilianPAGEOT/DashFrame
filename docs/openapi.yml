@@ -90,6 +90,14 @@ components:
           type: integer
           minimum: 1
           description: Refresh rate of the widget, in seconds
+        columnPos:
+          type: integer
+          minimum: 0
+          description: Column position in front
+        position:
+          type: integer
+          minimum: 0
+          description: Postion in column
       required:
         - type
     ClientInformation:
@@ -461,7 +469,7 @@ components:
         {
           "id": 42,
           "service_id": 1,
-          "order": 3,
+          "position": 3,
           "column_pos": 1,
           "config":
             {
@@ -478,7 +486,7 @@ components:
           type: string
         serviceId:
           $ref: "#/components/schemas/Identifier"
-        order:
+        position:
           type: integer
           description: The ordering of this widget in the column
           minimum: 0
@@ -495,7 +503,7 @@ components:
       required:
         - id
         - service_id
-        - order
+        - position
         - column_pos
     WidgetParameterDescription:
       type: object
