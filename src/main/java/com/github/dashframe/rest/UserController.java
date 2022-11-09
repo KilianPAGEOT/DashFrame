@@ -25,16 +25,41 @@ public class UserController implements UsersApi {
     public ResponseEntity<UserInstance> createUser(
         @Valid @RequestBody(required = false) CreateUserRequest createUserRequest
     ) {
-        User user = userDAO.save(
-            new User(
-                createUserRequest.getName(),
-                createUserRequest.getUsername(),
-                createUserRequest.getHashPassword(),
-                createUserRequest.getOauthToken(),
-                false
-            )
-        );
+        User exitUser = userDAO.findByUsername(createUserRequest.getUsername());
+        if (exitUser == null) {
+            User user = userDAO.save(
+                new User(
+                    createUserRequest.getName(),
+                    createUserRequest.getUsername(),
+                    createUserRequest.getHashPassword(),
+                    createUserRequest.getOauthToken(),
+                    false
+                )
+            );
+            return ResponseEntity.ok(new UserInstance().id(user.getId()).name(user.getName()).isAdmin(user.isAdmin()));
+        } else return ResponseEntity.badRequest().body(null);
+    }
 
-        return ResponseEntity.ok(new UserInstance().id(user.getId()).name(user.getName()).isAdmin(user.isAdmin()));
+    public void processOAuthPostLogin(
+        String name,
+        String username,
+        String hashPassword,
+        String oauthToken,
+        boolean isAdmin
+    ) {
+        User existUser = userDAO.findByUsername(username);
+
+        if (existUser == null) {
+            User newUser = new User();
+            newUser.setName(name);
+            newUser.setUsername(username);
+            newUser.setHashPassword(hashPassword);
+            newUser.setToken(oauthToken);
+            newUser.setAdmin(isAdmin);
+            userDAO.save(newUser);
+        } else {
+            existUser.setToken(oauthToken);
+            userDAO.save(existUser);
+        }
     }
 }

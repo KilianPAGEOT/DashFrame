@@ -1,32 +1,20 @@
 package com.github.dashframe.config;
 
-import java.util.List;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -34,38 +22,44 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 @Configuration
 public class SecurityConfig {
 
- @Bean
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
             // Disable Cross-Site Request Forgery (CSRF)
             .csrf(AbstractHttpConfigurer::disable)
             .cors()
-            .configurationSource(corsConfigurationSource()).and()
+            .configurationSource(corsConfigurationSource())
+            .and()
             // The user should be authenticated for any request ...
-            .authorizeRequests(auth ->
-                    {
-                            auth
-                                // ... except these
-                                .mvcMatchers(WebMvcConfig.API_BASE + "/users*")
-                                .permitAll()
-                                .anyRequest()
-                                .authenticated();
-                    }
-            ).oauth2Login().defaultSuccessUrl("http://localhost:8080/api/v1/users-oauth2", true).and()
-
+            .authorizeRequests(auth -> {
+                auth
+                    // ... except these
+                    .mvcMatchers(WebMvcConfig.API_BASE + "/users")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated();
+            })
+            .oauth2Login()
+            .defaultSuccessUrl("http://localhost:8080/api/v1/users-oauth2", true)
+            .and()
             // OAUTH2
             .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
             //
             // Spring Security will never create an HttpSession and use it to obtain the Security Context
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            // .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             // Spring Security’s HTTP Basic Authentication support is enabled by default
             // However, as soon as any servlet-based configuration is provided, HTTP Basic must be explicitly provided
             .httpBasic(Customizer.withDefaults())
             .build();
     }
+
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
