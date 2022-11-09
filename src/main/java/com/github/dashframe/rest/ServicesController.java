@@ -92,4 +92,41 @@ public class ServicesController implements ServicesApi {
         }
         else return ResponseEntity.badRequest().body(null);
     }
+    @RequestMapping(
+            method = RequestMethod.DELETE,
+            value = "/services",
+            produces = { "application/json" },
+            consumes = { "application/json" }
+    )public ResponseEntity<? extends Object> DeleteServices(
+            @Valid @RequestParam(required = false)  int userId
+    ){
+        User user = userDao.findById(userId);
+        ArrayList<Service> services = serviceDAO.findByUser(user);
+        System.out.println(services);
+        if(services.size()!=0){
+            ArrayList<ServiceInstance> serviceInstance = new ArrayList<>();
+            for (Service service:services
+            ) {
+                serviceDAO.delete(service);
+            }
+            return ResponseEntity.noContent().build();
+
+        }
+        else return ResponseEntity.badRequest().body(null);
+    }
+    @RequestMapping(
+            method = RequestMethod.DELETE,
+            value = "/services/:{serviceId}",
+            produces = { "application/json" },
+            consumes = { "application/json" }
+    )public ResponseEntity<? extends Object> DeleteService(
+            @Valid @PathVariable(required = false)  int serviceId
+    ){
+        Service services = serviceDAO.findById(serviceId);
+        if(services!=null){
+            serviceDAO.delete(services);
+            return ResponseEntity.noContent().build();
+        }
+        else return ResponseEntity.badRequest().body(null);
+    }
 }
