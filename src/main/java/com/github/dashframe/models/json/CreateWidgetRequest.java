@@ -1,12 +1,8 @@
 package com.github.dashframe.models.json;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.github.dashframe.models.json.WidgetConfiguration;
-import java.net.URI;
-import java.time.OffsetDateTime;
-import java.util.*;
+
 import java.util.Objects;
 import javax.annotation.Generated;
 import javax.validation.Valid;
@@ -28,6 +24,12 @@ public class CreateWidgetRequest {
 
     @JsonProperty("serviceId")
     private Integer serviceId;
+
+    @JsonProperty("position")
+    private Integer position;
+
+    @JsonProperty("columnPos")
+    private Integer columnPos;
 
     @JsonProperty("config")
     private WidgetConfiguration config;
@@ -89,6 +91,15 @@ public class CreateWidgetRequest {
     public void setConfig(WidgetConfiguration config) {
         this.config = config;
     }
+    @NotNull
+    @Min(0)
+    public int getPosition(){return position;}
+
+    public void setPosition(int position){this.position=position;}
+    @NotNull
+    @Min(0)
+    public int getColumnPos(){return columnPos;}
+    public void setColumnPos(int columnPos){this.columnPos=columnPos;}
 
     @Override
     public boolean equals(Object o) {

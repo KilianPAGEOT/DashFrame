@@ -22,74 +22,10 @@ import javax.validation.constraints.*;
     value = "org.openapitools.codegen.languages.SpringCodegen",
     date = "2022-11-08T16:03:51.937911500+01:00[Europe/Paris]"
 )
-public class SteamFriendsListWidgetConfiguration implements WidgetConfiguration {
-
-    @JsonProperty("type")
-    private String type;
-
-    @JsonProperty("name")
-    private String name;
-
-    @JsonProperty("refreshRate")
-    private Integer refreshRate;
+public class SteamFriendsListWidgetConfiguration extends WidgetConfiguration {
 
     @JsonProperty("parameters")
     private EpicGamesFriendsListWidgetConfigurationAllOfParameters parameters;
-
-    public SteamFriendsListWidgetConfiguration type(String type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
-     * The type of widget, one of the values of WidgetType
-     * @return type
-     */
-    @NotNull
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public SteamFriendsListWidgetConfiguration name(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Optional user-defined name for the widget
-     * @return name
-     */
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public SteamFriendsListWidgetConfiguration refreshRate(Integer refreshRate) {
-        this.refreshRate = refreshRate;
-        return this;
-    }
-
-    /**
-     * Refresh rate of the widget, in seconds
-     * minimum: 1
-     * @return refreshRate
-     */
-    @Min(1)
-    public Integer getRefreshRate() {
-        return refreshRate;
-    }
-
-    public void setRefreshRate(Integer refreshRate) {
-        this.refreshRate = refreshRate;
-    }
 
     public SteamFriendsListWidgetConfiguration parameters(
         EpicGamesFriendsListWidgetConfigurationAllOfParameters parameters
@@ -122,25 +58,23 @@ public class SteamFriendsListWidgetConfiguration implements WidgetConfiguration 
         }
         SteamFriendsListWidgetConfiguration steamFriendsListWidgetConfiguration = (SteamFriendsListWidgetConfiguration) o;
         return (
-            Objects.equals(this.type, steamFriendsListWidgetConfiguration.type) &&
-            Objects.equals(this.name, steamFriendsListWidgetConfiguration.name) &&
-            Objects.equals(this.refreshRate, steamFriendsListWidgetConfiguration.refreshRate) &&
+            super.equals(o) &&
             Objects.equals(this.parameters, steamFriendsListWidgetConfiguration.parameters)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, name, refreshRate, parameters);
+        return Objects.hash(getType(), getName(), getRefreshRate(), parameters);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class SteamFriendsListWidgetConfiguration {\n");
-        sb.append("    type: ").append(toIndentedString(type)).append("\n");
-        sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    refreshRate: ").append(toIndentedString(refreshRate)).append("\n");
+        sb.append("    type: ").append(toIndentedString(getType())).append("\n");
+        sb.append("    name: ").append(toIndentedString(getName())).append("\n");
+        sb.append("    refreshRate: ").append(toIndentedString(getRefreshRate())).append("\n");
         sb.append("    parameters: ").append(toIndentedString(parameters)).append("\n");
         sb.append("}");
         return sb.toString();

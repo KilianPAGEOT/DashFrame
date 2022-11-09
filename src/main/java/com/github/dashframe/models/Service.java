@@ -1,5 +1,7 @@
 package com.github.dashframe.models;
 
+import com.github.dashframe.models.json.ServiceType;
+
 import java.util.Date;
 import javax.persistence.*;
 
@@ -15,7 +17,7 @@ public class Service {
     private User user;
 
     @Column
-    private String type;
+    private ServiceType type;
 
     @Column(nullable = false)
     private String username;
@@ -23,7 +25,7 @@ public class Service {
     @Column(nullable = false)
     private String token;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Date expirationDate;
 
     @Column(nullable = false)
@@ -31,12 +33,12 @@ public class Service {
 
     public Service() {}
 
-    public Service(Integer id, User user, String type, String token, Date expirationDate) {
-        this.id = id;
+    public Service(User user, ServiceType type, String token,String username) {
         this.user = user;
         this.type = type;
         this.token = token;
-        this.expirationDate = expirationDate;
+        this.username = username;
+        this.expirationDate = null;
         this.createdAt = new Date();
     }
 
@@ -56,11 +58,11 @@ public class Service {
         this.user = user;
     }
 
-    public String getType() {
+    public ServiceType getType() {
         return type;
     }
 
-    public void setType(String name) {
+    public void setType(ServiceType name) {
         this.type = name;
     }
 
