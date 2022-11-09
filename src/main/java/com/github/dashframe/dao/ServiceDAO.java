@@ -11,4 +11,5 @@ import java.util.ArrayList;
 public interface ServiceDAO extends JpaRepository<Service, Integer> {
     Service findById(int id);
     ArrayList<Service> findByUser(User user);
+
 }

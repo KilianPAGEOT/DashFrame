@@ -11,7 +11,7 @@ public class WidgetParameter {
     private Integer id;
 
     @JoinColumn(nullable = false)
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Widget widget;
 
     @Column(nullable = false)
