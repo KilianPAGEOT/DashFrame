@@ -2,7 +2,6 @@ package com.github.dashframe.models.json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-
 import java.util.Objects;
 import javax.annotation.Generated;
 import javax.validation.constraints.*;
@@ -11,30 +10,31 @@ import javax.validation.constraints.*;
  * BaseWidgetConfiguration
  */
 @JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = EpicGamesFreeGamesWidgetConfiguration.class, name = "epic_games/free_games"),
-                @JsonSubTypes.Type(value = EpicGamesFriendsListWidgetConfiguration.class, name = "epic_games/friends_list"),
-                @JsonSubTypes.Type(value = RssFeedWidgetConfiguration.class, name = "rss/feed"),
-                @JsonSubTypes.Type(value = SteamFriendsListWidgetConfiguration.class, name = "steam/friends_list"),
-                @JsonSubTypes.Type(value = SteamGameNewsWidgetConfiguration.class, name = "steam/game_news"),
-                @JsonSubTypes.Type(value = SteamGamePopulationWidgetConfiguration.class, name = "steam/game_population"),
-                @JsonSubTypes.Type(value = TwitchFollowedChannelsWidgetConfiguration.class, name = "twitch/followed_channels"),
-                @JsonSubTypes.Type(value = WeatherTimeWidgetConfiguration.class, name = "weather_time/default"),
-                @JsonSubTypes.Type(
-                        value = YouTubeChannelStatisticsWidgetConfiguration.class,
-                        name = "youtube/channel_statistics"
-                ),
-                @JsonSubTypes.Type(
-                        value = YouTubeSubscribedChannelsWidgetConfiguration.class,
-                        name = "youtube/subsribed_channels"
-                ),
-                @JsonSubTypes.Type(value = YouTubeVideoStatisticsWidgetConfiguration.class, name = "youtube/video_statistics"),
-        })
+    {
+        @JsonSubTypes.Type(value = EpicGamesFreeGamesWidgetConfiguration.class, name = "epic_games/free_games"),
+        @JsonSubTypes.Type(value = EpicGamesFriendsListWidgetConfiguration.class, name = "epic_games/friends_list"),
+        @JsonSubTypes.Type(value = RssFeedWidgetConfiguration.class, name = "rss/feed"),
+        @JsonSubTypes.Type(value = SteamFriendsListWidgetConfiguration.class, name = "steam/friends_list"),
+        @JsonSubTypes.Type(value = SteamGameNewsWidgetConfiguration.class, name = "steam/game_news"),
+        @JsonSubTypes.Type(value = SteamGamePopulationWidgetConfiguration.class, name = "steam/game_population"),
+        @JsonSubTypes.Type(value = TwitchFollowedChannelsWidgetConfiguration.class, name = "twitch/followed_channels"),
+        @JsonSubTypes.Type(value = WeatherTimeWidgetConfiguration.class, name = "weather_time/default"),
+        @JsonSubTypes.Type(
+            value = YouTubeChannelStatisticsWidgetConfiguration.class,
+            name = "youtube/channel_statistics"
+        ),
+        @JsonSubTypes.Type(
+            value = YouTubeSubscribedChannelsWidgetConfiguration.class,
+            name = "youtube/subsribed_channels"
+        ),
+        @JsonSubTypes.Type(value = YouTubeVideoStatisticsWidgetConfiguration.class, name = "youtube/video_statistics"),
+    }
+)
 @Generated(
     value = "org.openapitools.codegen.languages.SpringCodegen",
     date = "2022-11-08T16:03:51.937911500+01:00[Europe/Paris]"
 )
-public class WidgetConfiguration<C>{
+public class WidgetConfiguration<C> {
 
     @JsonProperty("type")
     private String type;
@@ -108,13 +108,24 @@ public class WidgetConfiguration<C>{
 
     @NotNull
     @Min(0)
-    public int getPosition(){return position;}
+    public int getPosition() {
+        return position;
+    }
 
-    public void setPosition(int position){this.position=position;}
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
     @NotNull
     @Min(0)
-    public int getColumnPos(){return columnPos;}
-    public void setColumnPos(int columnPos){this.columnPos=columnPos;}
+    public int getColumnPos() {
+        return columnPos;
+    }
+
+    public void setColumnPos(int columnPos) {
+        this.columnPos = columnPos;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

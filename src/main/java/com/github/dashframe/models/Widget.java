@@ -1,7 +1,6 @@
 package com.github.dashframe.models;
 
 import com.github.dashframe.models.json.ServiceType;
-
 import java.util.Date;
 import javax.persistence.*;
 
@@ -13,7 +12,7 @@ public class Widget {
     private Integer id;
 
     @JoinColumn(nullable = false)
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne //(cascade = CascadeType.ALL)
     private Service service;
 
     @Column
@@ -33,16 +32,17 @@ public class Widget {
 
     @Column
     private int refreshRate;
+
     public Widget() {}
 
-    public Widget(Service service, String name, int position, int column_pos,String type,int refreshRate) {
+    public Widget(Service service, String name, int position, int column_pos, String type, int refreshRate) {
         this.service = service;
         this.name = name;
         this.position = position;
         this.column_pos = column_pos;
         this.createdAt = new Date();
-        this.type=type;
-        this.refreshRate=refreshRate;
+        this.type = type;
+        this.refreshRate = refreshRate;
     }
 
     public Integer getId() {

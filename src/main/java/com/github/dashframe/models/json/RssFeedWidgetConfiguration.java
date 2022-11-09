@@ -55,10 +55,7 @@ public class RssFeedWidgetConfiguration extends WidgetConfiguration {
             return false;
         }
         RssFeedWidgetConfiguration rssFeedWidgetConfiguration = (RssFeedWidgetConfiguration) o;
-        return (
-            super.equals(o)&&
-            Objects.equals(this.parameters, rssFeedWidgetConfiguration.parameters)
-        );
+        return (super.equals(o) && Objects.equals(this.parameters, rssFeedWidgetConfiguration.parameters));
     }
 
     @Override

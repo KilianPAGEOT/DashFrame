@@ -1,7 +1,6 @@
 package com.github.dashframe.models;
 
 import com.github.dashframe.models.json.ServiceType;
-
 import java.util.Date;
 import javax.persistence.*;
 
@@ -13,7 +12,7 @@ public class Service {
     private Integer id;
 
     @JoinColumn(nullable = false)
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne //(cascade = CascadeType.ALL)
     private User user;
 
     @Column
@@ -33,7 +32,7 @@ public class Service {
 
     public Service() {}
 
-    public Service(User user, ServiceType type, String token,String username) {
+    public Service(User user, ServiceType type, String token, String username) {
         this.user = user;
         this.type = type;
         this.token = token;

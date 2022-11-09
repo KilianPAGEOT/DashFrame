@@ -1,11 +1,10 @@
 package com.github.dashframe.models;
 
+import com.github.dashframe.models.json.ServiceType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.*;
-
-import com.github.dashframe.models.json.ServiceType;
 import org.hibernate.annotations.Comment;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -57,10 +57,7 @@ public class SteamFriendsListWidgetConfiguration extends WidgetConfiguration {
             return false;
         }
         SteamFriendsListWidgetConfiguration steamFriendsListWidgetConfiguration = (SteamFriendsListWidgetConfiguration) o;
-        return (
-            super.equals(o) &&
-            Objects.equals(this.parameters, steamFriendsListWidgetConfiguration.parameters)
-        );
+        return (super.equals(o) && Objects.equals(this.parameters, steamFriendsListWidgetConfiguration.parameters));
     }
 
     @Override

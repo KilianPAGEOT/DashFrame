@@ -1,7 +1,6 @@
 package com.github.dashframe.models.json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import javax.annotation.Generated;
