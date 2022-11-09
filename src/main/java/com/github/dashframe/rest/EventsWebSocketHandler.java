@@ -1,6 +1,8 @@
 package com.github.dashframe.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.dashframe.dao.UserDAO;
+import com.github.dashframe.models.User;
 import com.github.dashframe.models.json.Event;
 import com.github.dashframe.service.event.EventHandler;
 import com.github.dashframe.service.event.EventListener;
@@ -11,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -43,6 +46,9 @@ public class EventsWebSocketHandler extends TextWebSocketHandler {
     @Autowired
     private EventHandler eventHandler;
 
+    @Autowired
+    private UserDAO userDAO;
+
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
         this.logger.info("Connection established from {} with session {}", session.getRemoteAddress(), session);
@@ -50,19 +56,21 @@ public class EventsWebSocketHandler extends TextWebSocketHandler {
         EventListener listener = event -> this.sendEvent(session, event);
         this.sessions.put(session, listener);
 
-        int userId = getUserId(session);
+        var user = this.findSessionUser(session);
 
-        this.eventHandler.addListener(userId, listener);
+        if (user != null) this.eventHandler.addListener(user.getId(), listener);
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         this.logger.info("Connection closed for session {}, reason: {}", session, status.getReason());
 
-        int userId = getUserId(session);
-
         EventListener listener = this.sessions.remove(session);
-        if (listener != null) this.eventHandler.removeListener(userId, listener);
+        if (listener != null) {
+            var user = this.findSessionUser(session);
+
+            if (user != null) this.eventHandler.removeListener(user.getId(), listener);
+        }
     }
 
     @Override
@@ -102,8 +110,14 @@ public class EventsWebSocketHandler extends TextWebSocketHandler {
         }
     }
 
-    private int getUserId(WebSocketSession session) {
-        // TODO find a way to get the user id from a session
-        return 0;
+    /**
+     * Attempts to retrieve the current logged-in user from the given WebSocket session.
+     */
+    @Nullable
+    private User findSessionUser(WebSocketSession session) {
+        var principal = session.getPrincipal();
+        var username = principal != null ? principal.getName() : null;
+
+        return this.userDAO.findByUsername(username);
     }
 }

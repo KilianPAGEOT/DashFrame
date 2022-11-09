@@ -2,14 +2,12 @@ package com.github.dashframe.rest;
 
 import com.github.dashframe.config.MyUserDetailsService;
 import com.github.dashframe.config.TokenService;
-import com.github.dashframe.models.User;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -86,7 +84,7 @@ public class AuthenticationController {
                 null,
                 userToken,
                 false
-            ); // create user in db with OAuth2 informations
+            ); // create user in db with OAuth2 information
             this.cookie = new Cookie("token", userToken); // create cookie with token
             this.cookie.setPath("/");
             this.cookie.setMaxAge(8 * 60 * 60);

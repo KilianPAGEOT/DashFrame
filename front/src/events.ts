@@ -14,7 +14,16 @@ interface UnknownEvent {
 
 export function init() {
   const path = BASE_PATH.replace(/^(http|https)/, "ws");
-  const eventsWs = new WebSocket(`${path}/ws/events`);
+  let eventsWs: WebSocket;
+
+  try {
+    eventsWs = new WebSocket(`${path}/ws/events`);
+  } catch (error) {
+    console.error("Failed to open events WebSocket", error);
+    return;
+  }
+
+  console.debug("Sucessfully connected to events WebSocket");
 
   eventsWs.onerror = (event) => console.error("Events WS errored: ", event);
 
