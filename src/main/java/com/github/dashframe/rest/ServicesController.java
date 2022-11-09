@@ -10,7 +10,9 @@ import com.github.dashframe.models.json.ServiceInstance;
 import com.github.dashframe.models.json.UserInstance;
 import com.github.dashframe.rest.api.ServicesApi;
 
+import java.lang.reflect.Array;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -59,7 +61,34 @@ public class ServicesController implements ServicesApi {
                             createServiceRequest.getUsername()
                     )
             );
-            return ResponseEntity.ok(new ServiceInstance().id(service.getId()).type(service.getType()).username(service.getUser().getUsername()).token(service.getToken()));
+            return ResponseEntity.ok(new ServiceInstance().id(service.getId())
+                    .type(service.getType())
+                    .username(service.getUser().getUsername())
+                    .token(service.getToken())
+                    .createdAt(service.getCreatedAt()));
+        }
+        else return ResponseEntity.badRequest().body(null);
+    }
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/services",
+            produces = { "application/json" },
+            consumes = { "application/json" }
+    )public ResponseEntity<ArrayList<ServiceInstance>> getService(
+            @Valid @RequestParam(required = false)  int userId
+    ){
+        System.out.println(userId);
+        User user = userDao.findById(userId);
+        ArrayList<Service> services = serviceDAO.findByUser(user);
+        System.out.println(services);
+        if(services.size()!=0){
+            ArrayList<ServiceInstance> serviceInstance = new ArrayList<>();
+            for (Service service:services
+            ) {
+                serviceInstance.add(new ServiceInstance().id(service.getId()).type(service.getType()).username(service.getUser().getUsername()).token(service.getToken()));
+            }
+            return ResponseEntity.ok(serviceInstance);
+
         }
         else return ResponseEntity.badRequest().body(null);
     }

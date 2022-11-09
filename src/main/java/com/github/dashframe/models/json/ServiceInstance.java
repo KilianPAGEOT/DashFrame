@@ -37,7 +37,7 @@ public class ServiceInstance {
 
     @JsonProperty("createdAt")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private OffsetDateTime createdAt;
+    private Date createdAt;
 
     public ServiceInstance id(Integer id) {
         this.id = id;
@@ -114,7 +114,7 @@ public class ServiceInstance {
         this.token = token;
     }
 
-    public ServiceInstance createdAt(OffsetDateTime createdAt) {
+    public ServiceInstance createdAt(Date createdAt) {
         this.createdAt = createdAt;
         return this;
     }
@@ -124,11 +124,11 @@ public class ServiceInstance {
      * @return createdAt
      */
     @Valid
-    public OffsetDateTime getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(OffsetDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
