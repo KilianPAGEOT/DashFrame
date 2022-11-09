@@ -97,4 +97,20 @@ public class Widget {
     public void onCreate() {
         this.createdAt = new Date();
     }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setRefreshRate(int refreshRate) {
+        this.refreshRate = refreshRate;
+    }
+
+    public int getRefreshRate() {
+        return refreshRate;
+    }
 }
