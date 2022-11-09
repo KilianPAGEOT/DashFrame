@@ -73,11 +73,10 @@ public class ServicesController implements ServicesApi {
             method = RequestMethod.GET,
             value = "/services",
             produces = { "application/json" },
-            consumes = { "application/json" }
-    )public ResponseEntity<ArrayList<ServiceInstance>> getService(
+            consumes = { "application/*" }
+    )public ResponseEntity<ArrayList<ServiceInstance>> getServices(
             @Valid @RequestParam(required = false)  int userId
     ){
-        System.out.println(userId);
         User user = userDao.findById(userId);
         ArrayList<Service> services = serviceDAO.findByUser(user);
         System.out.println(services);
@@ -96,7 +95,7 @@ public class ServicesController implements ServicesApi {
             method = RequestMethod.DELETE,
             value = "/services",
             produces = { "application/json" },
-            consumes = { "application/json" }
+            consumes = { "application/*" }
     )public ResponseEntity<? extends Object> DeleteServices(
             @Valid @RequestParam(required = false)  int userId
     ){
@@ -118,7 +117,7 @@ public class ServicesController implements ServicesApi {
             method = RequestMethod.DELETE,
             value = "/services/:{serviceId}",
             produces = { "application/json" },
-            consumes = { "application/json" }
+            consumes = { "application/*" }
     )public ResponseEntity<? extends Object> DeleteService(
             @Valid @PathVariable(required = false)  int serviceId
     ){

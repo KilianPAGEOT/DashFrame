@@ -28,8 +28,8 @@ public class WidgetInstance {
     @JsonProperty("serviceId")
     private Integer serviceId;
 
-    @JsonProperty("order")
-    private Integer order;
+    @JsonProperty("position")
+    private int position;
 
     @JsonProperty("columnPos")
     private Integer columnPos;
@@ -98,24 +98,24 @@ public class WidgetInstance {
         this.serviceId = serviceId;
     }
 
-    public WidgetInstance order(Integer order) {
-        this.order = order;
+    public WidgetInstance position(int position) {
+        this.position = position;
         return this;
     }
 
     /**
-     * The ordering of this widget in the column
+     * The position of this widget in the column
      * minimum: 0
-     * @return order
+     * @return position
      */
     @NotNull
     @Min(0)
-    public Integer getOrder() {
-        return order;
+    public int getPosition() {
+        return position;
     }
 
-    public void setOrder(Integer order) {
-        this.order = order;
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     public WidgetInstance columnPos(Integer columnPos) {
@@ -186,7 +186,7 @@ public class WidgetInstance {
             Objects.equals(this.id, widgetInstance.id) &&
             Objects.equals(this.name, widgetInstance.name) &&
             Objects.equals(this.serviceId, widgetInstance.serviceId) &&
-            Objects.equals(this.order, widgetInstance.order) &&
+            Objects.equals(this.position, widgetInstance.position) &&
             Objects.equals(this.columnPos, widgetInstance.columnPos) &&
             Objects.equals(this.config, widgetInstance.config) &&
             Objects.equals(this.createdAt, widgetInstance.createdAt)
@@ -195,7 +195,7 @@ public class WidgetInstance {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, serviceId, order, columnPos, config, createdAt);
+        return Objects.hash(id, name, serviceId, position, columnPos, config, createdAt);
     }
 
     @Override
@@ -205,7 +205,7 @@ public class WidgetInstance {
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    serviceId: ").append(toIndentedString(serviceId)).append("\n");
-        sb.append("    order: ").append(toIndentedString(order)).append("\n");
+        sb.append("    position: ").append(toIndentedString(position)).append("\n");
         sb.append("    columnPos: ").append(toIndentedString(columnPos)).append("\n");
         sb.append("    config: ").append(toIndentedString(config)).append("\n");
         sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
