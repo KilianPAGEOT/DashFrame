@@ -58,8 +58,7 @@ public class TwitchFollowedChannelsWidgetConfiguration extends WidgetConfigurati
         }
         TwitchFollowedChannelsWidgetConfiguration twitchFollowedChannelsWidgetConfiguration = (TwitchFollowedChannelsWidgetConfiguration) o;
         return (
-            super.equals(o) &&
-            Objects.equals(this.parameters, twitchFollowedChannelsWidgetConfiguration.parameters)
+            super.equals(o) && Objects.equals(this.parameters, twitchFollowedChannelsWidgetConfiguration.parameters)
         );
     }
 

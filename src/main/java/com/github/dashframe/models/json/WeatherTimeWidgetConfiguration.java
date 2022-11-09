@@ -60,9 +60,7 @@ public class WeatherTimeWidgetConfiguration extends WidgetConfiguration<WeatherT
             return false;
         }
         WeatherTimeWidgetConfiguration weatherTimeWidgetConfiguration = (WeatherTimeWidgetConfiguration) o;
-        return (super.equals(o) &&
-            Objects.equals(this.parameters, weatherTimeWidgetConfiguration.parameters)
-        );
+        return (super.equals(o) && Objects.equals(this.parameters, weatherTimeWidgetConfiguration.parameters));
     }
 
     @Override

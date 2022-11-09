@@ -57,10 +57,7 @@ public class SteamGamePopulationWidgetConfiguration extends WidgetConfiguration 
             return false;
         }
         SteamGamePopulationWidgetConfiguration steamGamePopulationWidgetConfiguration = (SteamGamePopulationWidgetConfiguration) o;
-        return (
-            super.equals(o) &&
-            Objects.equals(this.parameters, steamGamePopulationWidgetConfiguration.parameters)
-        );
+        return (super.equals(o) && Objects.equals(this.parameters, steamGamePopulationWidgetConfiguration.parameters));
     }
 
     @Override

@@ -58,8 +58,7 @@ public class YouTubeSubscribedChannelsWidgetConfiguration extends WidgetConfigur
         }
         YouTubeSubscribedChannelsWidgetConfiguration youTubeSubscribedChannelsWidgetConfiguration = (YouTubeSubscribedChannelsWidgetConfiguration) o;
         return (
-            super.equals(o) &&
-            Objects.equals(this.parameters, youTubeSubscribedChannelsWidgetConfiguration.parameters)
+            super.equals(o) && Objects.equals(this.parameters, youTubeSubscribedChannelsWidgetConfiguration.parameters)
         );
     }
 

@@ -58,8 +58,7 @@ public class YouTubeChannelStatisticsWidgetConfiguration extends WidgetConfigura
         }
         YouTubeChannelStatisticsWidgetConfiguration youTubeChannelStatisticsWidgetConfiguration = (YouTubeChannelStatisticsWidgetConfiguration) o;
         return (
-            super.equals(o)&&
-            Objects.equals(this.parameters, youTubeChannelStatisticsWidgetConfiguration.parameters)
+            super.equals(o) && Objects.equals(this.parameters, youTubeChannelStatisticsWidgetConfiguration.parameters)
         );
     }
 

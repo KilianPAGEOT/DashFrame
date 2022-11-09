@@ -57,10 +57,7 @@ public class EpicGamesFriendsListWidgetConfiguration extends WidgetConfiguration
             return false;
         }
         EpicGamesFriendsListWidgetConfiguration epicGamesFriendsListWidgetConfiguration = (EpicGamesFriendsListWidgetConfiguration) o;
-        return (
-            super.equals(o) &&
-            Objects.equals(this.parameters, epicGamesFriendsListWidgetConfiguration.parameters)
-        );
+        return (super.equals(o) && Objects.equals(this.parameters, epicGamesFriendsListWidgetConfiguration.parameters));
     }
 
     @Override

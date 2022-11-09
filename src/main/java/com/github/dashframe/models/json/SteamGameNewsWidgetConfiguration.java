@@ -55,10 +55,7 @@ public class SteamGameNewsWidgetConfiguration extends WidgetConfiguration {
             return false;
         }
         SteamGameNewsWidgetConfiguration steamGameNewsWidgetConfiguration = (SteamGameNewsWidgetConfiguration) o;
-        return (
-            super.equals(o) &&
-            Objects.equals(this.parameters, steamGameNewsWidgetConfiguration.parameters)
-        );
+        return (super.equals(o) && Objects.equals(this.parameters, steamGameNewsWidgetConfiguration.parameters));
     }
 
     @Override
