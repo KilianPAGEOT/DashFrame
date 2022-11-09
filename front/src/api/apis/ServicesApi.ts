@@ -15,11 +15,9 @@
 import * as runtime from "../runtime";
 import type {
   CreateServiceRequest,
-  CreateToken400Response,
-  CreateToken401Response,
-  CreateUser404Response,
   ListServices200Response,
   ServiceInstance,
+  WrappedApiError,
 } from "../models";
 
 export interface CreateServiceOperationRequest {

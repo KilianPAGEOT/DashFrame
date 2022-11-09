@@ -75,7 +75,7 @@ public final class EventTests {
         this.eventHandler.broadcast(
                 80,
                 Events.WIDGET_ERROR,
-                new WidgetErrorEventAllOfDataWidgets().error(Errors.serverToClientOnlySocket("test"))
+                new WidgetErrorEventAllOfDataWidgets().error(Errors.serverToClientOnlySocket("test").getError())
             );
     }
 
@@ -86,7 +86,7 @@ public final class EventTests {
         this.eventHandler.broadcast(
                 1,
                 Events.WIDGET_ERROR,
-                new WidgetErrorEventAllOfDataWidgets().error(Errors.serverToClientOnlySocket("test"))
+                new WidgetErrorEventAllOfDataWidgets().error(Errors.serverToClientOnlySocket("test").getError())
             );
     }
 

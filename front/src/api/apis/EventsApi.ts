@@ -13,7 +13,7 @@
  */
 
 import * as runtime from "../runtime";
-import type { CreateToken401Response, CreateUser404Response } from "../models";
+import type { WrappedApiError } from "../models";
 
 export interface EventsWebsocketRequest {
   userId?: number;

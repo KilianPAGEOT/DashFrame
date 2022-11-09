@@ -5,8 +5,7 @@
  */
 package com.github.dashframe.rest.api;
 
-import com.github.dashframe.models.json.CreateToken400Response;
-import com.github.dashframe.models.json.CreateToken401Response;
+import com.github.dashframe.models.json.WrappedApiError;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,23 +22,22 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Generated(
     value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2022-11-08T16:03:51.937911500+01:00[Europe/Paris]"
+    date = "2022-11-09T11:51:12.913786908+01:00[Europe/Paris]"
 )
 @Validated
-public interface TokenApi {
+public interface UsersOauth2Api {
     default Optional<NativeWebRequest> getRequest() {
         return Optional.empty();
     }
 
     /**
-     * POST /token : Generate a new token for the user found by authentication infos in the header
+     * GET /users-oauth2 : Create user with OAuth login and add OAuth token to cookie
      *
-     * @return Expected response to a valid request (status code 200)
-     *         or Returned if the requested was malformed (status code 400)
-     *         or The user is not logged in (status code 401)
+     * @return Return cookie with Oauth2 token (status code 200)
+     *         or Error HTTP response.  Status codes: - 400: Returned if the requested was malformed - 401: The user is not logged in - 404: Returned if the requested resource doesn&#39;t exist, or the user does not have access   (status code 4XX)
      */
-    @RequestMapping(method = RequestMethod.POST, value = "/token", produces = { "text/plain", "application/json" })
-    default ResponseEntity<String> createToken() {
+    @RequestMapping(method = RequestMethod.GET, value = "/users-oauth2", produces = { "application/json" })
+    default ResponseEntity<Void> createUserOauth2() {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 }

@@ -18,9 +18,9 @@ import javax.validation.constraints.*;
 
 @Generated(
     value = "org.openapitools.codegen.languages.SpringCodegen",
-    date = "2022-11-08T16:03:51.937911500+01:00[Europe/Paris]"
+    date = "2022-11-09T11:51:12.913786908+01:00[Europe/Paris]"
 )
-public class Error {
+public class ApiError {
 
     @JsonProperty("code")
     private Integer code;
@@ -35,7 +35,7 @@ public class Error {
     @Valid
     private Map<String, String> messageParams = null;
 
-    public Error code(Integer code) {
+    public ApiError code(Integer code) {
         this.code = code;
         return this;
     }
@@ -44,7 +44,7 @@ public class Error {
      * The unique error code
      * @return code
      */
-
+    @NotNull
     public Integer getCode() {
         return code;
     }
@@ -53,7 +53,7 @@ public class Error {
         this.code = code;
     }
 
-    public Error message(String message) {
+    public ApiError message(String message) {
         this.message = message;
         return this;
     }
@@ -71,7 +71,7 @@ public class Error {
         this.message = message;
     }
 
-    public Error messageKey(String messageKey) {
+    public ApiError messageKey(String messageKey) {
         this.messageKey = messageKey;
         return this;
     }
@@ -89,12 +89,12 @@ public class Error {
         this.messageKey = messageKey;
     }
 
-    public Error messageParams(Map<String, String> messageParams) {
+    public ApiError messageParams(Map<String, String> messageParams) {
         this.messageParams = messageParams;
         return this;
     }
 
-    public Error putMessageParamsItem(String key, String messageParamsItem) {
+    public ApiError putMessageParamsItem(String key, String messageParamsItem) {
         if (this.messageParams == null) {
             this.messageParams = new HashMap<>();
         }
@@ -123,12 +123,12 @@ public class Error {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Error error = (Error) o;
+        ApiError apiError = (ApiError) o;
         return (
-            Objects.equals(this.code, error.code) &&
-            Objects.equals(this.message, error.message) &&
-            Objects.equals(this.messageKey, error.messageKey) &&
-            Objects.equals(this.messageParams, error.messageParams)
+            Objects.equals(this.code, apiError.code) &&
+            Objects.equals(this.message, apiError.message) &&
+            Objects.equals(this.messageKey, apiError.messageKey) &&
+            Objects.equals(this.messageParams, apiError.messageParams)
         );
     }
 
@@ -140,7 +140,7 @@ public class Error {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class Error {\n");
+        sb.append("class ApiError {\n");
         sb.append("    code: ").append(toIndentedString(code)).append("\n");
         sb.append("    message: ").append(toIndentedString(message)).append("\n");
         sb.append("    messageKey: ").append(toIndentedString(messageKey)).append("\n");
