@@ -87,9 +87,7 @@ public class UserController implements UsersApi {
         produces = { "application/json" },
         consumes = { "application/*" }
     )
-    public ResponseEntity<? extends Object> deleteUser(
-        @Valid @PathVariable(required = false) Optional<Integer> userId
-    ) {
+    public ResponseEntity<?> deleteUser(@Valid @PathVariable(required = false) Optional<Integer> userId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userDAO.findByUsername(username);
         if (userId.isPresent() && user.isAdmin()) {

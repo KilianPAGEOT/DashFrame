@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
     value = "org.openapitools.codegen.languages.SpringCodegen",
     date = "2022-11-08T16:03:51.937911500+01:00[Europe/Paris]"
 )
-public class SteamFriendsListWidgetConfiguration extends WidgetConfiguration {
+public class SteamFriendsListWidgetConfiguration extends WidgetConfiguration<SteamFriendsListWidgetConfiguration> {
 
     @JsonProperty("parameters")
     private EpicGamesFriendsListWidgetConfigurationAllOfParameters parameters;

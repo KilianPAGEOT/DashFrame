@@ -12,7 +12,7 @@ public class Service {
     private Integer id;
 
     @JoinColumn(nullable = false)
-    @OneToOne //(cascade = CascadeType.ALL)
+    @OneToOne
     private User user;
 
     @Column
