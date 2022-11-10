@@ -2,8 +2,12 @@ package com.github.dashframe.rest;
 
 import com.github.dashframe.dao.ServiceDAO;
 import com.github.dashframe.dao.UserDAO;
+import com.github.dashframe.dao.WidgetDAO;
+import com.github.dashframe.dao.WidgetParameterDAO;
 import com.github.dashframe.models.Service;
 import com.github.dashframe.models.User;
+import com.github.dashframe.models.Widget;
+import com.github.dashframe.models.WidgetParameter;
 import com.github.dashframe.models.json.CreateServiceRequest;
 import com.github.dashframe.models.json.CreateUserRequest;
 import com.github.dashframe.models.json.ServiceInstance;
@@ -31,6 +35,12 @@ public class ServicesController implements ServicesApi {
 
     @Autowired
     private UserDAO userDao;
+
+    @Autowired
+    private WidgetDAO widgetDAO;
+
+    @Autowired
+    private WidgetParameterDAO widgetParameterDAO;
 
     @Autowired
     public ServicesController(NativeWebRequest request) {
@@ -78,14 +88,20 @@ public class ServicesController implements ServicesApi {
         produces = { "application/json" },
         consumes = { "application/*" }
     )
-    public ResponseEntity<ArrayList<ServiceInstance>> getServices(@Valid @RequestParam(required = false) int userId) {
-        User user = userDao.findById(userId);
+    public ResponseEntity<ArrayList<ServiceInstance>> getServices(
+        @Valid @RequestParam(required = false) Optional<Integer> userId
+    ) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userDao.findByUsername(username);
+        if (userId.isPresent() && user.isAdmin()) {
+            user = userDao.findById(userId.get().intValue());
+        }
+
         ArrayList<Service> services = serviceDAO.findByUser(user);
-        System.out.println(services);
         if (services.size() != 0) {
-            ArrayList<ServiceInstance> serviceInstance = new ArrayList<>();
+            ArrayList<ServiceInstance> serviceInstances = new ArrayList<>();
             for (Service service : services) {
-                serviceInstance.add(
+                serviceInstances.add(
                     new ServiceInstance()
                         .id(service.getId())
                         .type(service.getType())
@@ -93,7 +109,7 @@ public class ServicesController implements ServicesApi {
                         .token(service.getToken())
                 );
             }
-            return ResponseEntity.ok(serviceInstance);
+            return ResponseEntity.ok(serviceInstances);
         } else return ResponseEntity.badRequest().body(null);
     }
 
@@ -103,13 +119,30 @@ public class ServicesController implements ServicesApi {
         produces = { "application/json" },
         consumes = { "application/*" }
     )
-    public ResponseEntity<? extends Object> DeleteServices(@Valid @RequestParam(required = false) int userId) {
-        User user = userDao.findById(userId);
+    public ResponseEntity<? extends Object> deleteServices(
+        @Valid @RequestParam(required = false) Optional<Integer> userId
+    ) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userDao.findByUsername(username);
+        if (userId.isPresent() && user.isAdmin()) {
+            user = userDao.findById(userId.get().intValue());
+        }
         ArrayList<Service> services = serviceDAO.findByUser(user);
         System.out.println(services);
         if (services.size() != 0) {
-            ArrayList<ServiceInstance> serviceInstance = new ArrayList<>();
             for (Service service : services) {
+                ArrayList<Widget> widgets = widgetDAO.findByService(service);
+                if (widgets.size() != 0) {
+                    for (Widget widget : widgets) {
+                        ArrayList<WidgetParameter> widgetParameters = widgetParameterDAO.findByWidget(widget);
+                        if (widgetParameters.size() != 0) {
+                            for (WidgetParameter widgetParameter : widgetParameters) {
+                                widgetParameterDAO.delete(widgetParameter);
+                            }
+                        }
+                        widgetDAO.delete(widget);
+                    }
+                }
                 serviceDAO.delete(service);
             }
             return ResponseEntity.noContent().build();
@@ -122,10 +155,22 @@ public class ServicesController implements ServicesApi {
         produces = { "application/json" },
         consumes = { "application/*" }
     )
-    public ResponseEntity<? extends Object> DeleteService(@Valid @PathVariable(required = false) int serviceId) {
-        Service services = serviceDAO.findById(serviceId);
-        if (services != null) {
-            serviceDAO.delete(services);
+    public ResponseEntity<? extends Object> deleteService(@Valid @PathVariable(required = false) int serviceId) {
+        Service service = serviceDAO.findById(serviceId);
+        if (service != null) {
+            ArrayList<Widget> widgets = widgetDAO.findByService(service);
+            if (widgets.size() != 0) {
+                for (Widget widget : widgets) {
+                    ArrayList<WidgetParameter> widgetParameters = widgetParameterDAO.findByWidget(widget);
+                    if (widgetParameters.size() != 0) {
+                        for (WidgetParameter widgetParameter : widgetParameters) {
+                            widgetParameterDAO.delete(widgetParameter);
+                        }
+                    }
+                    widgetDAO.delete(widget);
+                }
+            }
+            serviceDAO.delete(service);
             return ResponseEntity.noContent().build();
         } else return ResponseEntity.badRequest().body(null);
     }
