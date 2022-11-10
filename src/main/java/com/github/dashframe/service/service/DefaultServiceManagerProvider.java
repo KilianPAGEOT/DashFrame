@@ -1,6 +1,8 @@
 package com.github.dashframe.service.service;
 
 import com.github.dashframe.models.json.ServiceType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +13,15 @@ import org.springframework.stereotype.Service;
 @Primary
 public final class DefaultServiceManagerProvider implements ServiceManagerProvider {
 
+    @Autowired
+    private ApplicationContext context;
+
     @Override
     public ServiceManager<?> forType(ServiceType type) {
-        // TODO return the service managers here
-        return null;
+        //noinspection SwitchStatementWithTooFewBranches
+        return switch (type) {
+            case STEAM -> context.getBean(SteamServiceManager.class);
+            default -> null;
+        };
     }
 }
