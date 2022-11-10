@@ -33,7 +33,7 @@ public class ServiceTests {
         var testUser = new User();
         var serviceType = ServiceType.RSS;
         var widgetType = WidgetType.RSS_FEED;
-        var service = new Service(null, testUser, serviceType.getValue(), "secret", new Date());
+        var service = new Service(testUser, serviceType, "secret", "test");
         var widget = new Widget();
 
         assertNotNull(this.serviceManagerProvider);
