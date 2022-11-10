@@ -37,7 +37,8 @@ jobs:
           sed '/^spring.security.oauth2.client.registration.github.client-id/s/NOT SET/${{secrets.OAUTH2_GITHUB_CLIENT_ID}}/' |
           sed '/^spring.security.oauth2.client.registration.github.client-secret/s/NOT SET/${{secrets.OAUTH2_GITHUB_CLIENT_SECRET}}/' |
           sed '/^spring.mail.username/s/NOT SET/${{secrets.SPRING_MAIL_USERNAME}}/' |
-          sed '/^spring.mail.password/s/NOT SET/${{secrets.SPRING_MAIL_PASSWORD}}/' >
+          sed '/^spring.mail.password/s/NOT SET/${{secrets.SPRING_MAIL_PASSWORD}}/' |
+          sed '/^dashframe.services.steam.api_key/s/NOT SET/${{secrets.STEAM_API_KEY}}/' >
           application.properties
 
       - name: Create Testing application.properties
@@ -48,7 +49,10 @@ jobs:
           sed '/^spring.security.oauth2.client.registration.google.client-id/s/NOT SET/${{secrets.OAUTH2_GOOGLE_CLIENT_ID}}/' |
           sed '/^spring.security.oauth2.client.registration.google.client-secret/s/NOT SET/${{secrets.OAUTH2_GOOGLE_CLIENT_SECRET}}/' |
           sed '/^spring.security.oauth2.client.registration.github.client-id/s/NOT SET/${{secrets.OAUTH2_GITHUB_CLIENT_ID}}/' |
-          sed '/^spring.security.oauth2.client.registration.github.client-secret/s/NOT SET/${{secrets.OAUTH2_GITHUB_CLIENT_SECRET}}/' >
+          sed '/^spring.security.oauth2.client.registration.github.client-secret/s/NOT SET/${{secrets.OAUTH2_GITHUB_CLIENT_SECRET}}/' |
+          sed '/^spring.mail.username/s/NOT SET/${{secrets.SPRING_MAIL_USERNAME}}/' |
+          sed '/^spring.mail.password/s/NOT SET/${{secrets.SPRING_MAIL_PASSWORD}}/' |
+          sed '/^dashframe.services.steam.api_key/s/NOT SET/${{secrets.STEAM_API_KEY}}/' >
           application.properties
 
       - name: Setup Gradle and Build
