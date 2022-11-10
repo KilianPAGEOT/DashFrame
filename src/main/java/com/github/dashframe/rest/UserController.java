@@ -65,19 +65,12 @@ public class UserController implements UsersApi {
         String oauthToken,
         boolean isAdmin
     ) {
-        User existUser = userDAO.findByUsername(username);
-
-        if (existUser == null) {
-            User newUser = new User();
-            newUser.setName(name);
-            newUser.setUsername(username);
-            newUser.setHashPassword(hashPassword);
-            newUser.setToken(oauthToken);
-            newUser.setAdmin(isAdmin);
-            userDAO.save(newUser);
+        User user = userDAO.findByUsername(username);
+        if (user == null) {
+            userDAO.save(new User(name, username, hashPassword, oauthToken, isAdmin));
         } else {
-            existUser.setToken(oauthToken);
-            userDAO.save(existUser);
+            user.setOauthToken(oauthToken);
+            userDAO.save(user);
         }
     }
 
