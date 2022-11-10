@@ -12,7 +12,7 @@ public class Widget {
     private Integer id;
 
     @JoinColumn(nullable = false)
-    @OneToOne //(cascade = CascadeType.ALL)
+    @OneToOne
     private Service service;
 
     @Column

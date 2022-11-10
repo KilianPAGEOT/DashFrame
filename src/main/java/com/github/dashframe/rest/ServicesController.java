@@ -9,12 +9,8 @@ import com.github.dashframe.models.User;
 import com.github.dashframe.models.Widget;
 import com.github.dashframe.models.WidgetParameter;
 import com.github.dashframe.models.json.CreateServiceRequest;
-import com.github.dashframe.models.json.CreateUserRequest;
 import com.github.dashframe.models.json.ServiceInstance;
-import com.github.dashframe.models.json.UserInstance;
 import com.github.dashframe.rest.api.ServicesApi;
-import java.lang.reflect.Array;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -119,9 +115,7 @@ public class ServicesController implements ServicesApi {
         produces = { "application/json" },
         consumes = { "application/*" }
     )
-    public ResponseEntity<? extends Object> deleteServices(
-        @Valid @RequestParam(required = false) Optional<Integer> userId
-    ) {
+    public ResponseEntity<?> deleteServices(@Valid @RequestParam(required = false) Optional<Integer> userId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userDao.findByUsername(username);
         if (userId.isPresent() && user.isAdmin()) {
@@ -155,7 +149,7 @@ public class ServicesController implements ServicesApi {
         produces = { "application/json" },
         consumes = { "application/*" }
     )
-    public ResponseEntity<? extends Object> deleteService(@Valid @PathVariable(required = false) int serviceId) {
+    public ResponseEntity<?> deleteService(@Valid @PathVariable(required = false) int serviceId) {
         Service service = serviceDAO.findById(serviceId);
         if (service != null) {
             ArrayList<Widget> widgets = widgetDAO.findByService(service);

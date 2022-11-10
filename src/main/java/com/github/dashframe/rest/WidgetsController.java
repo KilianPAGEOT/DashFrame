@@ -69,7 +69,7 @@ public class WidgetsController implements WidgetsApi {
             );
             createParameters(createWidgetRequest.getConfig(), widget);
             WidgetType widgetType = WidgetType.fromValue(widget.getType());
-            WidgetConfiguration widgetConfiguration = getConfig(widgetType, widget);
+            WidgetConfiguration<?> widgetConfiguration = getConfig(widgetType, widget);
 
             return ResponseEntity.ok(
                 new WidgetInstance()
@@ -103,7 +103,7 @@ public class WidgetsController implements WidgetsApi {
                 if (widgets.size() != 0) {
                     for (Widget widget : widgets) {
                         WidgetType widgetType = WidgetType.fromValue(widget.getType());
-                        WidgetConfiguration widgetConfiguration = getConfig(widgetType, widget);
+                        WidgetConfiguration<?> widgetConfiguration = getConfig(widgetType, widget);
                         widgetInstances.add(
                             new WidgetInstance()
                                 .id(widget.getId())
@@ -162,10 +162,9 @@ public class WidgetsController implements WidgetsApi {
     )
     public ResponseEntity<WidgetInstance> getWidget(@Valid @PathVariable(required = false) int widgetId) {
         Widget widget = widgetDAO.findById(widgetId);
-        System.out.println(widget.getType());
         if (widget != null) {
             WidgetType widgetType = WidgetType.fromValue(widget.getType());
-            WidgetConfiguration widgetConfiguration = getConfig(widgetType, widget);
+            WidgetConfiguration<?> widgetConfiguration = getConfig(widgetType, widget);
             return ResponseEntity.ok(
                 new WidgetInstance()
                     .id(widget.getId())
@@ -221,7 +220,7 @@ public class WidgetsController implements WidgetsApi {
         return ResponseEntity.badRequest().body(null);
     }
 
-    public WidgetConfiguration getConfig(WidgetType widgetType, Widget widget) {
+    public WidgetConfiguration<?> getConfig(WidgetType widgetType, Widget widget) {
         switch (widgetType) {
             case EPIC_GAMES_FREE_GAMES -> {
                 EpicGamesFreeGamesWidgetConfiguration widgetConfiguration = new EpicGamesFreeGamesWidgetConfiguration();
@@ -349,7 +348,7 @@ public class WidgetsController implements WidgetsApi {
         return null;
     }
 
-    public WidgetConfiguration setWidgetConf(WidgetConfiguration widgetConfiguration, Widget widget) {
+    public WidgetConfiguration<?> setWidgetConf(WidgetConfiguration<?> widgetConfiguration, Widget widget) {
         widgetConfiguration.setType(widget.getType());
         widgetConfiguration.setPosition(widget.getPosition());
         widgetConfiguration.setColumnPos(widget.getColumn_pos());
@@ -358,87 +357,59 @@ public class WidgetsController implements WidgetsApi {
         return widgetConfiguration;
     }
 
-    public void createParameters(WidgetConfiguration widgetConfiguration, Widget widget) {
+    public void createParameters(WidgetConfiguration<?> widgetConfiguration, Widget widget) {
         WidgetType widgetType = WidgetType.fromValue(widgetConfiguration.getType());
         switch (widgetType) {
-            case EPIC_GAMES_FRIENDS_LIST -> {
-                widgetParameterDAO.save(
-                    new WidgetParameter(
-                        widget,
-                        "showOffline",
-                        widgetConfiguration.getParameters().get("showOffline").toString()
-                    )
-                );
-            }
-            case RSS_FEED -> {
-                widgetParameterDAO.save(
-                    new WidgetParameter(widget, "url", widgetConfiguration.getParameters().get("url").toString())
-                );
-            }
-            case STEAM_FRIENDS_LIST -> {
-                widgetParameterDAO.save(
-                    new WidgetParameter(
-                        widget,
-                        "showOffline",
-                        widgetConfiguration.getParameters().get("showOffline").toString()
-                    )
-                );
-            }
-            case STEAM_GAME_NEWS -> {
-                widgetParameterDAO.save(
-                    new WidgetParameter(
-                        widget,
-                        "gameNameOrId",
-                        widgetConfiguration.getParameters().get("gameNameOrId").toString()
-                    )
-                );
-            }
-            case STEAM_GAME_POPULATION -> {
-                widgetParameterDAO.save(
-                    new WidgetParameter(
-                        widget,
-                        "gameNameOrId",
-                        widgetConfiguration.getParameters().get("gameNameOrId").toString()
-                    )
-                );
-            }
-            case TWITCH_FOLLOWED_CHANNELS -> {
-                widgetParameterDAO.save(
-                    new WidgetParameter(widget, "filter", widgetConfiguration.getParameters().get("filter").toString())
-                );
-            }
-            case WEATHER_TIME_DEFAULT -> {
-                widgetParameterDAO.save(
-                    new WidgetParameter(
-                        widget,
-                        "location",
-                        widgetConfiguration.getParameters().get("location").toString()
-                    )
-                );
-            }
-            case YOUTUBE_CHANNEL_STATISTICS -> {
-                widgetParameterDAO.save(
-                    new WidgetParameter(
-                        widget,
-                        "channel",
-                        widgetConfiguration.getParameters().get("channel").toString()
-                    )
-                );
-            }
-            case YOUTUBE_SUBSRIBED_CHANNELS -> {
-                widgetParameterDAO.save(
-                    new WidgetParameter(widget, "filter", widgetConfiguration.getParameters().get("filter").toString())
-                );
-            }
-            case YOUTUBE_VIDEO_STATISTICS -> {
-                widgetParameterDAO.save(
-                    new WidgetParameter(widget, "video", widgetConfiguration.getParameters().get("video").toString())
-                );
-            }
+            case EPIC_GAMES_FRIENDS_LIST -> widgetParameterDAO.save(
+                new WidgetParameter(
+                    widget,
+                    "showOffline",
+                    widgetConfiguration.getParameters().get("showOffline").toString()
+                )
+            );
+            case RSS_FEED -> widgetParameterDAO.save(
+                new WidgetParameter(widget, "url", widgetConfiguration.getParameters().get("url").toString())
+            );
+            case STEAM_FRIENDS_LIST -> widgetParameterDAO.save(
+                new WidgetParameter(
+                    widget,
+                    "showOffline",
+                    widgetConfiguration.getParameters().get("showOffline").toString()
+                )
+            );
+            case STEAM_GAME_NEWS -> widgetParameterDAO.save(
+                new WidgetParameter(
+                    widget,
+                    "gameNameOrId",
+                    widgetConfiguration.getParameters().get("gameNameOrId").toString()
+                )
+            );
+            case STEAM_GAME_POPULATION -> widgetParameterDAO.save(
+                new WidgetParameter(
+                    widget,
+                    "gameNameOrId",
+                    widgetConfiguration.getParameters().get("gameNameOrId").toString()
+                )
+            );
+            case TWITCH_FOLLOWED_CHANNELS -> widgetParameterDAO.save(
+                new WidgetParameter(widget, "filter", widgetConfiguration.getParameters().get("filter").toString())
+            );
+            case WEATHER_TIME_DEFAULT -> widgetParameterDAO.save(
+                new WidgetParameter(widget, "location", widgetConfiguration.getParameters().get("location").toString())
+            );
+            case YOUTUBE_CHANNEL_STATISTICS -> widgetParameterDAO.save(
+                new WidgetParameter(widget, "channel", widgetConfiguration.getParameters().get("channel").toString())
+            );
+            case YOUTUBE_SUBSRIBED_CHANNELS -> widgetParameterDAO.save(
+                new WidgetParameter(widget, "filter", widgetConfiguration.getParameters().get("filter").toString())
+            );
+            case YOUTUBE_VIDEO_STATISTICS -> widgetParameterDAO.save(
+                new WidgetParameter(widget, "video", widgetConfiguration.getParameters().get("video").toString())
+            );
         }
     }
 
-    public void PatchParameters(WidgetConfiguration widgetConfiguration, Widget widget) {
+    public void PatchParameters(WidgetConfiguration<?> widgetConfiguration, Widget widget) {
         WidgetType widgetType = WidgetType.fromValue(widgetConfiguration.getType());
         switch (widgetType) {
             case EPIC_GAMES_FRIENDS_LIST -> {

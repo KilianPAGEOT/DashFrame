@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
     value = "org.openapitools.codegen.languages.SpringCodegen",
     date = "2022-11-08T16:03:51.937911500+01:00[Europe/Paris]"
 )
-public class SteamGameNewsWidgetConfiguration extends WidgetConfiguration {
+public class SteamGameNewsWidgetConfiguration extends WidgetConfiguration<SteamGameNewsWidgetConfiguration> {
 
     @JsonProperty("parameters")
     private SteamGameNewsWidgetConfigurationAllOfParameters parameters;

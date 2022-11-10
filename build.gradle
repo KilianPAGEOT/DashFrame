@@ -93,13 +93,13 @@ openApiGenerate {
             apiPackage           : "${group}.rest.api",
             modelPackage         : "${group}.models.json",
 
-            // do not generate OpenAPI docs in code, we already have a spec
-            //useSwaggerUI         : 'false',
-            //annotationLibrary    : 'none',
-            //documentationProvider: 'none',
+            //do not generate OpenAPI docs in code, we already have a spec
+            useSwaggerUI         : 'false',
+            annotationLibrary    : 'none',
+            documentationProvider: 'none',
 
             // do not import the @JsonNullable from jackson, they seem to be unused anyway
-            openApiNullable      : 'true',
+            openApiNullable      : 'false',
 
             // do not generate stub implementations of the API.
             interfaceOnly: 'true'
