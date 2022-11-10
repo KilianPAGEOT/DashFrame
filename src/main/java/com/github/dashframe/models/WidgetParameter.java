@@ -15,20 +15,19 @@ public class WidgetParameter {
     private Widget widget;
 
     @Column(nullable = false)
-    private int position;
+    private String name;
 
     @Column(nullable = false, name = "`value`")
-    private int value;
+    private String value;
 
     @Column(nullable = false)
     private Date createdAt;
 
     public WidgetParameter() {}
 
-    public WidgetParameter(Integer id, Widget widget, int position, int value) {
-        this.id = id;
+    public WidgetParameter(Widget widget, String name, String value) {
         this.widget = widget;
-        this.position = position;
+        this.name = name;
         this.value = value;
         this.createdAt = new Date();
     }
@@ -49,19 +48,19 @@ public class WidgetParameter {
         this.widget = widget;
     }
 
-    public int getPosition() {
-        return position;
+    public String getName() {
+        return name;
     }
 
-    public void setPosition(int position) {
-        this.position = position;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public int getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(String value) {
         this.value = value;
     }
 

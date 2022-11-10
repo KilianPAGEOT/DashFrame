@@ -2,8 +2,11 @@ package com.github.dashframe.models.json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import javax.annotation.Generated;
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
@@ -50,6 +53,27 @@ public class WidgetConfiguration<C> {
 
     @JsonProperty("columnPos")
     private Integer columnPos;
+
+    @JsonProperty("parameters")
+    private Map<String, Object> parameters = new HashMap<>();
+
+    public Map<String, Object> parameters(Map<String, Object> parameters) {
+        this.parameters = parameters;
+        return (Map<String, Object>) this;
+    }
+
+    /**
+     * Get parameters
+     *
+     * @return parameters
+     */
+    public Map<String, Object> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(Map<String, Object> parameters) {
+        this.parameters = parameters;
+    }
 
     public C type(String type) {
         this.type = type;
@@ -150,10 +174,11 @@ public class WidgetConfiguration<C> {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class BaseWidgetConfiguration {\n");
+        sb.append("class WidgetConfiguration {\n");
         sb.append("    type: ").append(toIndentedString(type)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    refreshRate: ").append(toIndentedString(refreshRate)).append("\n");
+        sb.append("    parameters: ").append(toIndentedString(parameters)).append("\n");
         sb.append("}");
         return sb.toString();
     }

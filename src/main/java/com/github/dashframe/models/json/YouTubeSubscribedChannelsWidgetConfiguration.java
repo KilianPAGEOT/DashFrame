@@ -1,14 +1,6 @@
 package com.github.dashframe.models.json;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.github.dashframe.models.json.TwitchFollowedChannelsWidgetConfigurationAllOfParameters;
-import java.net.URI;
-import java.time.OffsetDateTime;
-import java.util.*;
 import java.util.Objects;
 import javax.annotation.Generated;
 import javax.validation.Valid;
@@ -36,13 +28,12 @@ public class YouTubeSubscribedChannelsWidgetConfiguration extends WidgetConfigur
 
     /**
      * Get parameters
+     *
      * @return parameters
      */
-    @NotNull
-    @Valid
-    public TwitchFollowedChannelsWidgetConfigurationAllOfParameters getParameters() {
+    /*public @NotNull @Valid TwitchFollowedChannelsWidgetConfigurationAllOfParameters getParameters() {
         return parameters;
-    }
+    }*/
 
     public void setParameters(TwitchFollowedChannelsWidgetConfigurationAllOfParameters parameters) {
         this.parameters = parameters;

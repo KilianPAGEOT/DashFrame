@@ -2,6 +2,7 @@ package com.github.dashframe.dao;
 
 import com.github.dashframe.models.Service;
 import com.github.dashframe.models.Widget;
+import java.util.ArrayList;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,5 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface WidgetDAO extends JpaRepository<Widget, Integer> {
     Widget findById(int id);
 
-    Widget findByService(Service service);
+    ArrayList<Widget> findByService(Service service);
 }

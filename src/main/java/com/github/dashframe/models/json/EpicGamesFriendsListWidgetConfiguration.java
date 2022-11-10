@@ -1,14 +1,6 @@
 package com.github.dashframe.models.json;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.github.dashframe.models.json.EpicGamesFriendsListWidgetConfigurationAllOfParameters;
-import java.net.URI;
-import java.time.OffsetDateTime;
-import java.util.*;
 import java.util.Objects;
 import javax.annotation.Generated;
 import javax.validation.Valid;
@@ -36,13 +28,12 @@ public class EpicGamesFriendsListWidgetConfiguration extends WidgetConfiguration
 
     /**
      * Get parameters
+     *
      * @return parameters
      */
-    @NotNull
-    @Valid
-    public EpicGamesFriendsListWidgetConfigurationAllOfParameters getParameters() {
+    /*public @NotNull @Valid EpicGamesFriendsListWidgetConfigurationAllOfParameters getParameters() {
         return parameters;
-    }
+    }*/
 
     public void setParameters(EpicGamesFriendsListWidgetConfigurationAllOfParameters parameters) {
         this.parameters = parameters;
