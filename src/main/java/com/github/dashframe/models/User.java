@@ -1,6 +1,5 @@
 package com.github.dashframe.models;
 
-import com.github.dashframe.models.json.ServiceType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -34,6 +33,9 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private boolean isAdmin;
 
+    @Column(unique = true)
+    private String emailVerificationToken;
+
     @Column(nullable = false)
     private Date createdAt;
 
@@ -48,6 +50,7 @@ public class User implements UserDetails {
         this.oauthToken = oauthToken;
         this.isAdmin = isAdmin;
         this.createdAt = new Date();
+        this.emailVerificationToken = null;
     }
 
     public Integer getId() {
@@ -93,11 +96,11 @@ public class User implements UserDetails {
         this.createdAt = createdAt;
     }
 
-    public String getToken() {
+    public String getOauthToken() {
         return oauthToken;
     }
 
-    public void setToken(String oauthToken) {
+    public void setOauthToken(String oauthToken) {
         this.oauthToken = oauthToken;
     }
 
@@ -147,6 +150,14 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.emailVerificationToken == null;
+    }
+
+    public String getEmailVerificationToken() {
+        return emailVerificationToken;
+    }
+
+    public void setEmailVerificationToken(String emailVerificationToken) {
+        this.emailVerificationToken = emailVerificationToken;
     }
 }
