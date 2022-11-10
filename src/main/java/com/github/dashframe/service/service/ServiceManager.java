@@ -46,7 +46,7 @@ public interface ServiceManager<ContextT extends ServiceContext> {
      * @throws IllegalArgumentException if the passed service's type does match the type handled by this manager.
      */
     default void checkType(Service service) {
-        if (!service.getType().equals(this.getType().getValue())) throw new IllegalArgumentException(
+        if (service.getType() != this.getType()) throw new IllegalArgumentException(
             "expected service of type " + this.getType() + ", got " + service.getType()
         );
     }
