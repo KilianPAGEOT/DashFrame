@@ -2,6 +2,8 @@ package com.github.dashframe.service.service;
 
 import com.github.dashframe.models.json.ServiceType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ public final class DefaultServiceManagerProvider implements ServiceManagerProvid
         //noinspection SwitchStatementWithTooFewBranches
         return switch (type) {
             case STEAM -> context.getBean(SteamServiceManager.class);
+            case WEATHER_TIME -> context.getBean(WeatherServiceManager.class);
             default -> null;
         };
     }
