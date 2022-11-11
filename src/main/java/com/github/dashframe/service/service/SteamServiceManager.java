@@ -40,7 +40,7 @@ public class SteamServiceManager implements ServiceManager<SteamServiceManager.C
         var apiKey = this.environment.getProperty(API_KEY_PROPERTY);
         var steamid = service.getToken();
 
-        if (apiKey == null || apiKey.isBlank()) return Mono.error(
+        if (apiKey == null || apiKey.isBlank() || apiKey.equals("NOT SET")) return Mono.error(
             new MissingApiKeyException(
                 "Steam API key missing, please define " + API_KEY_PROPERTY + " in application.properties"
             )
