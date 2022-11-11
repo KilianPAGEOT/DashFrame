@@ -74,6 +74,18 @@ export interface BaseWidgetConfiguration {
    * @memberof BaseWidgetConfiguration
    */
   refreshRate?: number;
+  /**
+   * Column position in front
+   * @type {number}
+   * @memberof BaseWidgetConfiguration
+   */
+  columnPos?: number;
+  /**
+   * Postion in column
+   * @type {number}
+   * @memberof BaseWidgetConfiguration
+   */
+  position?: number;
 }
 /**
  * Information about the client that executed this request
@@ -297,6 +309,18 @@ export interface EpicGamesFreeGamesWidgetConfiguration {
    * @memberof EpicGamesFreeGamesWidgetConfiguration
    */
   refreshRate?: number;
+  /**
+   * Column position in front
+   * @type {number}
+   * @memberof EpicGamesFreeGamesWidgetConfiguration
+   */
+  columnPos?: number;
+  /**
+   * Postion in column
+   * @type {number}
+   * @memberof EpicGamesFreeGamesWidgetConfiguration
+   */
+  position?: number;
 }
 /**
  *
@@ -322,6 +346,18 @@ export interface EpicGamesFriendsListWidgetConfiguration {
    * @memberof EpicGamesFriendsListWidgetConfiguration
    */
   refreshRate?: number;
+  /**
+   * Column position in front
+   * @type {number}
+   * @memberof EpicGamesFriendsListWidgetConfiguration
+   */
+  columnPos?: number;
+  /**
+   * Postion in column
+   * @type {number}
+   * @memberof EpicGamesFriendsListWidgetConfiguration
+   */
+  position?: number;
   /**
    *
    * @type {EpicGamesFriendsListWidgetConfigurationAllOfParameters}
@@ -463,6 +499,18 @@ export interface RssFeedWidgetConfiguration {
    * @memberof RssFeedWidgetConfiguration
    */
   refreshRate?: number;
+  /**
+   * Column position in front
+   * @type {number}
+   * @memberof RssFeedWidgetConfiguration
+   */
+  columnPos?: number;
+  /**
+   * Postion in column
+   * @type {number}
+   * @memberof RssFeedWidgetConfiguration
+   */
+  position?: number;
   /**
    *
    * @type {RssFeedWidgetConfigurationAllOfParameters}
@@ -623,6 +671,18 @@ export interface SteamFriendsListWidgetConfiguration {
    */
   refreshRate?: number;
   /**
+   * Column position in front
+   * @type {number}
+   * @memberof SteamFriendsListWidgetConfiguration
+   */
+  columnPos?: number;
+  /**
+   * Postion in column
+   * @type {number}
+   * @memberof SteamFriendsListWidgetConfiguration
+   */
+  position?: number;
+  /**
    *
    * @type {EpicGamesFriendsListWidgetConfigurationAllOfParameters}
    * @memberof SteamFriendsListWidgetConfiguration
@@ -666,6 +726,18 @@ export interface SteamGameNewsWidgetConfiguration {
    * @memberof SteamGameNewsWidgetConfiguration
    */
   refreshRate?: number;
+  /**
+   * Column position in front
+   * @type {number}
+   * @memberof SteamGameNewsWidgetConfiguration
+   */
+  columnPos?: number;
+  /**
+   * Postion in column
+   * @type {number}
+   * @memberof SteamGameNewsWidgetConfiguration
+   */
+  position?: number;
   /**
    *
    * @type {SteamGameNewsWidgetConfigurationAllOfParameters}
@@ -724,6 +796,18 @@ export interface SteamGamePopulationWidgetConfiguration {
    */
   refreshRate?: number;
   /**
+   * Column position in front
+   * @type {number}
+   * @memberof SteamGamePopulationWidgetConfiguration
+   */
+  columnPos?: number;
+  /**
+   * Postion in column
+   * @type {number}
+   * @memberof SteamGamePopulationWidgetConfiguration
+   */
+  position?: number;
+  /**
    *
    * @type {SteamGameNewsWidgetConfigurationAllOfParameters}
    * @memberof SteamGamePopulationWidgetConfiguration
@@ -743,6 +827,77 @@ export interface SteamGamePopulationWidgetConfigurationAllOf {
    */
   parameters: SteamGameNewsWidgetConfigurationAllOfParameters;
 }
+/**
+ * A Steam user
+ * @export
+ * @interface SteamUser
+ */
+export interface SteamUser {
+  /**
+   * 64bit SteamID of the user
+   * @type {string}
+   * @memberof SteamUser
+   */
+  steamId?: string;
+  /**
+   * The player's persona name (display name)
+   * @type {string}
+   * @memberof SteamUser
+   */
+  name: string;
+  /**
+   * The full URL of the player's Steam Community profile.
+   * @type {string}
+   * @memberof SteamUser
+   */
+  profileUrl: string;
+  /**
+   * The full URL of the player's 32x32px avatar. If the user hasn't configured an avatar, this will be the default ? avatar.
+   * @type {string}
+   * @memberof SteamUser
+   */
+  avatar32x32: string;
+  /**
+   * The full URL of the player's 64x64px avatar. If the user hasn't configured an avatar, this will be the default ? avatar.
+   * @type {string}
+   * @memberof SteamUser
+   */
+  avatar64x64: string;
+  /**
+   * The full URL of the player's 184x184px avatar. If the user hasn't configured an avatar, this will be the default ? avatar.
+   * @type {string}
+   * @memberof SteamUser
+   */
+  avatar184x184: string;
+  /**
+   * The user's current status. If the player's profile is private, this will always be "OFFLINE", except is the user has set their status to looking to trade or looking to play, because a bug makes those status appear even if the profile is private.
+   * @type {string}
+   * @memberof SteamUser
+   */
+  status: SteamUserStatusEnum;
+  /**
+   * The last time the user was online, not present if online.
+   * @type {string}
+   * @memberof SteamUser
+   */
+  lastLogoff?: string;
+}
+
+/**
+ * @export
+ */
+export const SteamUserStatusEnum = {
+  Offline: "OFFLINE",
+  Online: "ONLINE",
+  Busy: "BUSY",
+  Away: "AWAY",
+  Snooze: "SNOOZE",
+  LookingForTrade: "LOOKING_FOR_TRADE",
+  LookingToPlay: "LOOKING_TO_PLAY",
+} as const;
+export type SteamUserStatusEnum =
+  typeof SteamUserStatusEnum[keyof typeof SteamUserStatusEnum];
+
 /**
  *
  * @export
@@ -767,6 +922,18 @@ export interface TwitchFollowedChannelsWidgetConfiguration {
    * @memberof TwitchFollowedChannelsWidgetConfiguration
    */
   refreshRate?: number;
+  /**
+   * Column position in front
+   * @type {number}
+   * @memberof TwitchFollowedChannelsWidgetConfiguration
+   */
+  columnPos?: number;
+  /**
+   * Postion in column
+   * @type {number}
+   * @memberof TwitchFollowedChannelsWidgetConfiguration
+   */
+  position?: number;
   /**
    *
    * @type {TwitchFollowedChannelsWidgetConfigurationAllOfParameters}
@@ -836,6 +1003,18 @@ export interface UnknownWidgetConfiguration {
    * @memberof UnknownWidgetConfiguration
    */
   refreshRate?: number;
+  /**
+   * Column position in front
+   * @type {number}
+   * @memberof UnknownWidgetConfiguration
+   */
+  columnPos?: number;
+  /**
+   * Postion in column
+   * @type {number}
+   * @memberof UnknownWidgetConfiguration
+   */
+  position?: number;
 }
 /**
  *
@@ -911,6 +1090,18 @@ export interface WeatherTimeWidgetConfiguration {
    * @memberof WeatherTimeWidgetConfiguration
    */
   refreshRate?: number;
+  /**
+   * Column position in front
+   * @type {number}
+   * @memberof WeatherTimeWidgetConfiguration
+   */
+  columnPos?: number;
+  /**
+   * Postion in column
+   * @type {number}
+   * @memberof WeatherTimeWidgetConfiguration
+   */
+  position?: number;
   /**
    *
    * @type {WeatherTimeWidgetConfigurationAllOfParameters}
@@ -1146,7 +1337,7 @@ export interface WidgetInstance {
    * @type {number}
    * @memberof WidgetInstance
    */
-  order: number;
+  position: number;
   /**
    * The column id of the widget
    * @type {number}
@@ -1325,6 +1516,18 @@ export interface YouTubeChannelStatisticsWidgetConfiguration {
    */
   refreshRate?: number;
   /**
+   * Column position in front
+   * @type {number}
+   * @memberof YouTubeChannelStatisticsWidgetConfiguration
+   */
+  columnPos?: number;
+  /**
+   * Postion in column
+   * @type {number}
+   * @memberof YouTubeChannelStatisticsWidgetConfiguration
+   */
+  position?: number;
+  /**
    *
    * @type {YouTubeChannelStatisticsWidgetConfigurationAllOfParameters}
    * @memberof YouTubeChannelStatisticsWidgetConfiguration
@@ -1382,6 +1585,18 @@ export interface YouTubeSubscribedChannelsWidgetConfiguration {
    */
   refreshRate?: number;
   /**
+   * Column position in front
+   * @type {number}
+   * @memberof YouTubeSubscribedChannelsWidgetConfiguration
+   */
+  columnPos?: number;
+  /**
+   * Postion in column
+   * @type {number}
+   * @memberof YouTubeSubscribedChannelsWidgetConfiguration
+   */
+  position?: number;
+  /**
    *
    * @type {TwitchFollowedChannelsWidgetConfigurationAllOfParameters}
    * @memberof YouTubeSubscribedChannelsWidgetConfiguration
@@ -1425,6 +1640,18 @@ export interface YouTubeVideoStatisticsWidgetConfiguration {
    * @memberof YouTubeVideoStatisticsWidgetConfiguration
    */
   refreshRate?: number;
+  /**
+   * Column position in front
+   * @type {number}
+   * @memberof YouTubeVideoStatisticsWidgetConfiguration
+   */
+  columnPos?: number;
+  /**
+   * Postion in column
+   * @type {number}
+   * @memberof YouTubeVideoStatisticsWidgetConfiguration
+   */
+  position?: number;
   /**
    *
    * @type {YouTubeVideoStatisticsWidgetConfigurationAllOfParameters}
