@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import "../assets/modalStyle.css";
+import AddWidgetModalVue from "./AddWidgetModal.vue";
 </script>
 
 <template>
   <body class="listWidget">
+    <div v-if="showModalAddWidget">
+      <AddWidgetModalVue showModalAddWidget />
+    </div>
     <div class="columnWidget">
       <div class="orderWidget">
         <div class="WidgetWeather">
@@ -11,14 +15,14 @@ import "../assets/modalStyle.css";
           <span>27°C</span>
         </div>
       </div>
-      <div class="Elipse">
+      <button class="Elipse" @click="showModalAddWidget = true">
         <div class="insideElipse">+</div>
-      </div>
+      </button>
     </div>
     <div class="Empty">
-      <div class="Elipse">
+      <button class="Elipse" @click="showModalAddWidget = true">
         <div class="insideElipse">+</div>
-      </div>
+      </button>
     </div>
   </body>
 </template>
@@ -27,7 +31,7 @@ import "../assets/modalStyle.css";
 export default {
   data() {
     return {
-      showModal: false,
+      showModalAddWidget: false,
     };
   },
 };
