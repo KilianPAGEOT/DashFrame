@@ -1,9 +1,12 @@
 package com.github.dashframe.service.widget;
 
 import com.github.dashframe.models.json.WidgetType;
+import com.github.dashframe.service.widget.Weather.WeatherWidgetManager;
 import com.github.dashframe.service.widget.steam.SteamFriendsListWidgetManager;
 import com.github.dashframe.service.widget.steam.SteamGameNewsWidgetManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,7 @@ public final class DefaultWidgetManagerProvider implements WidgetManagerProvider
         return switch (type) {
             case STEAM_FRIENDS_LIST -> context.getBean(SteamFriendsListWidgetManager.class);
             case STEAM_GAME_NEWS -> context.getBean(SteamGameNewsWidgetManager.class);
+            case WEATHER_TIME_DEFAULT -> context.getBean(WeatherWidgetManager.class);
             default -> null;
         };
     }

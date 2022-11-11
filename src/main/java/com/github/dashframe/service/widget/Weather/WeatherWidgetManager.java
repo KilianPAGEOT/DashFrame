@@ -1,17 +1,20 @@
-package com.github.dashframe.service.widget;
+package com.github.dashframe.service.widget.Weather;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.dashframe.models.Widget;
 import com.github.dashframe.models.json.WidgetType;
 import com.github.dashframe.service.service.WeatherServiceManager;
+import com.github.dashframe.service.widget.WidgetContext;
+import com.github.dashframe.service.widget.WidgetManager;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
+import java.util.Date;
 import java.util.Map;
 
-public class WeatherWidgetManager implements WidgetManager<WeatherServiceManager.Context,WeatherWidgetManager.Context, Map<String,Object>> {
+@Service
+public class WeatherWidgetManager implements WidgetManager<WeatherServiceManager.Context,WeatherWidgetManager.Context, Map> {
 
     @Override
     public WidgetType getType() {
@@ -24,24 +27,24 @@ public class WeatherWidgetManager implements WidgetManager<WeatherServiceManager
     }
 
     @Override
-    public Mono<Map<String,Object>> fetchData(WeatherWidgetManager.Context widgetContext) {
+    public Mono<Map> fetchData(WeatherWidgetManager.Context widgetContext) {
         var client = widgetContext.serviceContext.client();
         var finalLocation = widgetContext.serviceContext.finalLocation();
         var locResponse = widgetContext.serviceContext.locResponse();
+        System.out.println(new Date());
         return client.get().uri(uriBuilder ->
                         uriBuilder
                                 .queryParam("latitude",locResponse.get("lat"))
                                 .queryParam("longitude",locResponse.get("lon"))
                                 .queryParam("hourly","temperature_2m")
+                                .queryParam("current_weather",true)
                                 .build())
                 .retrieve()
-                .bodyToMono(RawData.class)
-                .map(rawData -> rawData.weather.weather());
-
+                .bodyToMono(Map.class);
     }
     public record Context(WeatherServiceManager.Context serviceContext, Widget widget) implements WidgetContext {}
 
-    private record RawData(@JsonProperty("Weather") RawWeather weather) {}
+    private record RawData(@JsonProperty("weather") RawWeather weather) {}
 
     private record RawWeather(Map<String,Object> weather) {}
 

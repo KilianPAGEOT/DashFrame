@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import javax.annotation.Generated;
+import javax.validation.constraints.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
