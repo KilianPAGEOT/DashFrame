@@ -27,6 +27,30 @@ jobs:
       - name: Validate gradle wrapper
         uses: gradle/wrapper-validation-action@v1
 
+      - name: Create application.properties
+        shell: bash
+        working-directory: src/main/resources
+        run: >
+          cat application.example.properties |
+          sed '/^spring.security.oauth2.client.registration.google.client-id/s/NOT SET/${{secrets.OAUTH2_GOOGLE_CLIENT_ID}}/' |
+          sed '/^spring.security.oauth2.client.registration.google.client-secret/s/NOT SET/${{secrets.OAUTH2_GOOGLE_CLIENT_SECRET}}/' |
+          sed '/^spring.security.oauth2.client.registration.github.client-id/s/NOT SET/${{secrets.OAUTH2_GITHUB_CLIENT_ID}}/' |
+          sed '/^spring.security.oauth2.client.registration.github.client-secret/s/NOT SET/${{secrets.OAUTH2_GITHUB_CLIENT_SECRET}}/' |
+          sed '/^spring.mail.username/s/NOT SET/${{secrets.SPRING_MAIL_USERNAME}}/' |
+          sed '/^spring.mail.password/s/NOT SET/${{secrets.SPRING_MAIL_PASSWORD}}/' >
+          application.properties
+
+      - name: Create Testing application.properties
+        shell: bash
+        working-directory: src/test/resources
+        run: >
+          cat application.example.properties |
+          sed '/^spring.security.oauth2.client.registration.google.client-id/s/NOT SET/${{secrets.OAUTH2_GOOGLE_CLIENT_ID}}/' |
+          sed '/^spring.security.oauth2.client.registration.google.client-secret/s/NOT SET/${{secrets.OAUTH2_GOOGLE_CLIENT_SECRET}}/' |
+          sed '/^spring.security.oauth2.client.registration.github.client-id/s/NOT SET/${{secrets.OAUTH2_GITHUB_CLIENT_ID}}/' |
+          sed '/^spring.security.oauth2.client.registration.github.client-secret/s/NOT SET/${{secrets.OAUTH2_GITHUB_CLIENT_SECRET}}/' >
+          application.properties
+
       - name: Setup Gradle and Build
         uses: gradle/gradle-build-action@v2
         with:
