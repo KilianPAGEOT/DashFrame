@@ -11,7 +11,7 @@ import AddWidgetModalVue from "./AddWidgetModal.vue";
     <div class="columnWidget">
       <div class="orderWidget">
         <div class="WidgetWeather">
-          <h3>Wethear of Nantes</h3>
+          <h3>Weather of Nantes</h3>
           <span>27°C</span>
         </div>
       </div>
