@@ -765,6 +765,12 @@ export interface SteamGameNewsWidgetConfigurationAllOf {
  */
 export interface SteamGameNewsWidgetConfigurationAllOfParameters {
   /**
+   * How many news entries you want to see
+   * @type {number}
+   * @memberof SteamGameNewsWidgetConfigurationAllOfParameters
+   */
+  newsCount?: number;
+  /**
    *
    * @type {string}
    * @memberof SteamGameNewsWidgetConfigurationAllOfParameters
@@ -809,10 +815,10 @@ export interface SteamGamePopulationWidgetConfiguration {
   position?: number;
   /**
    *
-   * @type {SteamGameNewsWidgetConfigurationAllOfParameters}
+   * @type {SteamGamePopulationWidgetConfigurationAllOfParameters}
    * @memberof SteamGamePopulationWidgetConfiguration
    */
-  parameters: SteamGameNewsWidgetConfigurationAllOfParameters;
+  parameters: SteamGamePopulationWidgetConfigurationAllOfParameters;
 }
 /**
  * Configuration for the Steam game population widget
@@ -822,10 +828,23 @@ export interface SteamGamePopulationWidgetConfiguration {
 export interface SteamGamePopulationWidgetConfigurationAllOf {
   /**
    *
-   * @type {SteamGameNewsWidgetConfigurationAllOfParameters}
+   * @type {SteamGamePopulationWidgetConfigurationAllOfParameters}
    * @memberof SteamGamePopulationWidgetConfigurationAllOf
    */
-  parameters: SteamGameNewsWidgetConfigurationAllOfParameters;
+  parameters: SteamGamePopulationWidgetConfigurationAllOfParameters;
+}
+/**
+ *
+ * @export
+ * @interface SteamGamePopulationWidgetConfigurationAllOfParameters
+ */
+export interface SteamGamePopulationWidgetConfigurationAllOfParameters {
+  /**
+   *
+   * @type {string}
+   * @memberof SteamGamePopulationWidgetConfigurationAllOfParameters
+   */
+  gameNameOrId: string;
 }
 /**
  * A Steam user

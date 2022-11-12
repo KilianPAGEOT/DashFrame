@@ -306,6 +306,10 @@ components:
             parameters:
               type: object
               properties:
+                newsCount:
+                  type: integer
+                  minimum: 1
+                  description: How many news entries you want to see
                 gameNameOrId:
                   type: string
                   minLength: 1
