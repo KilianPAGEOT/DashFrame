@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import iconSet from "quasar/icon-set/ionicons-v4";
 import "@quasar/extras/ionicons-v4/ionicons-v4.css";
+import {
+  BASE_PATH,
+  Configuration,
+  InformationApi,
+  ServicesApi,
+  WidgetsApi,
+} from "../api";
 </script>
 
 <template>
@@ -9,9 +16,13 @@ import "@quasar/extras/ionicons-v4/ionicons-v4.css";
       <div class="modal-mask">
         <div class="modal-wrapper">
           <div class="modal-back">
-            <div class="listService" style="overflow-y: scroll">
+            <div class="listService">
               <h4 style="margin: 10px">List of Widgets</h4>
-              <q-list bordered v-for="service in services">
+              <q-list
+                bordered
+                v-for="service in services"
+                v-bind:key="service.id"
+              >
                 <q-item
                   style="z-index: 1"
                   clickable
@@ -23,7 +34,10 @@ import "@quasar/extras/ionicons-v4/ionicons-v4.css";
                       {{ service.name }}
                     </h6>
                     <div v-if="service.displayWidget">
-                      <q-list v-for="widget in service.widgets">
+                      <q-list
+                        v-for="widget in service.widgets"
+                        v-bind:key="widget.id"
+                      >
                         <q-item
                           style="
                             border: 2px solid rgb(36 36 36);
@@ -33,7 +47,9 @@ import "@quasar/extras/ionicons-v4/ionicons-v4.css";
                           "
                           clickable
                           v-ripple
-                          @click.stop="showInfo(widget.id, service.widgets)"
+                          @click.stop="
+                            showInfo(widget.id, services, service.widgets)
+                          "
                         >
                           <q-item-section
                             ><h8 style="margin: 4px">
@@ -49,6 +65,84 @@ import "@quasar/extras/ionicons-v4/ionicons-v4.css";
                   </q-item-section>
                 </q-item>
               </q-list>
+            </div>
+            <div
+              style="
+                background: #d9d9d9;
+                border-radius: 20px;
+                margin: 12px;
+                width: 65%;
+                height: 95%;
+                flex-grow: 6;
+                overflow-y: scroll;
+              "
+            >
+              <div v-for="service in services" v-bind:key="service.id">
+                <div v-for="widget in service.widgets" v-bind:key="widget.id">
+                  <div
+                    v-if="widget.display"
+                    style="display: flex; flex-direction: column"
+                  >
+                    <div
+                      style="
+                        display: flex;
+                        align-items: flex-start;
+                        justify-content: space-between;
+                        margin: 20px;
+                      "
+                    >
+                      <h3 style="margin: 10px">{{ widget.name }}</h3>
+                      <div
+                        v-if="service.name == 'Steam'"
+                        style="margin-top: 15px"
+                      >
+                        <label for="inputparam">User ID :</label>
+                        <q-input
+                          style="margin-top: 10px"
+                          filled
+                          v-model="service.token"
+                        />
+                      </div>
+                    </div>
+                    <div style="margin: 20px">
+                      <h6 style="margin: 0px; margin-bottom: 10px">
+                        Widget Description :
+                      </h6>
+                      {{ widget.description }}
+                    </div>
+                    <div style="width: 40%; margin: 20px">
+                      <label for="inputparam">refreshRate :</label>
+                      <q-input
+                        style="margin-top: 10px"
+                        filled
+                        v-model="widget.refreshRate"
+                      />
+                    </div>
+                    <div
+                      v-for="param in widget.parameters"
+                      v-bind:key="param.name"
+                      style="width: 40%; margin: 20px"
+                    >
+                      <label for="inputparam"
+                        >{{ (param as any).name }} :</label
+                      >
+                      <q-input
+                        style="margin-top: 10px"
+                        filled
+                        v-model="(param as any)[(param as any).name]"
+                      />
+                    </div>
+                    <div style="align-self: end; margin: 25px">
+                      <q-btn
+                        class="btnSubmit"
+                        style="background: rgb(89 89 89); color: white"
+                        label="Add Widget"
+                        @click="CreateWidget(widget, service)"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <q-btn
               class="btnClose"
@@ -72,59 +166,169 @@ export default {
           id: 1,
           name: "Steam",
           displayWidget: false,
+          token: "token",
+          type: "steam",
           widgets: [
-            { id: 1, name: "Friend List", display: false },
-            { id: 2, name: "Game News", display: false },
-            { id: 3, name: "Game Population", display: false },
+            {
+              id: 1,
+              name: "Friend List",
+              display: false,
+              description: "Widget to display your friend list",
+              type: "steam/friends_list",
+              refreshRate: 10,
+              parameters: [{ name: "showOffline", showOffline: true }],
+            },
+            {
+              id: 2,
+              name: "Game News",
+              display: false,
+              description: "Widget to news on a game",
+              type: "steam/game_news",
+              refreshRate: 10,
+              parameters: [
+                { name: "gameNameOrId", gameNameOrId: "You game ID" },
+              ],
+            },
+            {
+              id: 3,
+              name: "Game Population",
+              display: false,
+              description:
+                "Widget to display population in a game of your choice",
+              type: "steam/game_population",
+              refreshRate: 10,
+              parameters: [
+                { name: "gameNameOrId", gameNameOrId: "You game ID" },
+              ],
+            },
           ],
         },
         {
           id: 2,
           name: "Epic Games",
           displayWidget: false,
+          token: "token",
+          type: "epic_games",
           widgets: [
-            { id: 1, name: "Friend List", display: false },
-            { id: 2, name: "Free Game", display: false },
+            {
+              id: 1,
+              name: "Friend List",
+              display: false,
+              description: "Widget to display your friend list",
+              type: "epic_games/friends_list",
+              refreshRate: 10,
+              parameters: [{ name: "showOffline", showOffline: true }],
+            },
+            {
+              id: 2,
+              name: "Free Game",
+              display: false,
+              type: "epic_games/free_games",
+              description: "Widget to display free games on Epic Games",
+              refreshRate: 10,
+            },
           ],
         },
         {
           id: 3,
           name: "Youtube",
           displayWidget: false,
+          token: "token",
+          type: "youtube",
           widgets: [
-            { id: 1, name: "List of Followed channels", display: false },
-            { id: 2, name: "Stats for your channel", display: false },
-            { id: 3, name: "Specific video stats", display: false },
+            {
+              id: 1,
+              name: "List of Followed channels",
+              display: false,
+              description:
+                "Widget to see if your subscriptions are live on Youtube",
+              type: "youtube/subsribed_channels",
+              refreshRate: 10,
+              parameters: [{ name: "filter", filter: "Choose Channel" }],
+            },
+            {
+              id: 2,
+              name: "Stats for your channel",
+              display: false,
+              description:
+                "Widget to display some statistics on your Youtube channel",
+              type: "youtube/channel_statistics",
+              refreshRate: 10,
+              parameters: [{ name: "channel", channel: "Choose Channel" }],
+            },
+            {
+              id: 3,
+              name: "Specific video stats",
+              display: false,
+              description:
+                "Widget to display some statistics on specific Video",
+              type: "youtube/video_statistics",
+              refreshRate: 10,
+              parameters: [{ name: "video", video: "Choose video" }],
+            },
           ],
         },
         {
           id: 4,
           name: "Weather and Time",
           displayWidget: false,
-          widgets: [{ id: 1, name: "Wheater Widget", display: false }],
+          token: "token",
+          type: "weather_time",
+          widgets: [
+            {
+              id: 1,
+              name: "Wheater Widget",
+              display: false,
+              description: "Widget to display Weather in you city",
+              type: "weather_time/default",
+              refreshRate: 10,
+              parameters: [{ name: "location", location: "Choose location" }],
+            },
+          ],
         },
         {
           id: 5,
           name: "Twitch",
           displayWidget: false,
+          token: "token",
+          type: "twitch",
           widgets: [
-            { id: 1, name: "List of Followed channels", display: false },
+            {
+              id: 1,
+              name: "List of Followed channels",
+              display: false,
+              description:
+                "Widget to see if your subscriptions are live on Twitch",
+              type: "twitch/followed_channels",
+              refreshRate: 10,
+              parameters: [{ name: "filter", filter: "Choose channel" }],
+            },
           ],
         },
         {
           id: 6,
           name: "RSS",
           displayWidget: false,
-          widgets: [{ id: 1, name: "RSS Feed", display: false }],
+          token: "token",
+          type: "rss",
+          widgets: [
+            {
+              id: 1,
+              name: "RSS Feed",
+              display: false,
+              description: "Widget to display RSS Feed of your choice",
+              type: "rss/feed",
+              refreshRate: 10,
+              parameters: [{ name: "url", url: "Choose url" }],
+            },
+          ],
         },
       ],
     };
   },
   methods: {
     close() {
-      (
-        this.$parent || { $data: { showModalAddWidget: true } }
-      ).$data.showModalAddWidget = false;
+      (this.$parent as any).$data.showModalAddWidget = false;
     },
     showWidget(id: number, services: any[]) {
       if (services[id - 1].displayWidget) {
@@ -137,12 +341,70 @@ export default {
         services[id - 1].displayWidget = true;
       }
     },
-    showInfo(id: number, widgets: any[]) {
-      console.log(widgets[id - 1].name);
-      widgets.forEach((widget: { display: boolean }) => {
-        widget.display = false;
+    showInfo(id: number, services: any[], widgets: any[]) {
+      services.forEach((service: { widgets: { display: boolean }[] }) => {
+        service.widgets.forEach((widget: { display: boolean }) => {
+          widget.display = false;
+        });
       });
       widgets[id - 1].display = true;
+    },
+    async CreateWidget(widget: any, service: any) {
+      const servicesApi = new ServicesApi();
+      const widgetApi = new WidgetsApi();
+      const [services] = await Promise.all([
+        servicesApi.createService(
+          {
+            createServiceRequest: {
+              type: service.type,
+              username: "gg",
+              token: service.token,
+            },
+          },
+          { credentials: "include" }
+        ),
+      ]);
+      let nameparm = undefined;
+      let widgets = undefined;
+      if (widget.type != "epic_games/free_games") {
+        nameparm = widget.parameters[0].name;
+        widgets = await Promise.all([
+          widgetApi.createWidget(
+            {
+              createWidgetRequest: {
+                serviceId: services.id,
+                config: {
+                  name: widget.name,
+                  refreshRate: widget.refreshRate,
+                  type: widget.type,
+                  columnPos: 0,
+                  position: 0,
+                  parameters: widget.parameters[0],
+                },
+              },
+            },
+            { credentials: "include" }
+          ),
+        ]);
+      } else {
+        widgets = await Promise.all([
+          widgetApi.createWidget(
+            {
+              createWidgetRequest: {
+                serviceId: services.id,
+                config: {
+                  name: widget.name,
+                  refreshRate: widget.refreshRate,
+                  type: "epic_games/free_games",
+                  columnPos: 1,
+                  position: 1,
+                },
+              },
+            },
+            { credentials: "include" }
+          ),
+        ]);
+      }
     },
   },
 };
@@ -156,28 +418,26 @@ export default {
   background: #878787;
   backdrop-filter: blur(10px);
   border-radius: 25px;
-  width: 75vw;
+  width: 65vw;
   height: 50vh;
   margin: 50px;
-  display: flex;
-  position: relative;
   display: flex;
   position: relative;
   align-items: flex-start;
   justify-content: flex-end;
 }
 .listService {
-  position: absolute;
-  left: 0.83%;
-  right: 66.69%;
-  top: 1.51%;
-  bottom: 1.91%;
   background: #4d4d4d;
+  flex-grow: 2;
   border-radius: 20px;
+  margin: 12px;
+  overflow-y: scroll;
+  max-height: 95%;
 }
 .btnClose {
   position: absolute;
   width: 33.62px;
   height: 33.62px;
+  margin: 5px;
 }
 </style>

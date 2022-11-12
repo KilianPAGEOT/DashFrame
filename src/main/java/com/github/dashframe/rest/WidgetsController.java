@@ -61,8 +61,8 @@ public class WidgetsController implements WidgetsApi {
                 new Widget(
                     service.get(),
                     createWidgetRequest.getConfig().getName(),
-                    createWidgetRequest.getPosition(),
-                    createWidgetRequest.getColumnPos(),
+                    createWidgetRequest.getConfig().getPosition(),
+                    createWidgetRequest.getConfig().getColumnPos(),
                     createWidgetRequest.getConfig().getType(),
                     createWidgetRequest.getConfig().getRefreshRate()
                 )
@@ -400,9 +400,11 @@ public class WidgetsController implements WidgetsApi {
             case YOUTUBE_CHANNEL_STATISTICS -> widgetParameterDAO.save(
                 new WidgetParameter(widget, "channel", widgetConfiguration.getParameters().get("channel").toString())
             );
-            case YOUTUBE_SUBSRIBED_CHANNELS -> widgetParameterDAO.save(
-                new WidgetParameter(widget, "filter", widgetConfiguration.getParameters().get("filter").toString())
-            );
+            case YOUTUBE_SUBSRIBED_CHANNELS -> {
+                widgetParameterDAO.save(
+                    new WidgetParameter(widget, "filter", widgetConfiguration.getParameters().get("filter").toString())
+                );
+            }
             case YOUTUBE_VIDEO_STATISTICS -> widgetParameterDAO.save(
                 new WidgetParameter(widget, "video", widgetConfiguration.getParameters().get("video").toString())
             );

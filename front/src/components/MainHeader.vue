@@ -146,7 +146,6 @@ span {
   margin: 10px;
   background: #2c2c2c;
   border-radius: 20px;
-  overflow-y: ;
 }
 .connect_button {
   box-sizing: border-box;
