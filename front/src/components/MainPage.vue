@@ -21,11 +21,5 @@ export default {
       column: 0,
     };
   },
-  mounted() {
-    console.log(this.$watch);
-    console.log(this.$props);
-
-    console.log(this.$emit);
-  },
 };
 </script>
