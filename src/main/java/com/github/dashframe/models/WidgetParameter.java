@@ -11,8 +11,8 @@ public class WidgetParameter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @JoinColumn(nullable = false)
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "widget_id", nullable = false)
     private Widget widget;
 
     @Column(nullable = false)
@@ -59,6 +59,14 @@ public class WidgetParameter {
 
     public String getValue() {
         return value;
+    }
+
+    public long getLongValue(long defaultValue) {
+        try {
+            return Long.parseLong(this.getValue());
+        } catch (NumberFormatException ignored) {
+            return defaultValue;
+        }
     }
 
     public void setValue(String value) {
