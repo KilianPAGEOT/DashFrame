@@ -24,9 +24,6 @@ import javax.validation.constraints.*;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", visible = true)
 @JsonSubTypes(
     {
-        @JsonSubTypes.Type(value = WidgetDeletionEvent.class, name = "WidgetDeletionEvent"),
-        @JsonSubTypes.Type(value = WidgetErrorEvent.class, name = "WidgetErrorEvent"),
-        @JsonSubTypes.Type(value = WidgetRefreshEvent.class, name = "WidgetRefreshEvent"),
         @JsonSubTypes.Type(value = WidgetDeletionEvent.class, name = "widgets/deletion"),
         @JsonSubTypes.Type(value = WidgetErrorEvent.class, name = "widgets/error"),
         @JsonSubTypes.Type(value = WidgetRefreshEvent.class, name = "widgets/refresh"),
