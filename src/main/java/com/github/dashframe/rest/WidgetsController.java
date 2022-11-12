@@ -98,8 +98,8 @@ public class WidgetsController implements WidgetsApi {
         }
         ArrayList<Service> services = serviceDAO.findByUser(user);
         if (services.size() != 0) {
+            ArrayList<WidgetInstance> widgetInstances = new ArrayList<>();
             for (Service service : services) {
-                ArrayList<WidgetInstance> widgetInstances = new ArrayList<>();
                 ArrayList<Widget> widgets = widgetDAO.findByService(service);
                 if (widgets.size() != 0) {
                     for (Widget widget : widgets) {
@@ -112,9 +112,9 @@ public class WidgetsController implements WidgetsApi {
                                 .config(widgetConfiguration)
                         );
                     }
-                    return ResponseEntity.ok(widgetInstances);
+
                 }
-            }
+            }return ResponseEntity.ok(widgetInstances);
         }
         return ResponseEntity.badRequest().body(null);
     }
