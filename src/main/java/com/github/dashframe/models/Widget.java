@@ -1,8 +1,10 @@
 package com.github.dashframe.models;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 import javax.persistence.*;
+import org.springframework.lang.NonNull;
 
 @Entity(name = "widgets")
 public class Widget {
@@ -32,6 +34,10 @@ public class Widget {
 
     @Column
     private int refreshRate;
+
+    @OneToMany(mappedBy = "widget")
+    @MapKey(name = "name")
+    private Map<String, WidgetParameter> parameters;
 
     public Widget() {}
 
@@ -112,6 +118,51 @@ public class Widget {
 
     public int getRefreshRate() {
         return refreshRate;
+    }
+
+    public void setParameters(Map<String, WidgetParameter> parameters) {
+        this.parameters = parameters;
+    }
+
+    public Map<String, WidgetParameter> getParameters() {
+        return this.parameters;
+    }
+
+    @NonNull
+    public String getParameter(String name, @NonNull String defaultValue) {
+        var params = this.getParameters();
+        if (params != null) {
+            var param = params.get(name);
+            if (param != null) {
+                return param.getValue();
+            }
+        }
+        return defaultValue;
+    }
+
+    public long getParameterAsLong(String name, long defaultValue) {
+        var params = this.getParameters();
+        if (params != null) {
+            var param = params.get(name);
+            if (param != null) {
+                return param.getLongValue(defaultValue);
+            }
+        }
+        return defaultValue;
+    }
+
+    @NonNull
+    public WidgetParameter getParameterOrThrow(String name) {
+        var params = this.getParameters();
+        if (params != null) {
+            var param = params.get(name);
+            if (param != null) {
+                return param;
+            }
+        }
+        throw new IllegalStateException(
+            "Missing parameter \"" + name + "\" for widget #" + this.getId() + " of type " + this.getType()
+        );
     }
 
     @Override
