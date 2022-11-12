@@ -408,18 +408,6 @@ export default {
       }
     },
   },
-  watch: {
-    async showModalAddWidget() {
-      console.log((this.$parent as any).$data.showModalAddWidget);
-      const widgetsApi = new WidgetsApi();
-      const widgets = await Promise.all([
-        widgetsApi.listWidgets({}, { credentials: "include" }),
-      ]);
-      this.widgets = [];
-      this.widgets.push(widgets[0]);
-      console.log(this.widgets);
-    },
-  },
 };
 </script>
 <style>
