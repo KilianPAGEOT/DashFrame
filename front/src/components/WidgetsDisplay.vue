@@ -9,13 +9,9 @@ import {
 </script>
 
 <template>
-  <div
-    class="columnWidget"
-    v-if="widgets.length != 0"
-    v-for="column in maxColumn"
-  >
+  <div class="columnWidget" v-for="column in maxColumn" :key="column">
     <div class="orderWidget">
-      <div v-for="widget in widgets[0]">
+      <div v-for="widget in widgets[0]" :key="widget.id">
         <div v-if="widget.config.columnPos == column">
           <div class="WidgetWeather">
             <h6>{{ widget.config.name }}</h6>
@@ -46,14 +42,12 @@ export default {
       maxColumn: 0,
       maxPos: 0,
       showModalAddWidget: (this.$parent as any).$data.showModalAddWidget,
-      user: {},
     };
   },
   methods: {
-    open(Column: any) {
+    open(column: any) {
       (this.$parent as any).$data.showModalAddWidget = true;
-      (this.$parent as any).$data.Column = Column;
-      console.log((this.$parent as any).$data.Column);
+      (this.$parent as any).$data.column = column;
     },
     async update() {
       const widgetsApi = new WidgetsApi();
@@ -78,7 +72,7 @@ export default {
     });
   },
 
-  watch: {
+  /*watch: {
     async showModalAddWidget() {
       console.log(this.showModalAddWidget);
       const widgetsApi = new WidgetsApi();
@@ -89,7 +83,7 @@ export default {
       this.widgets.push(widgets[0]);
       console.log(this.widgets);
     },
-  },
+  },*/
 };
 </script>
 

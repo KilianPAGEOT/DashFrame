@@ -112,9 +112,9 @@ public class WidgetsController implements WidgetsApi {
                                 .config(widgetConfiguration)
                         );
                     }
-
                 }
-            }return ResponseEntity.ok(widgetInstances);
+            }
+            return ResponseEntity.ok(widgetInstances);
         }
         return ResponseEntity.badRequest().body(null);
     }

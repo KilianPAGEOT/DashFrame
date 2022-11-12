@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import "../assets/modalStyle.css";
 import AddWidgetModalVue from "./AddWidgetModal.vue";
-import WidgetsVue from "./Widgets.vue";
+import WidgetsVue from "./WidgetsDisplay.vue";
 </script>
 
 <template>
@@ -18,14 +18,8 @@ export default {
   data() {
     return {
       showModalAddWidget: false,
-      Column: 0,
+      column: 0,
     };
-  },
-  mounted() {
-    console.log(this.$watch);
-    console.log(this.$props);
-
-    console.log(this.$emit);
   },
 };
 </script>
