@@ -10,6 +10,7 @@ import com.github.dashframe.util.Errors;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class EventsWebSocketHandler extends TextWebSocketHandler {
 
     private final Logger logger = LoggerFactory.getLogger("EventsWebSocketHandler");
 
-    private final Map<WebSocketSession, EventListener> sessions = new ConcurrentHashMap<>();
+    private final Map<WebSocketSession, WebSocketEventListener> sessions = new ConcurrentHashMap<>();
 
     /**
      * The JSON object mapper instance.
@@ -53,24 +54,20 @@ public class EventsWebSocketHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) {
         this.logger.info("Connection established from {} with session {}", session.getRemoteAddress(), session);
 
-        EventListener listener = event -> this.sendEvent(session, event);
-        this.sessions.put(session, listener);
-
         var user = this.findSessionUser(session);
 
-        if (user != null) this.eventHandler.addListener(user.getId(), listener);
+        if (user != null) {
+            var listener = new WebSocketEventListener(session, user, this::sendEvent);
+            this.sessions.put(session, listener);
+            this.logger.info("listening to user #{}", user.getId());
+            this.eventHandler.addListener(user, listener);
+        }
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         this.logger.info("Connection closed for session {}, reason: {}", session, status.getReason());
-
-        EventListener listener = this.sessions.remove(session);
-        if (listener != null) {
-            var user = this.findSessionUser(session);
-
-            if (user != null) this.eventHandler.removeListener(user.getId(), listener);
-        }
+        this.tryCloseSession(this.sessions.get(session));
     }
 
     @Override
@@ -92,22 +89,33 @@ public class EventsWebSocketHandler extends TextWebSocketHandler {
     /**
      * Sends an {@link Event} (as JSON) to the given session.
      *
-     * @param session The target WS session.
-     * @param event   The event to send to the client.
+     * @param event The event to send to the client.
      */
-    private void sendEvent(WebSocketSession session, Event event) {
+    private void sendEvent(WebSocketEventListener listener, Event event) {
         try {
-            this.sendJsonMessage(session, event);
+            if (listener.session.isOpen()) {
+                this.sendJsonMessage(listener.session, event);
+                return;
+            }
         } catch (Exception error) {
-            logger.error("Closing session due to exception for " + session, error);
-            if (session.isOpen()) {
-                try {
-                    session.close(CloseStatus.SERVER_ERROR);
-                } catch (Throwable ex) {
-                    // ignore
-                }
+            this.logger.error("Closing session due to exception for " + listener.session, error);
+        }
+        this.tryCloseSession(listener);
+    }
+
+    private void tryCloseSession(@Nullable WebSocketEventListener listener) {
+        if (listener == null) {
+            return;
+        }
+        if (listener.session.isOpen()) {
+            try {
+                listener.session.close(CloseStatus.SERVER_ERROR);
+            } catch (Throwable ex) {
+                // ignore
             }
         }
+        this.sessions.remove(listener.session);
+        this.eventHandler.removeListener(listener.user, listener);
     }
 
     /**
@@ -119,5 +127,17 @@ public class EventsWebSocketHandler extends TextWebSocketHandler {
         var username = principal != null ? principal.getName() : null;
 
         return this.userDAO.findByUsername(username);
+    }
+
+    private record WebSocketEventListener(
+        WebSocketSession session,
+        User user,
+        BiConsumer<WebSocketEventListener, Event> onEvent
+    )
+        implements EventListener {
+        @Override
+        public void onEvent(Event event) {
+            this.onEvent.accept(this, event);
+        }
     }
 }
