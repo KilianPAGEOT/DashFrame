@@ -57,6 +57,7 @@ public class WidgetsController implements WidgetsApi {
     ) {
         Optional<Service> service = serviceDAO.findById(createWidgetRequest.getServiceId());
         if (service.isPresent()) {
+            System.out.println(createWidgetRequest.getConfig());
             Widget widget = widgetDAO.save(
                 new Widget(
                     service.get(),
