@@ -1,5 +1,6 @@
 package com.github.dashframe.service.event;
 
+import com.github.dashframe.models.User;
 import com.github.dashframe.models.json.Event;
 import java.util.Arrays;
 import java.util.Map;
@@ -13,24 +14,24 @@ import org.springframework.stereotype.Service;
 @Service
 public final class EventHandler {
 
-    private final Map<Integer, Set<EventListener>> userEventListeners = new ConcurrentHashMap<>();
+    private final Map<User, Set<EventListener>> userEventListeners = new ConcurrentHashMap<>();
     private final Logger logger = LoggerFactory.getLogger("EventHandler");
 
     /**
      * Sends an arbitrary event payload to all listeners.
      *
-     * @param userId The main concerned user for this event.
+     * @param user The main concerned user for this event.
      * @param event  The event to broadcast.
      */
-    public void broadcast(int userId, Event event) {
-        Set<EventListener> listeners = this.userEventListeners.get(userId);
+    public void broadcast(User user, Event event) {
+        Set<EventListener> listeners = this.userEventListeners.get(user);
         int listenerCount = listeners == null ? 0 : listeners.size();
 
         logger.info(
             "Broadcasting event of type {} to {} listeners for user #{}",
             event.getType(),
             listenerCount,
-            userId
+            user.getId()
         );
         if (listenerCount == 0) return;
 
@@ -45,23 +46,30 @@ public final class EventHandler {
     }
 
     @SafeVarargs
-    public final <E extends Event, D> void broadcast(int userId, EventFactory<E, D> eventFactory, D... eventData) {
-        this.broadcast(userId, eventFactory.makeEvent(System.currentTimeMillis(), Arrays.asList(eventData)));
+    public final <E extends Event, D> void broadcast(User user, EventFactory<E, D> eventFactory, D... eventData) {
+        this.broadcast(user, eventFactory.makeEvent(System.currentTimeMillis(), Arrays.asList(eventData)));
     }
 
-    public void addListener(int userId, EventListener listener) {
-        Set<EventListener> listeners = this.userEventListeners.get(userId);
+    public void addListener(User user, EventListener listener) {
+        Set<EventListener> listeners = this.userEventListeners.get(user);
 
         if (listeners == null) {
             listeners = new CopyOnWriteArraySet<>();
-            this.userEventListeners.put(userId, listeners);
+            this.userEventListeners.put(user, listeners);
         }
         listeners.add(listener);
     }
 
-    public void removeListener(int userId, EventListener listener) {
-        Set<EventListener> listeners = this.userEventListeners.get(userId);
+    public void removeListener(User user, EventListener listener) {
+        Set<EventListener> listeners = this.userEventListeners.get(user);
 
-        if (listeners != null) listeners.remove(listener);
+        if (listeners != null) {
+            listeners.remove(listener);
+            if (listeners.isEmpty()) this.userEventListeners.remove(user);
+        }
+    }
+
+    public Set<User> getListeningUsers() {
+        return this.userEventListeners.keySet();
     }
 }

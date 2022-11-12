@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.github.dashframe.models.User;
 import com.github.dashframe.models.json.*;
 import com.github.dashframe.service.event.EventHandler;
 import com.github.dashframe.service.event.EventListener;
@@ -40,8 +41,11 @@ public final class EventTests {
 
     @Test
     void singleListener() {
+        var user = new User();
+        user.setId(0);
+
         this.eventHandler.addListener(
-                0,
+                user,
                 event -> {
                     assertEquals("widgets/deletion", event.getType());
                     assertInstanceOf(WidgetDeletionEvent.class, event);
@@ -52,13 +56,16 @@ public final class EventTests {
                 }
             );
 
-        this.eventHandler.broadcast(0, Events.WIDGET_DELETION, 42, 3, 8);
+        this.eventHandler.broadcast(user, Events.WIDGET_DELETION, 42, 3, 8);
     }
 
     @Test
     void widgetError() {
+        var user = new User();
+        user.setId(80);
+
         this.eventHandler.addListener(
-                80,
+                user,
                 event -> {
                     assertEquals("widgets/error", event.getType());
                     assertInstanceOf(WidgetErrorEvent.class, event);
@@ -73,7 +80,7 @@ public final class EventTests {
             );
 
         this.eventHandler.broadcast(
-                80,
+                user,
                 Events.WIDGET_ERROR,
                 new WidgetErrorEventAllOfDataWidgets().error(Errors.serverToClientOnlySocket("test").getError())
             );
@@ -81,10 +88,18 @@ public final class EventTests {
 
     @Test
     void noMatchingListener() {
-        this.eventHandler.addListener(80, event -> fail("The event handler for user 80 should not have been called"));
+        var user1 = new User();
+        var user2 = new User();
+        user1.setId(80);
+        user2.setId(1);
+
+        this.eventHandler.addListener(
+                user1,
+                event -> fail("The event handler for user 80 should not have been called")
+            );
 
         this.eventHandler.broadcast(
-                1,
+                user2,
                 Events.WIDGET_ERROR,
                 new WidgetErrorEventAllOfDataWidgets().error(Errors.serverToClientOnlySocket("test").getError())
             );
@@ -93,6 +108,11 @@ public final class EventTests {
     @Test
     @SuppressWarnings("FunctionalExpressionCanBeFolded")
     void multipleListeners() {
+        var user1 = new User();
+        var user2 = new User();
+        user1.setId(42);
+        user2.setId(84);
+
         var counter = new AtomicInteger(0);
         EventListener listener = event -> {
             assertEquals("widgets/refresh", event.getType());
@@ -100,12 +120,12 @@ public final class EventTests {
             counter.incrementAndGet();
         };
 
-        this.eventHandler.addListener(42, listener::onEvent);
-        this.eventHandler.addListener(42, listener::onEvent);
-        this.eventHandler.addListener(42, listener::onEvent);
-        this.eventHandler.addListener(84, listener::onEvent);
+        this.eventHandler.addListener(user1, listener::onEvent);
+        this.eventHandler.addListener(user1, listener::onEvent);
+        this.eventHandler.addListener(user1, listener::onEvent);
+        this.eventHandler.addListener(user2, listener::onEvent);
 
-        this.eventHandler.broadcast(42, Events.WIDGET_REFRESH, new WidgetRefreshEventAllOfDataWidgets());
+        this.eventHandler.broadcast(user1, Events.WIDGET_REFRESH, new WidgetRefreshEventAllOfDataWidgets());
 
         assertEquals(3, counter.get(), "3 event listeners should have been called");
     }
