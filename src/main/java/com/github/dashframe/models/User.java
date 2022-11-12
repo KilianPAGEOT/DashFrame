@@ -3,6 +3,7 @@ package com.github.dashframe.models;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.*;
 import org.hibernate.annotations.Comment;
 import org.springframework.security.core.GrantedAuthority;
@@ -159,5 +160,18 @@ public class User implements UserDetails {
 
     public void setEmailVerificationToken(String emailVerificationToken) {
         this.emailVerificationToken = emailVerificationToken;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof User other) {
+            return Objects.equals(other.getId(), this.getId());
+        }
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

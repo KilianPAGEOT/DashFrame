@@ -2,6 +2,7 @@ package com.github.dashframe.models;
 
 import com.github.dashframe.models.json.ServiceType;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.*;
 
 @Entity(name = "services")
@@ -92,5 +93,18 @@ public class Service {
     @PrePersist
     public void onCreate() {
         this.createdAt = new Date();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Service other) {
+            return Objects.equals(other.getId(), this.getId());
+        }
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
