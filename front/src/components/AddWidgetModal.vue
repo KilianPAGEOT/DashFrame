@@ -377,7 +377,7 @@ export default {
                   name: widget.name,
                   refreshRate: widget.refreshRate,
                   type: widget.type,
-                  columnPos: 0,
+                  columnPos: (this.$parent as any).$data.Column,
                   position: 0,
                   parameters: widget.parameters[0],
                 },
@@ -396,7 +396,7 @@ export default {
                   name: widget.name,
                   refreshRate: widget.refreshRate,
                   type: "epic_games/free_games",
-                  columnPos: 1,
+                  columnPos: (this.$parent as any).$data.Column,
                   position: 1,
                 },
               },
@@ -404,19 +404,8 @@ export default {
             { credentials: "include" }
           ),
         ]);
+        window.location.reload();
       }
-    },
-  },
-  watch: {
-    async showModalAddWidget() {
-      console.log((this.$parent as any).$data.showModalAddWidget);
-      const widgetsApi = new WidgetsApi();
-      const widgets = await Promise.all([
-        widgetsApi.listWidgets({}, { credentials: "include" }),
-      ]);
-      this.widgets = [];
-      this.widgets.push(widgets[0]);
-      console.log(this.widgets);
     },
   },
 };
