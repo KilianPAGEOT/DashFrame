@@ -1,7 +1,7 @@
 package com.github.dashframe.models;
 
-import com.github.dashframe.models.json.ServiceType;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.*;
 
 @Entity(name = "widgets")
@@ -112,5 +112,33 @@ public class Widget {
 
     public int getRefreshRate() {
         return refreshRate;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Widget other) {
+            return Objects.equals(other.getId(), this.getId());
+        }
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return (
+            "Widget{id = " +
+            this.getId() +
+            ", name = " +
+            this.getName() +
+            ", type = " +
+            this.getType() +
+            ", refreshRate" +
+            this.getRefreshRate() +
+            '}'
+        );
     }
 }
