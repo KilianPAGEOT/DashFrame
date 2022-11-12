@@ -5,8 +5,9 @@ import com.github.dashframe.models.Widget;
 import com.github.dashframe.models.json.SteamUser;
 import com.github.dashframe.models.json.WidgetType;
 import com.github.dashframe.service.service.SteamServiceManager;
+import com.github.dashframe.service.widget.AbstractWidgetManager;
 import com.github.dashframe.service.widget.WidgetContext;
-import com.github.dashframe.service.widget.WidgetManager;
+import com.github.dashframe.util.MonoUtil;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +17,7 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class SteamFriendsListWidgetManager
-    implements WidgetManager<SteamServiceManager.Context, SteamFriendsListWidgetManager.Context, List<SteamUser>> {
+    extends AbstractWidgetManager<SteamServiceManager.Context, SteamFriendsListWidgetManager.Context, List<SteamUser>> {
 
     @Override
     public WidgetType getType() {
@@ -34,34 +35,42 @@ public class SteamFriendsListWidgetManager
         var apiKey = widgetContext.serviceContext.apiKey();
         var steamid = widgetContext.serviceContext.steamid();
 
-        return client
-            .get()
-            .uri(uriBuilder ->
-                uriBuilder
-                    .path("ISteamUser/GetFriendList/v0001")
-                    .queryParam("key", apiKey)
-                    .queryParam("steamid", steamid)
-                    .queryParam("relationship", "friend")
-                    .build()
+        return MonoUtil
+            .ignoreExceptions(
+                client
+                    .get()
+                    .uri(uriBuilder ->
+                        uriBuilder
+                            .path("ISteamUser/GetFriendList/v0001")
+                            .queryParam("key", apiKey)
+                            .queryParam("steamid", steamid)
+                            .queryParam("relationship", "friend")
+                            .build()
+                    )
+                    .retrieve()
+                    .bodyToMono(FriendsListResponse.class),
+                error -> this.logger.debug("Failed to fetch friends list of Steam user {}", steamid)
             )
-            .retrieve()
-            .bodyToMono(FriendsListResponse.class)
             .flatMapMany(response -> {
                 List<SteamId> rawFriends = response.friendsList.friends;
                 // Steam's API expect a list of comma-separated steam IDs as a parameter
                 String ids = rawFriends.stream().map(SteamId::steamId).collect(Collectors.joining(","));
 
-                return client
-                    .get()
-                    .uri(uriBuilder ->
-                        uriBuilder
-                            .path("ISteamUser/GetPlayerSummaries/v0002")
-                            .queryParam("key", apiKey)
-                            .queryParam("steamids", ids)
-                            .build()
+                return MonoUtil
+                    .ignoreExceptions(
+                        client
+                            .get()
+                            .uri(uriBuilder ->
+                                uriBuilder
+                                    .path("ISteamUser/GetPlayerSummaries/v0002")
+                                    .queryParam("key", apiKey)
+                                    .queryParam("steamids", ids)
+                                    .build()
+                            )
+                            .retrieve()
+                            .bodyToMono(PlayerSummariesResponse.class),
+                        error -> this.logger.debug("Failed to fetch summaries of Steam users {}", ids, error)
                     )
-                    .retrieve()
-                    .bodyToMono(PlayerSummariesResponse.class)
                     // convert the response to a flux of Raw Steam users for easier post-processing
                     .flatMapIterable(summaries -> summaries.response.players);
             })
