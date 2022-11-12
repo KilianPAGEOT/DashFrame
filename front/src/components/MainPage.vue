@@ -18,6 +18,7 @@ export default {
   data() {
     return {
       showModalAddWidget: false,
+      Column: 0,
     };
   },
   mounted() {

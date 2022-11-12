@@ -9,25 +9,30 @@ import {
 </script>
 
 <template>
-  <div class="columnWidget">
+  <div
+    class="columnWidget"
+    v-if="widgets.length != 0"
+    v-for="column in maxColumn"
+  >
     <div class="orderWidget">
       <div v-for="widget in widgets[0]">
-        <div class="WidgetWeather">
-          <h6>{{ widget.config.name }}</h6>
-          <span>iWidget Info</span>
+        <div v-if="widget.config.columnPos == column">
+          <div class="WidgetWeather">
+            <h6>{{ widget.config.name }}</h6>
+            <span>iWidget Info</span>
+          </div>
         </div>
       </div>
     </div>
-    <button class="Elipse" @click="open">
+    <button class="Elipse" @click="open(column)">
       <div class="insideElipse">+</div>
     </button>
   </div>
   <div class="Empty">
-    <button class="Elipse" @click="open">
+    <button class="Elipse" @click="open(maxColumn + 1)">
       <div class="insideElipse">+</div>
     </button>
   </div>
-  <button class="Elipse" @click="api"></button>
 </template>
 
 <script lang="ts">
@@ -45,19 +50,18 @@ export default {
     };
   },
   methods: {
-    open() {
+    open(Column: any) {
       (this.$parent as any).$data.showModalAddWidget = true;
-      console.log(this.showModalAddWidget);
+      (this.$parent as any).$data.Column = Column;
+      console.log((this.$parent as any).$data.Column);
     },
-    async api() {
+    async update() {
       const widgetsApi = new WidgetsApi();
       const widgets = await Promise.all([
         widgetsApi.listWidgets({}, { credentials: "include" }),
       ]);
       this.widgets = [];
       this.widgets.push(widgets[0]);
-      console.log(this.widgets);
-      console.log(this.showModalAddWidget);
     },
   },
   async created() {
@@ -67,14 +71,9 @@ export default {
     ]);
     this.widgets = [];
     this.widgets.push(widgets[0]);
-    console.log(this.widgets);
-    console.log(this.showModalAddWidget);
     widgets[0].forEach((widget) => {
-      console.log(widget.config.columnPos);
-      if (this.maxColumn < widget.config.columnPos) {
-        this.maxColumn = widget.columnPos;
-        console.log(widget.columnPos);
-        console.log(this.maxColumn);
+      if (this.maxColumn < (widget.config as any).columnPos) {
+        this.maxColumn = (widget.config as any).columnPos;
       }
     });
   },
