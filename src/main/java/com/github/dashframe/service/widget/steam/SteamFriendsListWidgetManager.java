@@ -1,6 +1,5 @@
 package com.github.dashframe.service.widget.steam;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.dashframe.models.Widget;
 import com.github.dashframe.models.json.SteamUser;
 import com.github.dashframe.models.json.WidgetType;
@@ -11,6 +10,7 @@ import com.github.dashframe.util.MonoUtil;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -31,48 +31,25 @@ public class SteamFriendsListWidgetManager
 
     @Override
     public Mono<List<SteamUser>> fetchData(Context widgetContext) {
-        var client = widgetContext.serviceContext.client();
-        var apiKey = widgetContext.serviceContext.apiKey();
-        var steamid = widgetContext.serviceContext.steamid();
+        var api = widgetContext.serviceContext.api();
+        var steamId = widgetContext.serviceContext.steamId();
 
         return MonoUtil
             .ignoreExceptions(
-                client
-                    .get()
-                    .uri(uriBuilder ->
-                        uriBuilder
-                            .path("ISteamUser/GetFriendList/v0001")
-                            .queryParam("key", apiKey)
-                            .queryParam("steamid", steamid)
-                            .queryParam("relationship", "friend")
-                            .build()
-                    )
-                    .retrieve()
-                    .bodyToMono(FriendsListResponse.class),
-                error -> this.logger.debug("Failed to fetch friends list of Steam user {}", steamid)
+                api.getFriendsList(steamId),
+                error -> this.logger.error("Failed to fetch friends list of Steam user {}", steamId, error)
             )
-            .flatMapMany(response -> {
-                List<SteamId> rawFriends = response.friendsList.friends;
-                // Steam's API expect a list of comma-separated steam IDs as a parameter
-                String ids = rawFriends.stream().map(SteamId::steamId).collect(Collectors.joining(","));
+            .flatMapMany(friendsIds -> {
+                // Steam's API expects a list of comma-separated steam IDs as a parameter
+                String ids = String.join(",", friendsIds);
 
                 return MonoUtil
                     .ignoreExceptions(
-                        client
-                            .get()
-                            .uri(uriBuilder ->
-                                uriBuilder
-                                    .path("ISteamUser/GetPlayerSummaries/v0002")
-                                    .queryParam("key", apiKey)
-                                    .queryParam("steamids", ids)
-                                    .build()
-                            )
-                            .retrieve()
-                            .bodyToMono(PlayerSummariesResponse.class),
-                        error -> this.logger.debug("Failed to fetch summaries of Steam users {}", ids, error)
+                        api.getPlayerSummaries(ids),
+                        error -> this.logger.error("Failed to fetch summaries of Steam users {}", ids, error)
                     )
-                    // convert the response to a flux of Raw Steam users for easier post-processing
-                    .flatMapIterable(summaries -> summaries.response.players);
+                    // convert the response to a flux of Steam IDs for easier post-processing
+                    .flatMapIterable(Function.identity());
             })
             .map(raw ->
                 // Convert the users returned by Steam's API to the one our front-end expects
@@ -94,14 +71,4 @@ public class SteamFriendsListWidgetManager
     }
 
     public record Context(SteamServiceManager.Context serviceContext, Widget widget) implements WidgetContext {}
-
-    private record FriendsListResponse(@JsonProperty("friendslist") FriendsList friendsList) {}
-
-    private record FriendsList(List<SteamId> friends) {}
-
-    private record SteamId(@JsonProperty("steamid") String steamId) {}
-
-    private record PlayerSummariesResponse(PlayerList response) {}
-
-    private record PlayerList(List<SteamUser.Raw> players) {}
 }
