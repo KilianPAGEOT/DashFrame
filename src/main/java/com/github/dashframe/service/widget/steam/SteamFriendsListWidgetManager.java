@@ -62,7 +62,7 @@ public class SteamFriendsListWidgetManager
                     )
                     .retrieve()
                     .bodyToMono(PlayerSummariesResponse.class)
-                     // convert the response to a flux of Raw Steam users for easier post-processing
+                    // convert the response to a flux of Raw Steam users for easier post-processing
                     .flatMapIterable(summaries -> summaries.response.players);
             })
             .map(raw ->
