@@ -7,6 +7,7 @@ import {
   ServicesApi,
   WidgetsApi,
 } from "../api";
+import WeatherWidget from "./Weather/WeatherWidget.vue";
 </script>
 
 <template>
@@ -14,10 +15,10 @@ import {
     <div class="orderWidget">
       <div v-for="widget in widgets[0]" :key="widget.id">
         <div v-if="widget.config.columnPos == column">
-          <div class="WidgetWeather">
-            <h6>{{ widget.config.name }}</h6>
-            <span>iWidget Info</span>
-          </div>
+          <component
+            :is="getWidgetComponent(widget)"
+            v-bind="{ widget: widget }"
+          ></component>
         </div>
       </div>
     </div>
@@ -46,6 +47,14 @@ export default {
     };
   },
   methods: {
+    getWidgetComponent(widget: any) {
+      switch (widget.config.type) {
+        case "weather_time/default":
+          return WeatherWidget;
+        default:
+          return null;
+      }
+    },
     open(column: number) {
       (this.$parent as any).$data.showModalAddWidget = true;
       (this.$parent as any).$data.column = column;
@@ -56,7 +65,6 @@ export default {
         {},
         { credentials: "include" }
       );
-
       this.widgets = [];
       this.widgets.push(widgets[0]);
     },
@@ -91,19 +99,12 @@ export default {
       });
     }
   },
-
-  /*watch: {
-    async showModalAddWidget() {
-      console.log(this.showModalAddWidget);
-      const widgetsApi = new WidgetsApi();
-      const widgets = await 
-        widgetsApi.listWidgets({}, { credentials: "include" })
-
-      this.widgets = [];
-      this.widgets.push(widgets[0]);
-      console.log(this.widgets);
+  components: { WeatherWidget },
+  computed: {
+    currentProps() {
+      return "test";
     },
-  },*/
+  },
 };
 </script>
 
@@ -116,7 +117,7 @@ export default {
 }
 .WidgetWeather {
   width: 450px;
-  height: 200px;
+  min-height: 200px;
   background: #393131;
   border-radius: 20px;
   margin: 10px;
@@ -128,9 +129,10 @@ export default {
   margin: 20px;
 }
 .WidgetWeather > span {
-  margin: 20px;
-  font-size: 28px;
-  align-self: center;
+  margin: 10px;
+  font-size: 24px;
+  margin-left: 25px;
+  margin-bottom: 25px;
 }
 .orderWidget {
   display: flex;

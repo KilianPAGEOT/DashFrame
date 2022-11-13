@@ -31,13 +31,13 @@ public class WeatherWidgetManager implements WidgetManager<WeatherServiceManager
         var client = widgetContext.serviceContext.client();
         var finalLocation = widgetContext.serviceContext.finalLocation();
         var locResponse = widgetContext.serviceContext.locResponse();
-        System.out.println(new Date());
         return client.get().uri(uriBuilder ->
                         uriBuilder
                                 .queryParam("latitude",locResponse.get("lat"))
                                 .queryParam("longitude",locResponse.get("lon"))
                                 .queryParam("hourly","temperature_2m")
                                 .queryParam("current_weather",true)
+                                .queryParam("timezone","Europe/Paris")
                                 .build())
                 .retrieve()
                 .bodyToMono(Map.class);
