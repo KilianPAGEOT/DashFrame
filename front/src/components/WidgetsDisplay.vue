@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Cookies } from "quasar";
 import {
   BASE_PATH,
   Configuration,
@@ -45,40 +46,61 @@ export default {
     };
   },
   methods: {
-    open(column: any) {
+    open(column: number) {
       (this.$parent as any).$data.showModalAddWidget = true;
       (this.$parent as any).$data.column = column;
     },
     async update() {
       const widgetsApi = new WidgetsApi();
-      const widgets = await Promise.all([
-        widgetsApi.listWidgets({}, { credentials: "include" }),
-      ]);
+      const widgets = await widgetsApi.listWidgets(
+        {},
+        { credentials: "include" }
+      );
+
       this.widgets = [];
       this.widgets.push(widgets[0]);
     },
   },
   async created() {
-    const widgetsApi = new WidgetsApi();
-    const widgets = await Promise.all([
-      widgetsApi.listWidgets({}, { credentials: "include" }),
-    ]);
-    this.widgets = [];
-    this.widgets.push(widgets[0]);
-    widgets[0].forEach((widget) => {
-      if (this.maxColumn < (widget.config as any).columnPos) {
-        this.maxColumn = (widget.config as any).columnPos;
-      }
-    });
+    if (Cookies.get("token") != null) {
+      let widgetsApi = new WidgetsApi(
+        new Configuration({
+          accessToken: Cookies.get("token"),
+        })
+      );
+      const widgets = await widgetsApi.listWidgets({}, {});
+      console.log(widgets);
+      this.widgets = [];
+      this.widgets.push(widgets);
+      widgets.forEach((widget: any) => {
+        if (this.maxColumn < widget.config.columnPos) {
+          this.maxColumn = widget.config.columnPos;
+        }
+      });
+    } else {
+      let widgetsApi = new WidgetsApi();
+      const widgets = await widgetsApi.listWidgets(
+        {},
+        { credentials: "include" }
+      );
+
+      this.widgets = [];
+      this.widgets.push(widgets);
+      widgets.forEach((widget: any) => {
+        if (this.maxColumn < widget.config.columnPos) {
+          this.maxColumn = widget.config.columnPos;
+        }
+      });
+    }
   },
 
   /*watch: {
     async showModalAddWidget() {
       console.log(this.showModalAddWidget);
       const widgetsApi = new WidgetsApi();
-      const widgets = await Promise.all([
-        widgetsApi.listWidgets({}, { credentials: "include" }),
-      ]);
+      const widgets = await 
+        widgetsApi.listWidgets({}, { credentials: "include" })
+
       this.widgets = [];
       this.widgets.push(widgets[0]);
       console.log(this.widgets);
@@ -92,6 +114,7 @@ export default {
 .listWidget {
   display: flex;
   align-items: flex-start;
+  flex-wrap: wrap;
 }
 .WidgetWeather {
   width: 450px;
