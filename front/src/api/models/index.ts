@@ -1,6 +1,25 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
+ *
+ * @export
+ * @interface AboutInformation
+ */
+export interface AboutInformation {
+  /**
+   *
+   * @type {ClientInformation}
+   * @memberof AboutInformation
+   */
+  client: ClientInformation;
+  /**
+   *
+   * @type {ServerInformation}
+   * @memberof AboutInformation
+   */
+  server: ServerInformation;
+}
+/**
  * An error response object
  * @export
  * @interface ApiError
@@ -427,25 +446,6 @@ export type EventType = typeof EventType[keyof typeof EventType];
 /**
  *
  * @export
- * @interface GetAboutJson200Response
- */
-export interface GetAboutJson200Response {
-  /**
-   *
-   * @type {ClientInformation}
-   * @memberof GetAboutJson200Response
-   */
-  client: ClientInformation;
-  /**
-   *
-   * @type {ServerInformation}
-   * @memberof GetAboutJson200Response
-   */
-  server: ServerInformation;
-}
-/**
- *
- * @export
  * @interface ListServices200Response
  */
 export interface ListServices200Response {
@@ -783,7 +783,7 @@ export interface SteamGameNewsItem {
    */
   author?: string;
   /**
-   *
+   * Contents of this article as HTML
    * @type {string}
    * @memberof SteamGameNewsItem
    */
