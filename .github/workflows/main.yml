@@ -52,7 +52,8 @@ jobs:
           sed '/^spring.security.oauth2.client.registration.github.client-secret/s/NOT SET/${{secrets.OAUTH2_GITHUB_CLIENT_SECRET}}/' |
           sed '/^spring.mail.username/s/NOT SET/${{secrets.SPRING_MAIL_USERNAME}}/' |
           sed '/^spring.mail.password/s/NOT SET/${{secrets.SPRING_MAIL_PASSWORD}}/' |
-          sed '/^dashframe.services.steam.api_key/s/NOT SET/${{secrets.STEAM_API_KEY}}/' >
+          sed '/^dashframe.services.steam.api_key/s/NOT SET/${{secrets.STEAM_API_KEY}}/' |
+          sed '/^dashframe.services.google.api_key/s/NOT SET/${{secrets.GOOGLE_API_KEY}}/' >
           application.properties
 
       - name: Setup Gradle and Build
