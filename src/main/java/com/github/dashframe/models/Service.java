@@ -22,10 +22,10 @@ public class Service {
     @Column(nullable = false)
     private String username;
 
-    @Column(nullable = false)
+    @Column
     private String token;
 
-    @Column(nullable = true)
+    @Column
     private Date expirationDate;
 
     @Column(nullable = false)

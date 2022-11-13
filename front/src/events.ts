@@ -88,7 +88,9 @@ function onWidgetDeletion(event: WidgetDeletionEvent) {
 function onWidgetRefresh(event: WidgetRefreshEvent) {
   for (let widget of event.data.widgets) {
     console.debug(`Requested update of widget ${widget.id}`, widget.data);
+    widgetsData.set(widget.id, widget.data);
 
     // inject your widget update code here
   }
 }
+export const widgetsData: Map<number, unknown> = new Map();

@@ -278,7 +278,7 @@ export default {
           widgets: [
             {
               id: 1,
-              name: "Wheater Widget",
+              name: "Weather Widget",
               display: false,
               description: "Widget to display Weather in you city",
               type: "weather_time/default",
@@ -461,6 +461,7 @@ export default {
             { credentials: "include" }
           );
         }
+        window.location.reload();
       }
     },
   },
