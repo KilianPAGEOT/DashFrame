@@ -159,7 +159,7 @@ components:
       minimum: 0
     OptionalUserIdentifier:
       type: object
-      description: The ID of an user, assumed to be the current user if not specified
+      description: The ID of a user, assumed to be the current user if not specified
       properties:
         userId:
           $ref: "#/components/schemas/Identifier"
@@ -343,7 +343,7 @@ components:
           type: string
         contents:
           type: string
-          description: Contents of this article as HTML 
+          description: Contents of this article as HTML
         date:
           type: string
           format: date-time
@@ -748,17 +748,26 @@ components:
         Status codes:
         - 400: Returned if the requested was malformed
         - 401: The user is not logged in
-        - 404: Returned if the requested resource doesn't exist, or the user does not have access 
+        - 404: Returned if the requested resource doesn't exist, or the user does not have access
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/WrappedApiError"
   parameters:
+    emailVerificationToken:
+      name: emailVerificationToken
+      in: query
+      required: true
+      description: A email verification token owned by an unauthenticated user
+      schema:
+        type: string
+        minLength: 32
+        maxLength: 32
     optionalUserId:
       name: userId
       in: query
       required: false
-      description: The ID of an user, assumed to be the current user if not specified
+      description: The ID of a user, assumed to be the current user if not specified
       schema:
         $ref: "#/components/schemas/Identifier"
     widgetId:
@@ -820,7 +829,7 @@ paths:
   /login:
     post:
       operationId: create_token
-      summary: Generate a new token for the user found by authentication infos in the header
+      summary: Generate a new token for the user authenticated with the header info
       security:
         - basicAuth: []
       tags:
@@ -832,6 +841,66 @@ paths:
             text/plain:
               schema:
                 type: string
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /register:
+    post:
+      operationId: create_user_and_send_email
+      summary: Create a new user instance and send him a verification e-mail
+      tags:
+        - authentication
+      requestBody:
+        content:
+          application/json:
+            example:
+              {
+                "name": "patrick",
+                "username": "patrick@gmail.com",
+                "hashPassword": "123",
+              }
+            schema:
+              type: object
+              allOf:
+                - type: object
+                  properties:
+                    name:
+                      type: string
+                      description: The user's name
+                    username:
+                      type: string
+                      description: A unique identifier that can be any format like email or number sequence
+                    hashPassword:
+                      type: string
+                      description: The password of the user
+                  required:
+                    - name
+                    - username
+                    - hashPassword
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserInstance"
+        "4XX":
+          $ref: "#/components/responses/ErrorResponse"
+  /email-verifier:
+    get:
+      operationId: verify_the_user
+      summary: Verify the user with the token passed as URL parameter
+      tags:
+        - authentication
+      parameters:
+        - $ref: "#/components/parameters/emailVerificationToken"
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: The user with the e-mail address {username} is now verified.
         "4XX":
           $ref: "#/components/responses/ErrorResponse"
   /users-oauth2:
@@ -863,12 +932,10 @@ paths:
                 "name": "patrick",
                 "username": "patrick@gmail.com",
                 "hashPassword": "123",
-                "oauthToken": "c3VwZXIgc2VjcmV0IHRva2VuCg==",
               }
             schema:
               type: object
               allOf:
-                - $ref: "#/components/schemas/OptionalUserIdentifier"
                 - type: object
                   properties:
                     name:
@@ -880,9 +947,6 @@ paths:
                     hashPassword:
                       type: string
                       description: The password of the user
-                    oauthToken:
-                      type: string
-                      description: The token returned by the external service, optional if not needed
                   required:
                     - name
                     - username

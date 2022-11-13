@@ -14,13 +14,13 @@
 
 import * as runtime from "../runtime";
 import type {
-  CreateUserRequest,
+  CreateUserAndSendEmailRequest,
   UserInstance,
   WrappedApiError,
 } from "../models";
 
-export interface CreateUserOperationRequest {
-  createUserRequest?: CreateUserRequest;
+export interface CreateUserRequest {
+  createUserAndSendEmailRequest?: CreateUserAndSendEmailRequest;
 }
 
 /**
@@ -31,7 +31,7 @@ export class UsersApi extends runtime.BaseAPI {
    * Create a new user instance
    */
   async createUserRaw(
-    requestParameters: CreateUserOperationRequest,
+    requestParameters: CreateUserRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<UserInstance>> {
     const queryParameters: any = {};
@@ -46,7 +46,7 @@ export class UsersApi extends runtime.BaseAPI {
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: requestParameters.createUserRequest,
+        body: requestParameters.createUserAndSendEmailRequest,
       },
       initOverrides
     );
@@ -58,7 +58,7 @@ export class UsersApi extends runtime.BaseAPI {
    * Create a new user instance
    */
   async createUser(
-    requestParameters: CreateUserOperationRequest = {},
+    requestParameters: CreateUserRequest = {},
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<UserInstance> {
     const response = await this.createUserRaw(requestParameters, initOverrides);

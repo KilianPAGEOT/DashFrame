@@ -90,7 +90,12 @@ public class AuthenticationController {
         return this.tokenService.generateToken(authentication);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/register", produces = { "text/plain", "application/json" })
+    @RequestMapping(
+        method = RequestMethod.POST,
+        value = "/register",
+        produces = { "application/json" },
+        consumes = { "application/json" }
+    )
     public ResponseEntity<UserInstance> register(
         @Valid @RequestBody(required = false) CreateUserRequest createUserRequest
     ) {
@@ -127,14 +132,19 @@ public class AuthenticationController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = pathEmailVerifier + "/{emailVerificationToken}")
-    public String verifyEmail(@PathVariable String emailVerificationToken) {
+    public ResponseEntity<String> verifyEmail(
+        @PathVariable String emailVerificationToken,
+        HttpServletResponse response
+    ) throws IOException {
         User user = this.userDAO.findByEmailVerificationToken(emailVerificationToken);
         if (user != null) {
             user.setEmailVerificationToken(null);
             this.userDAO.save(user);
-            return "The user with the e-mail address " + user.getUsername() + " is now verified.";
+
+            response.sendRedirect("http://localhost:5173");
+            return ResponseEntity.ok("The user with the e-mail address " + user.getUsername() + " is now verified.");
         } else {
-            return "The token does not match any user.";
+            return ResponseEntity.badRequest().body("The token does not match any user.");
         }
     }
 
