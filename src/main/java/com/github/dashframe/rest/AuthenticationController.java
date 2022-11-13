@@ -12,6 +12,7 @@ import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Objects;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class AuthenticationController {
     private final UserController userController;
 
     // Fields and methods for e-mail sending
+    private Cookie cookie;
 
     @Autowired
     public SimpleMailMessage template;
@@ -150,6 +152,10 @@ public class AuthenticationController {
         if (user instanceof OAuth2AuthenticationToken) {
             getOauth2LoginInfo(user);
         }
+        cookie = new Cookie("token", "OAuth2");
+        cookie.setPath("/");
+        cookie.setMaxAge(5*60*60);
+        response.addCookie(this.cookie); //add cookie and redirect to fronted client
         response.sendRedirect("http://localhost:5173");
     }
 

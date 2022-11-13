@@ -351,7 +351,7 @@ export default {
       widgets[id - 1].display = true;
     },
     async CreateWidget(widget: any, service: any) {
-      if (Cookies.get("token") != null) {
+      if (Cookies.get("token") != "OAuth2") {
         const servicesApi = new ServicesApi(
           new Configuration({
             accessToken: Cookies.get("token"),
