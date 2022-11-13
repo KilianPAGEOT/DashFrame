@@ -49,6 +49,9 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-webflux:${project.spring_version}"
 
     implementation 'javax.validation:validation-api:2.0.1.Final'
+
+    // Useful collections
+    implementation 'com.google.guava:guava:31.1-jre'
 }
 
 tasks.named('test') {

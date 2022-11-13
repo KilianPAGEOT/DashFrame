@@ -2,6 +2,7 @@ package com.github.dashframe.service.widget;
 
 import com.github.dashframe.models.json.WidgetType;
 import com.github.dashframe.service.widget.steam.SteamFriendsListWidgetManager;
+import com.github.dashframe.service.widget.steam.SteamGameNewsWidgetManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Primary;
@@ -19,9 +20,9 @@ public final class DefaultWidgetManagerProvider implements WidgetManagerProvider
 
     @Override
     public WidgetManager<?, ?, ?> forType(WidgetType type) {
-        //noinspection SwitchStatementWithTooFewBranches
         return switch (type) {
             case STEAM_FRIENDS_LIST -> context.getBean(SteamFriendsListWidgetManager.class);
+            case STEAM_GAME_NEWS -> context.getBean(SteamGameNewsWidgetManager.class);
             default -> null;
         };
     }

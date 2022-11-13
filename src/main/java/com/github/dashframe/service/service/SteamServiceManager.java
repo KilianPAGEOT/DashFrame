@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -44,10 +45,22 @@ public class SteamServiceManager implements ServiceManager<SteamServiceManager.C
     public Mono<Context> open(Service service) {
         this.checkType(service);
 
-        var client = WebClient.create(BASE_URL);
+        var client = WebClient
+            .builder()
+            .baseUrl(BASE_URL)
+            .exchangeStrategies(
+                ExchangeStrategies
+                    .builder()
+                    .codecs(it -> {
+                        it.defaultCodecs().maxInMemorySize(10000000); // playing with fire
+                    })
+                    .build()
+            )
+            .build();
         var apiKey = this.environment.getProperty(API_KEY_PROPERTY);
         var steamid = service.getToken();
 
+        //noinspection ConstantConditions
         return this.steamApiProvider.open(client, apiKey)
             .map(api -> OPEN_SERVICES.computeIfAbsent(service.getId(), id -> new Context(service, api, steamid)));
     }
