@@ -57,9 +57,9 @@ public class WidgetConfiguration<C> {
     @JsonProperty("parameters")
     private Map<String, Object> parameters = new HashMap<>();
 
-    public Map<String, Object> parameters(Map<String, Object> parameters) {
+    public WidgetConfiguration<C> parameters(Map<String, Object> parameters) {
         this.parameters = parameters;
-        return (Map<String, Object>) this;
+        return this;
     }
 
     /**
@@ -93,9 +93,9 @@ public class WidgetConfiguration<C> {
         this.type = type;
     }
 
-    public C name(String name) {
+    public WidgetConfiguration<C> name(String name) {
         this.name = name;
-        return (C) this;
+        return this;
     }
 
     /**
@@ -111,9 +111,9 @@ public class WidgetConfiguration<C> {
         this.name = name;
     }
 
-    public C refreshRate(Integer refreshRate) {
+    public WidgetConfiguration<C> refreshRate(Integer refreshRate) {
         this.refreshRate = refreshRate;
-        return (C) this;
+        return this;
     }
 
     /**

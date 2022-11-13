@@ -8,6 +8,7 @@ import {
   ServicesApi,
   WidgetsApi,
 } from "../api";
+import { Cookies, QList, QItem, QItemSection, QInput, QBtn } from "quasar";
 </script>
 
 <template>
@@ -350,10 +351,68 @@ export default {
       widgets[id - 1].display = true;
     },
     async CreateWidget(widget: any, service: any) {
-      const servicesApi = new ServicesApi();
-      const widgetApi = new WidgetsApi();
-      const [services] = await Promise.all([
-        servicesApi.createService(
+      if (Cookies.get("token") != null) {
+        const servicesApi = new ServicesApi(
+          new Configuration({
+            accessToken: Cookies.get("token"),
+          })
+        );
+        const services = await servicesApi.createService(
+          {
+            createServiceRequest: {
+              type: service.type,
+              username: "gg",
+              token: service.token,
+            },
+          },
+          {}
+        );
+        const widgetApi = new WidgetsApi(
+          new Configuration({
+            accessToken: Cookies.get("token"),
+          })
+        );
+
+        let nameparm = undefined;
+        let widgets = undefined;
+        if (widget.type != "epic_games/free_games") {
+          nameparm = widget.parameters[0].name;
+          widgets = await widgetApi.createWidget(
+            {
+              createWidgetRequest: {
+                serviceId: services.id,
+                config: {
+                  name: widget.name,
+                  refreshRate: widget.refreshRate,
+                  type: widget.type,
+                  columnPos: (this.$parent as any).$data.column,
+                  position: 0,
+                  parameters: widget.parameters[0],
+                },
+              },
+            },
+            {}
+          );
+        } else {
+          widgets = await widgetApi.createWidget(
+            {
+              createWidgetRequest: {
+                serviceId: services.id,
+                config: {
+                  name: widget.name,
+                  refreshRate: widget.refreshRate,
+                  type: "epic_games/free_games",
+                  columnPos: (this.$parent as any).$data.column,
+                  position: 1,
+                },
+              },
+            },
+            { credentials: "include" }
+          );
+        }
+      } else {
+        const servicesApi = new ServicesApi();
+        const services = await servicesApi.createService(
           {
             createServiceRequest: {
               type: service.type,
@@ -362,14 +421,14 @@ export default {
             },
           },
           { credentials: "include" }
-        ),
-      ]);
-      let nameparm = undefined;
-      let widgets = undefined;
-      if (widget.type != "epic_games/free_games") {
-        nameparm = widget.parameters[0].name;
-        widgets = await Promise.all([
-          widgetApi.createWidget(
+        );
+        const widgetsApi = new WidgetsApi();
+
+        let nameparm = undefined;
+        let widgets = undefined;
+        if (widget.type != "epic_games/free_games") {
+          nameparm = widget.parameters[0].name;
+          widgets = await widgetsApi.createWidget(
             {
               createWidgetRequest: {
                 serviceId: services.id,
@@ -377,18 +436,16 @@ export default {
                   name: widget.name,
                   refreshRate: widget.refreshRate,
                   type: widget.type,
-                  columnPos: (this.$parent as any).$data.Column,
+                  columnPos: (this.$parent as any).$data.column,
                   position: 0,
                   parameters: widget.parameters[0],
                 },
               },
             },
             { credentials: "include" }
-          ),
-        ]);
-      } else {
-        widgets = await Promise.all([
-          widgetApi.createWidget(
+          );
+        } else {
+          widgets = await widgetsApi.createWidget(
             {
               createWidgetRequest: {
                 serviceId: services.id,
@@ -396,15 +453,14 @@ export default {
                   name: widget.name,
                   refreshRate: widget.refreshRate,
                   type: "epic_games/free_games",
-                  columnPos: (this.$parent as any).$data.Column,
+                  columnPos: (this.$parent as any).$data.column,
                   position: 1,
                 },
               },
             },
             { credentials: "include" }
-          ),
-        ]);
-        window.location.reload();
+          );
+        }
       }
     },
   },
