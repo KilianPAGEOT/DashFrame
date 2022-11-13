@@ -154,7 +154,7 @@ public class AuthenticationController {
         }
         cookie = new Cookie("token", "OAuth2");
         cookie.setPath("/");
-        cookie.setMaxAge(5*60*60);
+        cookie.setMaxAge(5 * 60 * 60);
         response.addCookie(this.cookie); //add cookie and redirect to fronted client
         response.sendRedirect("http://localhost:5173");
     }

@@ -17,7 +17,7 @@ import SteamGameNews from "./Steam/GameNews.vue";
 import SteamGamePopulation from "./Steam/GamePopulation.vue";
 import RssFeed from "./Rss/RssFeed.vue";
 import TwitchFollowedChannels from "./Twitch/FollowedChannels.vue";
-import Weather from "./Weather.vue";
+import WeatherTime from "./WeatherTime.vue";
 import YouTubeChannelStatistics from "./YouTube/ChannelStatistics.vue";
 import YouTubeSubscribedChannels from "./YouTube/SubscribedChannels.vue";
 import YouTubeVideoStatistics from "./YouTube/VideoStatistics.vue";
@@ -29,7 +29,10 @@ import type { DefineComponent } from "vue";
     <div class="orderWidget">
       <div v-for="widget in widgets[0]" :key="widget.id">
         <div v-if="widget.config.columnPos == column">
-          <component :is="getWidgetComponent(widget)"></component>
+          <component
+            :is="getWidgetComponent(widget)"
+            v-bind="{ widgetId: widget.id }"
+          ></component>
         </div>
       </div>
     </div>
@@ -56,7 +59,7 @@ export default {
     SteamGamePopulation,
     RssFeed,
     TwitchFollowedChannels,
-    Weather,
+    WeatherTime,
     YouTubeChannelStatistics,
     YouTubeSubscribedChannels,
     YouTubeVideoStatistics,
@@ -76,7 +79,7 @@ export default {
       (this.$parent as any).$data.column = column;
     },
     getWidgetComponent(widget: WidgetInstance): DefineComponent | null {
-      const typeToWidget: Record<WidgetType, DefineComponent> = {
+      const typeToWidget: Record<WidgetType, unknown> = {
         "epic_games/free_games": EpicGamesFreeGames,
         "epic_games/friends_list": EpicGamesFriendsList,
         "steam/friends_list": SteamFriendsList,
@@ -84,13 +87,13 @@ export default {
         "steam/game_population": SteamGamePopulation,
         "rss/feed": RssFeed,
         "twitch/followed_channels": TwitchFollowedChannels,
-        "weather_time/default": Weather,
+        "weather_time/default": WeatherTime,
         "youtube/channel_statistics": YouTubeChannelStatistics,
         "youtube/subscribed_channels": YouTubeSubscribedChannels,
         "youtube/video_statistics": YouTubeVideoStatistics,
       } as const;
       const type = widget.config?.type;
-      return type ? typeToWidget[type] : null;
+      return type ? (typeToWidget[type] as DefineComponent) : null;
     },
     async update() {
       const widgetsApi = new WidgetsApi();

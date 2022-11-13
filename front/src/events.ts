@@ -1,3 +1,4 @@
+import exp from "constants";
 import {
   BASE_PATH,
   type ApiError,
@@ -89,6 +90,13 @@ function onWidgetRefresh(event: WidgetRefreshEvent) {
   for (let widget of event.data.widgets) {
     console.debug(`Requested update of widget ${widget.id}`, widget.data);
 
-    // inject your widget update code here
+    widgetsData.set(widget.id, widget.data);
+    const updater = widgetsUpdater.get(widget.id);
+    if (updater !== undefined) {
+      updater();
+    }
   }
 }
+
+export const widgetsData: Map<number, unknown> = new Map();
+export const widgetsUpdater: Map<number, () => void> = new Map();
