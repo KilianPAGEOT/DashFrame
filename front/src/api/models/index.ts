@@ -703,6 +703,111 @@ export interface SteamFriendsListWidgetConfigurationAllOf {
   parameters: EpicGamesFriendsListWidgetConfigurationAllOfParameters;
 }
 /**
+ * The NEWS! Used as part of the widgets/refresh event.
+ * @export
+ * @interface SteamGameNews
+ */
+export interface SteamGameNews {
+  /**
+   * The game's name.
+   * @type {string}
+   * @memberof SteamGameNews
+   */
+  name: string;
+  /**
+   * The game's app ID.
+   * @type {string}
+   * @memberof SteamGameNews
+   */
+  id: string;
+  /**
+   * A list of news items.
+   * @type {Array<SteamGameNewsItem>}
+   * @memberof SteamGameNews
+   */
+  items: Array<SteamGameNewsItem>;
+}
+/**
+ *
+ * @export
+ * @interface SteamGameNewsFeed
+ */
+export interface SteamGameNewsFeed {
+  /**
+   *
+   * @type {string}
+   * @memberof SteamGameNewsFeed
+   */
+  label: string;
+  /**
+   *
+   * @type {string}
+   * @memberof SteamGameNewsFeed
+   */
+  name: string;
+  /**
+   *
+   * @type {number}
+   * @memberof SteamGameNewsFeed
+   */
+  type: number;
+}
+/**
+ *
+ * @export
+ * @interface SteamGameNewsItem
+ */
+export interface SteamGameNewsItem {
+  /**
+   *
+   * @type {string}
+   * @memberof SteamGameNewsItem
+   */
+  id: string;
+  /**
+   *
+   * @type {string}
+   * @memberof SteamGameNewsItem
+   */
+  title: string;
+  /**
+   *
+   * @type {string}
+   * @memberof SteamGameNewsItem
+   */
+  url?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof SteamGameNewsItem
+   */
+  author?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof SteamGameNewsItem
+   */
+  contents: string;
+  /**
+   *
+   * @type {string}
+   * @memberof SteamGameNewsItem
+   */
+  date?: string;
+  /**
+   *
+   * @type {SteamGameNewsFeed}
+   * @memberof SteamGameNewsItem
+   */
+  feed?: SteamGameNewsFeed;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof SteamGameNewsItem
+   */
+  tags: Array<string>;
+}
+/**
  *
  * @export
  * @interface SteamGameNewsWidgetConfiguration

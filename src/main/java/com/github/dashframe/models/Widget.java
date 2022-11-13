@@ -35,7 +35,7 @@ public class Widget {
     @Column
     private int refreshRate;
 
-    @OneToMany(mappedBy = "widget")
+    @OneToMany(mappedBy = "widget", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @MapKey(name = "name")
     private Map<String, WidgetParameter> parameters;
 
