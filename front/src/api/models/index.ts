@@ -178,70 +178,52 @@ export interface CreateServiceRequestAllOf {
 /**
  *
  * @export
- * @interface CreateUserRequest
+ * @interface CreateUserAndSendEmailRequest
  */
-export interface CreateUserRequest {
-  /**
-   * A resource identifier
-   * @type {number}
-   * @memberof CreateUserRequest
-   */
-  userId?: number;
+export interface CreateUserAndSendEmailRequest {
   /**
    * The user's name
    * @type {string}
-   * @memberof CreateUserRequest
+   * @memberof CreateUserAndSendEmailRequest
    */
   name: string;
   /**
    * A unique identifier that can be any format like email or number sequence
    * @type {string}
-   * @memberof CreateUserRequest
+   * @memberof CreateUserAndSendEmailRequest
    */
   username: string;
   /**
    * The password of the user
    * @type {string}
-   * @memberof CreateUserRequest
+   * @memberof CreateUserAndSendEmailRequest
    */
   hashPassword: string;
-  /**
-   * The token returned by the external service, optional if not needed
-   * @type {string}
-   * @memberof CreateUserRequest
-   */
-  oauthToken?: string;
 }
 /**
  *
  * @export
- * @interface CreateUserRequestAllOf
+ * @interface CreateUserAndSendEmailRequestAllOf
  */
-export interface CreateUserRequestAllOf {
+export interface CreateUserAndSendEmailRequestAllOf {
   /**
    * The user's name
    * @type {string}
-   * @memberof CreateUserRequestAllOf
+   * @memberof CreateUserAndSendEmailRequestAllOf
    */
   name: string;
   /**
    * A unique identifier that can be any format like email or number sequence
    * @type {string}
-   * @memberof CreateUserRequestAllOf
+   * @memberof CreateUserAndSendEmailRequestAllOf
    */
   username: string;
   /**
    * The password of the user
    * @type {string}
-   * @memberof CreateUserRequestAllOf
+   * @memberof CreateUserAndSendEmailRequestAllOf
    */
   hashPassword: string;
-  /**
-   * The token returned by the external service, optional if not needed
-   * @type {string}
-   * @memberof CreateUserRequestAllOf
-   */
-  oauthToken?: string;
 }
 /**
  *
@@ -446,7 +428,7 @@ export interface ListServices200Response {
   instances: Array<ServiceInstance>;
 }
 /**
- * The ID of an user, assumed to be the current user if not specified
+ * The ID of a user, assumed to be the current user if not specified
  * @export
  * @interface OptionalUserIdentifier
  */
@@ -971,10 +953,11 @@ export interface SteamUser {
    */
   avatar184x184: string;
   /**
-   * The user's current status. If the player's profile is private, this will always be "OFFLINE", except is the user has set their status to looking to trade or looking to play, because a bug makes those status appear even if the profile is private.
-   * @type {string}
-   * @memberof SteamUser
-   */
+     * The user's current status. If the player's profile is private, this will always be "OFFLINE", except is the user has set their status to looking to trade or looking to play, because a bug makes those status appear even if the profile is private.
+
+     * @type {string}
+     * @memberof SteamUser
+     */
   status: SteamUserStatusEnum;
   /**
    * The last time the user was online, not present if online.
@@ -1580,7 +1563,8 @@ export type WidgetType = typeof WidgetType[keyof typeof WidgetType];
 
 /**
  * An API error object wrapped as an object with an "error" key.
- * Used to distinguish between different types of values
+Used to distinguish between different types of values
+
  * @export
  * @interface WrappedApiError
  */

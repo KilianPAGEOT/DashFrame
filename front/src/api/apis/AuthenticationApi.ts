@@ -13,14 +13,26 @@
  */
 
 import * as runtime from "../runtime";
-import type { WrappedApiError } from "../models";
+import type {
+  CreateUserAndSendEmailRequest,
+  UserInstance,
+  WrappedApiError,
+} from "../models";
+
+export interface CreateUserAndSendEmailOperationRequest {
+  createUserAndSendEmailRequest?: CreateUserAndSendEmailRequest;
+}
+
+export interface VerifyTheUserRequest {
+  emailVerificationToken: string;
+}
 
 /**
  *
  */
 export class AuthenticationApi extends runtime.BaseAPI {
   /**
-   * Generate a new token for the user found by authentication infos in the header
+   * Generate a new token for the user authenticated with the header info
    */
   async createTokenRaw(
     initOverrides?: RequestInit | runtime.InitOverrideFunction
@@ -52,12 +64,53 @@ export class AuthenticationApi extends runtime.BaseAPI {
   }
 
   /**
-   * Generate a new token for the user found by authentication infos in the header
+   * Generate a new token for the user authenticated with the header info
    */
   async createToken(
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<string> {
     const response = await this.createTokenRaw(initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Create a new user instance and send him a verification e-mail
+   */
+  async createUserAndSendEmailRaw(
+    requestParameters: CreateUserAndSendEmailOperationRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<UserInstance>> {
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json";
+
+    const response = await this.request(
+      {
+        path: `/register`,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+        body: requestParameters.createUserAndSendEmailRequest,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response);
+  }
+
+  /**
+   * Create a new user instance and send him a verification e-mail
+   */
+  async createUserAndSendEmail(
+    requestParameters: CreateUserAndSendEmailOperationRequest = {},
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<UserInstance> {
+    const response = await this.createUserAndSendEmailRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -91,5 +144,58 @@ export class AuthenticationApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<void> {
     await this.createUserOauth2Raw(initOverrides);
+  }
+
+  /**
+   * Verify the user with the token passed as URL parameter
+   */
+  async verifyTheUserRaw(
+    requestParameters: VerifyTheUserRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<string>> {
+    if (
+      requestParameters.emailVerificationToken === null ||
+      requestParameters.emailVerificationToken === undefined
+    ) {
+      throw new runtime.RequiredError(
+        "emailVerificationToken",
+        "Required parameter requestParameters.emailVerificationToken was null or undefined when calling verifyTheUser."
+      );
+    }
+
+    const queryParameters: any = {};
+
+    if (requestParameters.emailVerificationToken !== undefined) {
+      queryParameters["emailVerificationToken"] =
+        requestParameters.emailVerificationToken;
+    }
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/email-verifier`,
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.TextApiResponse(response) as any;
+  }
+
+  /**
+   * Verify the user with the token passed as URL parameter
+   */
+  async verifyTheUser(
+    requestParameters: VerifyTheUserRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<string> {
+    const response = await this.verifyTheUserRaw(
+      requestParameters,
+      initOverrides
+    );
+    return await response.value();
   }
 }

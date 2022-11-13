@@ -54,6 +54,8 @@ public class SecurityConfig {
                     .permitAll()
                     .mvcMatchers(WebMvcConfig.API_BASE_PATH + "/register")
                     .permitAll()
+                    .mvcMatchers("/about.json")
+                    .permitAll()
                     .anyRequest()
                     .authenticated()
             )
