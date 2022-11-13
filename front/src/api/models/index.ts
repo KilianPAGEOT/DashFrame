@@ -113,29 +113,12 @@ export interface BaseWidgetConfiguration {
  */
 export interface ClientInformation {
   /**
-   * Indicates the identifier of this parameter
+   *
    * @type {string}
    * @memberof ClientInformation
    */
-  name: string;
-  /**
-   * Indicates the type of this parameter
-   * @type {string}
-   * @memberof ClientInformation
-   */
-  type: ClientInformationTypeEnum;
+  host: string;
 }
-
-/**
- * @export
- */
-export const ClientInformationTypeEnum = {
-  String: "string",
-  Integer: "integer",
-} as const;
-export type ClientInformationTypeEnum =
-  typeof ClientInformationTypeEnum[keyof typeof ClientInformationTypeEnum];
-
 /**
  *
  * @export
@@ -575,12 +558,6 @@ export interface ServiceDescription {
    * @memberof ServiceDescription
    */
   name: string;
-  /**
-   * The image URL of the service
-   * @type {string}
-   * @memberof ServiceDescription
-   */
-  iconUrl?: string;
   /**
    * Describes the service
    * @type {string}
@@ -1281,7 +1258,7 @@ export type WidgetConfiguration =
       type: "youtube/channel_statistics";
     } & YouTubeChannelStatisticsWidgetConfiguration)
   | ({
-      type: "youtube/subsribed_channels";
+      type: "youtube/subscribed_channels";
     } & YouTubeSubscribedChannelsWidgetConfiguration)
   | ({
       type: "youtube/video_statistics";
@@ -1596,7 +1573,7 @@ export const WidgetType = {
   TwitchFollowedChannels: "twitch/followed_channels",
   WeatherTimeDefault: "weather_time/default",
   YoutubeChannelStatistics: "youtube/channel_statistics",
-  YoutubeSubsribedChannels: "youtube/subsribed_channels",
+  YoutubeSubscribedChannels: "youtube/subscribed_channels",
   YoutubeVideoStatistics: "youtube/video_statistics",
 } as const;
 export type WidgetType = typeof WidgetType[keyof typeof WidgetType];

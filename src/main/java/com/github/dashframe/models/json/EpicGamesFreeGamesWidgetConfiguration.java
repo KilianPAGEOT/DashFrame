@@ -1,6 +1,8 @@
 package com.github.dashframe.models.json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import javax.annotation.Generated;
 import javax.validation.constraints.*;

@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import javax.annotation.Generated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 /**
  * BaseWidgetConfiguration
@@ -28,7 +28,7 @@ import javax.validation.constraints.*;
         ),
         @JsonSubTypes.Type(
             value = YouTubeSubscribedChannelsWidgetConfiguration.class,
-            name = "youtube/subsribed_channels"
+            name = "youtube/subscribed_channels"
         ),
         @JsonSubTypes.Type(value = YouTubeVideoStatisticsWidgetConfiguration.class, name = "youtube/video_statistics"),
     }

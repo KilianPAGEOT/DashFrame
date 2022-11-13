@@ -27,9 +27,6 @@ public class ServiceDescription {
     @JsonProperty("name")
     private String name;
 
-    @JsonProperty("iconUrl")
-    private URI iconUrl;
-
     @JsonProperty("description")
     private String description;
 
@@ -53,24 +50,6 @@ public class ServiceDescription {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public ServiceDescription iconUrl(URI iconUrl) {
-        this.iconUrl = iconUrl;
-        return this;
-    }
-
-    /**
-     * The image URL of the service
-     * @return iconUrl
-     */
-    @Valid
-    public URI getIconUrl() {
-        return iconUrl;
-    }
-
-    public void setIconUrl(URI iconUrl) {
-        this.iconUrl = iconUrl;
     }
 
     public ServiceDescription description(String description) {
@@ -129,7 +108,6 @@ public class ServiceDescription {
         ServiceDescription serviceDescription = (ServiceDescription) o;
         return (
             Objects.equals(this.name, serviceDescription.name) &&
-            Objects.equals(this.iconUrl, serviceDescription.iconUrl) &&
             Objects.equals(this.description, serviceDescription.description) &&
             Objects.equals(this.widgets, serviceDescription.widgets)
         );
@@ -137,7 +115,7 @@ public class ServiceDescription {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, iconUrl, description, widgets);
+        return Objects.hash(name, description, widgets);
     }
 
     @Override
@@ -145,7 +123,6 @@ public class ServiceDescription {
         StringBuilder sb = new StringBuilder();
         sb.append("class ServiceDescription {\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    iconUrl: ").append(toIndentedString(iconUrl)).append("\n");
         sb.append("    description: ").append(toIndentedString(description)).append("\n");
         sb.append("    widgets: ").append(toIndentedString(widgets)).append("\n");
         sb.append("}");

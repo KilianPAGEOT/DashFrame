@@ -21,7 +21,7 @@ import javax.validation.constraints.*;
     value = "org.openapitools.codegen.languages.SpringCodegen",
     date = "2022-11-08T16:03:51.937911500+01:00[Europe/Paris]"
 )
-public class TwitchFollowedChannelsWidgetConfigurationAllOfParameters {
+public class TwitchFollowedChannelsWidgetConfigurationAllOfParameters extends WidgetConfigurationParameters {
 
     /**
      * Gets or Sets filter
@@ -114,5 +114,10 @@ public class TwitchFollowedChannelsWidgetConfigurationAllOfParameters {
             return "null";
         }
         return o.toString().replace("\n", "\n    ");
+    }
+
+    @Override
+    public List<WidgetParameterDescription> describeParameters() {
+        return List.of(describeParameter("filter", WidgetParameterDescription.TypeEnum.STRING));
     }
 }

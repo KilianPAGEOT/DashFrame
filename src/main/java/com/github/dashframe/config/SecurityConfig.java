@@ -48,6 +48,8 @@ public class SecurityConfig {
             .authorizeRequests(auth ->
                 auth
                     // ... except these
+                    .mvcMatchers("about.json")
+                    .permitAll()
                     .mvcMatchers(WebMvcConfig.API_BASE_PATH + "/email-verifier/*")
                     .permitAll()
                     .mvcMatchers(WebMvcConfig.API_BASE_PATH + "/register")

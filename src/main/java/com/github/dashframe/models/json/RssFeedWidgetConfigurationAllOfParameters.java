@@ -1,16 +1,13 @@
 package com.github.dashframe.models.json;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.net.URI;
-import java.net.URI;
-import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.List;
 import java.util.Objects;
 import javax.annotation.Generated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * RssFeedWidgetConfigurationAllOfParameters
@@ -21,7 +18,7 @@ import javax.validation.constraints.*;
     value = "org.openapitools.codegen.languages.SpringCodegen",
     date = "2022-11-08T16:03:51.937911500+01:00[Europe/Paris]"
 )
-public class RssFeedWidgetConfigurationAllOfParameters {
+public class RssFeedWidgetConfigurationAllOfParameters extends WidgetConfigurationParameters {
 
     @JsonProperty("url")
     private URI url;
@@ -80,5 +77,12 @@ public class RssFeedWidgetConfigurationAllOfParameters {
             return "null";
         }
         return o.toString().replace("\n", "\n    ");
+    }
+
+    @Override
+    public List<WidgetParameterDescription> describeParameters() {
+        return List.of(
+            WidgetConfigurationParameters.describeParameter("url", WidgetParameterDescription.TypeEnum.STRING)
+        );
     }
 }

@@ -3205,7 +3205,7 @@
 											"top": 817,
 											"width": 223.22802734375,
 											"height": 13,
-											"text": "YOUTUBE_SUBSRIBED_CHANNELS",
+											"text": "YOUTUBE_SUBSCRIBED_CHANNELS",
 											"horizontalAlignment": 0
 										},
 										{
@@ -4949,7 +4949,7 @@
 									"_parent": {
 										"$ref": "AAAAAAGEYR9dUv3d9PE="
 									},
-									"name": "YOUTUBE_SUBSRIBED_CHANNELS"
+									"name": "YOUTUBE_SUBSCRIBED_CHANNELS"
 								},
 								{
 									"_type": "UMLEnumerationLiteral",

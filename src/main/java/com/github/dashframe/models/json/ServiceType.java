@@ -2,14 +2,7 @@ package com.github.dashframe.models.json;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.annotation.JsonValue;
-import java.net.URI;
-import java.time.OffsetDateTime;
-import java.util.*;
-import java.util.Objects;
 import javax.annotation.Generated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * Service unique identifier
@@ -20,22 +13,25 @@ import javax.validation.constraints.*;
     date = "2022-11-08T16:03:51.937911500+01:00[Europe/Paris]"
 )
 public enum ServiceType {
-    EPIC_GAMES("epic_games"),
+    EPIC_GAMES("epic_games", "The Epic Games Launcher"),
 
-    RSS("rss"),
+    RSS("rss", "RSS Feed"),
 
-    STEAM("steam"),
+    STEAM("steam", "The Steam Launcher"),
 
-    TWITCH("twitch"),
+    TWITCH("twitch", "The livestreaming platform"),
 
-    WEATHER_TIME("weather_time"),
+    WEATHER_TIME("weather_time", "Time & Date"),
 
-    YOUTUBE("youtube");
+    YOUTUBE("youtube", "All the videos");
 
-    private String value;
+    private final String value;
 
-    ServiceType(String value) {
+    private final String description;
+
+    ServiceType(String value, String description) {
         this.value = value;
+        this.description = description;
     }
 
     @JsonValue
@@ -46,6 +42,10 @@ public enum ServiceType {
     @Override
     public String toString() {
         return String.valueOf(value);
+    }
+
+    public String getDescription() {
+        return this.description;
     }
 
     @JsonCreator
