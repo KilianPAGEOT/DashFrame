@@ -20,7 +20,7 @@ import javax.validation.constraints.*;
     value = "org.openapitools.codegen.languages.SpringCodegen",
     date = "2022-11-08T16:03:51.937911500+01:00[Europe/Paris]"
 )
-public class YouTubeChannelStatisticsWidgetConfigurationAllOfParameters {
+public class YouTubeChannelStatisticsWidgetConfigurationAllOfParameters extends WidgetConfigurationParameters {
 
     @JsonProperty("channel")
     private String channel;
@@ -79,5 +79,10 @@ public class YouTubeChannelStatisticsWidgetConfigurationAllOfParameters {
             return "null";
         }
         return o.toString().replace("\n", "\n    ");
+    }
+
+    @Override
+    public List<WidgetParameterDescription> describeParameters() {
+        return List.of(describeParameter("channel", WidgetParameterDescription.TypeEnum.STRING));
     }
 }

@@ -114,18 +114,10 @@ components:
       type: object
       description: Information about the client that executed this request
       properties:
-        name:
+        host:
           type: string
-          description: Indicates the identifier of this parameter
-          example: city
-        type:
-          type: string
-          description: Indicates the type of this parameter
-          enum: ["string", "integer"]
-          example: string
       required:
-        - name
-        - type
+        - host
     EpicGamesFreeGamesWidgetConfiguration:
       allOf:
         - $ref: "#/components/schemas/BaseWidgetConfiguration"
@@ -213,10 +205,6 @@ components:
           type: string
           description: Indicates the name of the Service
           example: weather
-        iconUrl:
-          type: string
-          format: uri
-          description: The image URL of the service
         description:
           type: string
           description: Describes the service
@@ -511,7 +499,7 @@ components:
           twitch/followed_channels: "#/components/schemas/TwitchFollowedChannelsWidgetConfiguration"
           weather_time/default: "#/components/schemas/WeatherTimeWidgetConfiguration"
           youtube/channel_statistics: "#/components/schemas/YouTubeChannelStatisticsWidgetConfiguration"
-          youtube/subsribed_channels: "#/components/schemas/YouTubeSubscribedChannelsWidgetConfiguration"
+          youtube/subscribed_channels: "#/components/schemas/YouTubeSubscribedChannelsWidgetConfiguration"
           youtube/video_statistics: "#/components/schemas/YouTubeVideoStatisticsWidgetConfiguration"
     WidgetDeletionEvent:
       example:
@@ -680,7 +668,7 @@ components:
         - twitch/followed_channels
         - weather_time/default
         - youtube/channel_statistics
-        - youtube/subsribed_channels
+        - youtube/subscribed_channels
         - youtube/video_statistics
     WrappedApiError:
       type: object

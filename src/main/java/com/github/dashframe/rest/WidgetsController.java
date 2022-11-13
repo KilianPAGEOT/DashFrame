@@ -321,7 +321,7 @@ public class WidgetsController implements WidgetsApi {
                 widgetConfiguration.setParameters(map);
                 return widgetConfiguration;
             }
-            case YOUTUBE_SUBSRIBED_CHANNELS -> {
+            case YOUTUBE_SUBSCRIBED_CHANNELS -> {
                 YouTubeSubscribedChannelsWidgetConfiguration widgetConfiguration = new YouTubeSubscribedChannelsWidgetConfiguration();
                 widgetConfiguration =
                     (YouTubeSubscribedChannelsWidgetConfiguration) setWidgetConf(widgetConfiguration, widget);
@@ -401,7 +401,7 @@ public class WidgetsController implements WidgetsApi {
             case YOUTUBE_CHANNEL_STATISTICS -> widgetParameterDAO.save(
                 new WidgetParameter(widget, "channel", widgetConfiguration.getParameters().get("channel").toString())
             );
-            case YOUTUBE_SUBSRIBED_CHANNELS -> {
+            case YOUTUBE_SUBSCRIBED_CHANNELS -> {
                 widgetParameterDAO.save(
                     new WidgetParameter(widget, "filter", widgetConfiguration.getParameters().get("filter").toString())
                 );
@@ -455,7 +455,7 @@ public class WidgetsController implements WidgetsApi {
                 widgetParameter.setValue(widgetConfiguration.getParameters().get("channel").toString());
                 widgetParameterDAO.save(widgetParameter);
             }
-            case YOUTUBE_SUBSRIBED_CHANNELS -> {
+            case YOUTUBE_SUBSCRIBED_CHANNELS -> {
                 WidgetParameter widgetParameter = widgetParameterDAO.findByWidget(widget).get(0);
                 widgetParameter.setValue(widgetConfiguration.getParameters().get("filter").toString());
                 widgetParameterDAO.save(widgetParameter);

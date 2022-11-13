@@ -4,13 +4,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import java.net.URI;
-import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.List;
 import java.util.Objects;
 import javax.annotation.Generated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * EpicGamesFriendsListWidgetConfigurationAllOfParameters
@@ -21,7 +18,7 @@ import javax.validation.constraints.*;
     value = "org.openapitools.codegen.languages.SpringCodegen",
     date = "2022-11-08T16:03:51.937911500+01:00[Europe/Paris]"
 )
-public class EpicGamesFriendsListWidgetConfigurationAllOfParameters {
+public class EpicGamesFriendsListWidgetConfigurationAllOfParameters extends WidgetConfigurationParameters {
 
     /**
      * Gets or Sets showOffline
@@ -114,5 +111,10 @@ public class EpicGamesFriendsListWidgetConfigurationAllOfParameters {
             return "null";
         }
         return o.toString().replace("\n", "\n    ");
+    }
+
+    @Override
+    public List<WidgetParameterDescription> describeParameters() {
+        return List.of(describeParameter("showOffline", WidgetParameterDescription.TypeEnum.INTEGER));
     }
 }

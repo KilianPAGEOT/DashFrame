@@ -2,6 +2,7 @@ package com.github.dashframe.models.json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 import java.util.Objects;
 import javax.annotation.Generated;
 import javax.validation.constraints.Min;
@@ -17,7 +18,7 @@ import javax.validation.constraints.Size;
     value = "org.openapitools.codegen.languages.SpringCodegen",
     date = "2022-11-08T16:03:51.937911500+01:00[Europe/Paris]"
 )
-public class SteamGameNewsWidgetConfigurationAllOfParameters {
+public class SteamGameNewsWidgetConfigurationAllOfParameters extends WidgetConfigurationParameters {
 
     @JsonProperty("gameNameOrId")
     private String gameNameOrId;
@@ -103,5 +104,10 @@ public class SteamGameNewsWidgetConfigurationAllOfParameters {
             return "null";
         }
         return o.toString().replace("\n", "\n    ");
+    }
+
+    @Override
+    public List<WidgetParameterDescription> describeParameters() {
+        return List.of(describeParameter("gameNameOrId", WidgetParameterDescription.TypeEnum.STRING));
     }
 }

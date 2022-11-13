@@ -1,17 +1,17 @@
 package com.github.dashframe;
 
 import com.github.dashframe.config.RsaKeyProperties;
-import com.github.dashframe.dao.ServiceDAO;
-import com.github.dashframe.dao.UserDAO;
-import com.github.dashframe.dao.WidgetDAO;
-import com.github.dashframe.dao.WidgetParameterDAO;
-import java.util.HashMap;
-import java.util.Map;
+import com.github.dashframe.models.json.*;
+import com.github.dashframe.service.service.ServiceManagerProvider;
+import com.github.dashframe.service.widget.WidgetManagerProvider;
+import java.time.Instant;
+import java.util.*;
+import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,16 +24,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class DashframeApplication {
 
     @Autowired
-    private ServiceDAO serviceDAO;
+    private ServiceManagerProvider serviceManagerProvider;
 
     @Autowired
-    private UserDAO userDAO;
-
-    @Autowired
-    private WidgetDAO widgetDAO;
-
-    @Autowired
-    private WidgetParameterDAO widgetParameterDAO;
+    private WidgetManagerProvider widgetManagerProvider;
 
     public static void main(String[] args) {
         SpringApplication.run(DashframeApplication.class, args);
@@ -41,11 +35,40 @@ public class DashframeApplication {
 
     @ResponseBody
     @CrossOrigin
-    @GetMapping("/about.json")
-    public ResponseEntity<Map<String, Object>> aboutJson() {
-        Map<String, Object> body = new HashMap<>();
-        body.put("client", new HashMap<>());
-        body.put("server", new HashMap<>());
-        return ResponseEntity.ok(body);
+    @GetMapping(value = "/about.json", produces = "application/json")
+    public AboutInformation aboutJson(HttpServletRequest request) {
+        Map<ServiceType, List<WidgetType>> supportedWidgets = Arrays
+            .stream(WidgetType.values())
+            .filter(widgetType -> this.widgetManagerProvider.forType(widgetType) != null)
+            .collect(Collectors.groupingBy(WidgetType::getServiceType));
+
+        return new AboutInformation(
+            new ClientInformation(request.getRemoteAddr()),
+            new ServerInformation()
+                .currentTime(Instant.now().getEpochSecond())
+                .services(
+                    Arrays
+                        .stream(ServiceType.values())
+                        .filter(serviceType -> this.serviceManagerProvider.forType(serviceType) != null)
+                        .map(serviceType ->
+                            new ServiceDescription()
+                                .name(serviceType.getValue())
+                                .description(serviceType.getDescription())
+                                .widgets(
+                                    supportedWidgets
+                                        .getOrDefault(serviceType, Collections.emptyList())
+                                        .stream()
+                                        .map(widgetType ->
+                                            new WidgetDescription()
+                                                .name(widgetType.getValue())
+                                                .description(widgetType.getDescription())
+                                                .params(widgetType.getParameterDescriptions())
+                                        )
+                                        .toList()
+                                )
+                        )
+                        .toList()
+                )
+        );
     }
 }

@@ -242,7 +242,7 @@ export default {
               display: false,
               description:
                 "Widget to see if your subscriptions are live on Youtube",
-              type: "youtube/subsribed_channels",
+              type: "youtube/subscribed_channels",
               refreshRate: 10,
               parameters: [{ name: "filter", filter: "Choose Channel" }],
             },
