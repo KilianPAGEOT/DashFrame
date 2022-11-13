@@ -13,7 +13,7 @@
  */
 
 import * as runtime from "../runtime";
-import type { GetAboutJson200Response } from "../models";
+import type { AboutInformation } from "../models";
 
 /**
  *
@@ -24,7 +24,7 @@ export class InformationApi extends runtime.BaseAPI {
    */
   async getAboutJsonRaw(
     initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<GetAboutJson200Response>> {
+  ): Promise<runtime.ApiResponse<AboutInformation>> {
     const queryParameters: any = {};
 
     const headerParameters: runtime.HTTPHeaders = {};
@@ -47,7 +47,7 @@ export class InformationApi extends runtime.BaseAPI {
    */
   async getAboutJson(
     initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<GetAboutJson200Response> {
+  ): Promise<AboutInformation> {
     const response = await this.getAboutJsonRaw(initOverrides);
     return await response.value();
   }

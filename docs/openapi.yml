@@ -37,6 +37,16 @@ servers:
         default: v1
 components:
   schemas:
+    AboutInformation:
+      type: object
+      properties:
+        client:
+          $ref: "#/components/schemas/ClientInformation"
+        server:
+          $ref: "#/components/schemas/ServerInformation"
+      required:
+        - client
+        - server
     ApiError:
       type: object
       description: An error response object
@@ -808,15 +818,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  client:
-                    $ref: "#/components/schemas/ClientInformation"
-                  server:
-                    $ref: "#/components/schemas/ServerInformation"
-                required:
-                  - client
-                  - server
+                $ref: "#/components/schemas/AboutInformation"
   /login:
     post:
       operationId: create_token
