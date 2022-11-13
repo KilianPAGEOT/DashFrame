@@ -297,6 +297,67 @@ components:
                 - showOffline
           required:
             - parameters
+    SteamGameNews:
+      type: object
+      description: The NEWS! Used as part of the widgets/refresh event.
+      properties:
+        name:
+          type: string
+          description: The game's name.
+        id:
+          type: string
+          description: The game's app ID.
+        items:
+          type: array
+          description: A list of news items.
+          items:
+            $ref: "#/components/schemas/SteamGameNewsItem"
+      required:
+        - name
+        - id
+        - items
+    SteamGameNewsFeed:
+      type: object
+      properties:
+        label:
+          type: string
+        name:
+          type: string
+        type:
+          type: integer
+      required:
+        - label
+        - name
+        - type
+    SteamGameNewsItem:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        author:
+          type: string
+        contents:
+          type: string
+          description: Contents of this article as HTML 
+        date:
+          type: string
+          format: date-time
+        feed:
+          $ref: "#/components/schemas/SteamGameNewsFeed"
+        tags:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - title
+        - contents
+        - tags
     SteamGameNewsWidgetConfiguration:
       allOf:
         - $ref: "#/components/schemas/BaseWidgetConfiguration"
