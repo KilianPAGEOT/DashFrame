@@ -8,7 +8,7 @@
           v-on:click="google_redirection"
           color="black"
         >
-          <img class="oauth_img" src="./../../public/Google_Logo.png" />
+          <img class="oauth_img" src="/assets/google_logo.png" />
           Access with Google
         </q-btn>
         <q-btn
@@ -17,7 +17,7 @@
           v-on:click="github_redirection"
           color="black"
         >
-          <img class="oauth_img" src="./../../public/GitHub_Logo.png" />
+          <img class="oauth_img" src="/assets/github_logo.png" />
           Access with GitHub
         </q-btn>
       </div>
