@@ -6,7 +6,22 @@ import {
   InformationApi,
   ServicesApi,
   WidgetsApi,
+  WidgetType,
+  type WidgetInstance,
 } from "../api";
+
+import EpicGamesFreeGames from "./EpicGames/FreeGames.vue";
+import EpicGamesFriendsList from "./EpicGames/FriendsList.vue";
+import SteamFriendsList from "./Steam/FriendsList.vue";
+import SteamGameNews from "./Steam/GameNews.vue";
+import SteamGamePopulation from "./Steam/GamePopulation.vue";
+import RssFeed from "./Rss/RssFeed.vue";
+import TwitchFollowedChannels from "./Twitch/FollowedChannels.vue";
+import Weather from "./Weather.vue";
+import YouTubeChannelStatistics from "./YouTube/ChannelStatistics.vue";
+import YouTubeSubscribedChannels from "./YouTube/SubscribedChannels.vue";
+import YouTubeVideoStatistics from "./YouTube/VideoStatistics.vue";
+import type { DefineComponent } from "vue";
 </script>
 
 <template>
@@ -14,10 +29,7 @@ import {
     <div class="orderWidget">
       <div v-for="widget in widgets[0]" :key="widget.id">
         <div v-if="widget.config.columnPos == column">
-          <div class="WidgetWeather">
-            <h6>{{ widget.config.name }}</h6>
-            <span>iWidget Info</span>
-          </div>
+          <component :is="getWidgetComponent(widget)"></component>
         </div>
       </div>
     </div>
@@ -36,6 +48,19 @@ import {
 const servicesInit: any[] = [];
 const widgetsInit: any[] = [];
 export default {
+  components: {
+    EpicGamesFreeGames,
+    EpicGamesFriendsList,
+    SteamFriendsList,
+    SteamGameNews,
+    SteamGamePopulation,
+    RssFeed,
+    TwitchFollowedChannels,
+    Weather,
+    YouTubeChannelStatistics,
+    YouTubeSubscribedChannels,
+    YouTubeVideoStatistics,
+  },
   data() {
     return {
       services: servicesInit,
@@ -49,6 +74,23 @@ export default {
     open(column: number) {
       (this.$parent as any).$data.showModalAddWidget = true;
       (this.$parent as any).$data.column = column;
+    },
+    getWidgetComponent(widget: WidgetInstance): DefineComponent | null {
+      const typeToWidget: Record<WidgetType, DefineComponent> = {
+        "epic_games/free_games": EpicGamesFreeGames,
+        "epic_games/friends_list": EpicGamesFriendsList,
+        "steam/friends_list": SteamFriendsList,
+        "steam/game_news": SteamGameNews,
+        "steam/game_population": SteamGamePopulation,
+        "rss/feed": RssFeed,
+        "twitch/followed_channels": TwitchFollowedChannels,
+        "weather_time/default": Weather,
+        "youtube/channel_statistics": YouTubeChannelStatistics,
+        "youtube/subscribed_channels": YouTubeSubscribedChannels,
+        "youtube/video_statistics": YouTubeVideoStatistics,
+      } as const;
+      const type = widget.config?.type;
+      return type ? typeToWidget[type] : null;
     },
     async update() {
       const widgetsApi = new WidgetsApi();
@@ -91,19 +133,6 @@ export default {
       });
     }
   },
-
-  /*watch: {
-    async showModalAddWidget() {
-      console.log(this.showModalAddWidget);
-      const widgetsApi = new WidgetsApi();
-      const widgets = await 
-        widgetsApi.listWidgets({}, { credentials: "include" })
-
-      this.widgets = [];
-      this.widgets.push(widgets[0]);
-      console.log(this.widgets);
-    },
-  },*/
 };
 </script>
 
