@@ -23,29 +23,6 @@ export default {
     };
   },
 };
-
-/** TEMP: API usage example */
-async function apiExample() {
-  const infoApi = new InformationApi(
-    new Configuration({
-      basePath: BASE_PATH.replace("/api/v1", ""),
-    })
-  );
-  const servicesApi = new ServicesApi();
-
-  const [about, services] = await Promise.all([
-    infoApi.getAboutJson(),
-    servicesApi.listServices({}, { credentials: "include" }),
-  ]);
-
-  console.groupCollapsed("Example API calls");
-  console.log("client information", about.client);
-  console.log("server information", about.server);
-  console.log("detailed service information", services);
-  console.groupEnd();
-}
-
-apiExample();
 try {
   events.init();
 } catch (error) {

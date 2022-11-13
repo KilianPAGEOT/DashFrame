@@ -62,14 +62,13 @@ export default {
     },
   },
   async created() {
-    if (Cookies.get("token") != null) {
+    if (Cookies.get("token") != "OAuth2") {
       let widgetsApi = new WidgetsApi(
         new Configuration({
           accessToken: Cookies.get("token"),
         })
       );
       const widgets = await widgetsApi.listWidgets({}, {});
-      console.log(widgets);
       this.widgets = [];
       this.widgets.push(widgets);
       widgets.forEach((widget: any) => {
@@ -83,7 +82,6 @@ export default {
         {},
         { credentials: "include" }
       );
-
       this.widgets = [];
       this.widgets.push(widgets);
       widgets.forEach((widget: any) => {
